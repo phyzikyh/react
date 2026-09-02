@@ -1,0 +1,4848 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>포트폴리오 실습 워크북</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#f7f9fb;--surface:#ffffff;--surface2:#f0f3f6;--code-bg:#f6f8fa;
+  --ink:#1c2128;--muted:#5b6570;--faint:#8b95a1;--line:#dce2e8;
+  --accent:#16a34a;--accent-soft:#dcfce7;--link:#2563eb;
+  --shadow:0 1px 2px rgb(20 30 50 / 4%),0 8px 24px rgb(20 30 50 / 5%);
+  --disp:'Bricolage Grotesque','Segoe UI',sans-serif;
+  --sans:'IBM Plex Sans','Malgun Gothic','Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d1117;--surface:#161b22;--surface2:#1c222b;--code-bg:#12171e;
+  --ink:#e6edf3;--muted:#9aa4b0;--faint:#6e7781;--line:#2a313a;
+  --accent:#3fb950;--accent-soft:#12351d;--link:#589bff;
+  --shadow:0 1px 2px rgb(0 0 0 / 30%),0 10px 30px rgb(0 0 0 / 35%);
+}}
+:root[data-theme="dark"]{
+  --bg:#0d1117;--surface:#161b22;--surface2:#1c222b;--code-bg:#12171e;
+  --ink:#e6edf3;--muted:#9aa4b0;--faint:#6e7781;--line:#2a313a;
+  --accent:#3fb950;--accent-soft:#12351d;--link:#589bff;
+  --shadow:0 1px 2px rgb(0 0 0 / 30%),0 10px 30px rgb(0 0 0 / 35%);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+code,pre{font-family:var(--mono)}
+a{color:inherit;text-decoration:none}
+.top{border-bottom:1px solid var(--line);background:radial-gradient(720px 240px at 12% -10%,color-mix(in srgb,var(--accent) 13%,transparent),transparent 70%)}
+.top-inner{max-width:1200px;margin:0 auto;padding:52px 28px 42px}
+.kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+h1.title{font-family:var(--disp);font-weight:800;font-size:clamp(30px,5vw,50px);line-height:1.05;letter-spacing:-.02em;text-wrap:balance;max-width:18ch}
+.subtitle{color:var(--muted);font-size:17px;margin-top:15px;max-width:62ch}
+.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.mchip{font-family:var(--mono);font-size:13px;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--muted)}
+.mchip b{color:var(--ink);font-weight:600}
+.layout{max-width:1200px;margin:0 auto;padding:40px 28px 80px;display:grid;grid-template-columns:210px 1fr;gap:44px;align-items:start}
+.toc{position:sticky;top:22px}
+.toc h3{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+.toc ol{list-style:none;display:flex;flex-direction:column;gap:2px}
+.toc a{display:flex;gap:11px;padding:7px 10px;border-radius:8px;color:var(--muted);font-size:14px;transition:.15s}
+.toc a:hover{background:var(--surface2);color:var(--ink)}
+.toc .tnum{font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600;min-width:20px}
+.main{min-width:0;display:flex;flex-direction:column;gap:20px}
+.intro{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 26px;box-shadow:var(--shadow)}
+.intro h2{font-family:var(--disp);font-size:19px;margin-bottom:12px;font-weight:600}
+.flow{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-family:var(--mono);font-size:13px}
+.flow span{background:var(--surface2);padding:6px 12px;border-radius:7px}
+.flow .arw{background:none;color:var(--faint);padding:6px 2px}
+.intro .note{color:var(--muted);font-size:14px;margin-top:14px}
+.part{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px 28px 24px;box-shadow:var(--shadow);scroll-margin-top:18px}
+.parthead{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.pnum{font-family:var(--mono);font-size:13px;letter-spacing:.08em;color:var(--faint)}
+.pnum b{color:var(--accent);font-weight:600}
+.pmeta{display:flex;align-items:center;gap:14px}
+.level{display:inline-flex;gap:4px}
+.level .d{width:7px;height:7px;border-radius:50%;background:var(--line)}
+.level .d.on{background:var(--accent)}
+h2.ptitle{font-family:var(--disp);font-weight:600;font-size:25px;letter-spacing:-.01em;margin:11px 0 13px}
+.learnrow{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
+.tag{font-family:var(--mono);font-size:12px;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:6px}
+.goal{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--code-bg);margin-bottom:18px}
+.glabel{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);padding:9px 14px;border-bottom:1px solid var(--line);background:var(--surface2)}
+iframe.pv{width:100%;border:0;display:block;background:#fbfcfd}
+.mission{background:var(--surface2);border-radius:12px;padding:18px 20px;margin-bottom:16px}
+.mission h4{font-size:14px;margin-bottom:8px;font-family:var(--sans);font-weight:700}
+.mission>p{font-size:15px;color:var(--ink);margin-bottom:16px}
+.reqs,.hints{margin-top:14px}
+.reqs h4,.hints h4{font-size:13px;margin-bottom:9px;font-weight:700;color:var(--muted);letter-spacing:.02em}
+.reqs ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+.reqs li{position:relative;padding-left:26px;font-size:14.5px;color:var(--ink)}
+.reqs li::before{content:"";position:absolute;left:4px;top:7px;width:9px;height:9px;border:2px solid var(--accent);border-radius:3px}
+.hints ul{list-style:none;display:flex;flex-direction:column;gap:7px;border-left:3px solid var(--accent);padding-left:16px}
+.hints li{font-size:14px;color:var(--muted)}
+.htmlguide{margin-top:16px}
+.htmlguide h4{font-size:13px;margin-bottom:10px;font-weight:700;color:var(--muted)}
+.hrows{list-style:none;display:flex;flex-direction:column;gap:7px;border-left:3px solid var(--accent);padding-left:16px}
+.hrows li{font-size:14px;color:var(--ink)}
+.cssguide{margin-top:16px}
+.cssguide h4{font-size:13px;margin-bottom:10px;font-weight:700;color:var(--muted)}
+.cssrows{list-style:none;display:flex;flex-direction:column;gap:8px}
+.cssrows li{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;padding:11px 14px;background:var(--code-bg);border:1px solid var(--line);border-radius:9px}
+.cssrows .sel{font-family:var(--mono);font-size:13px;color:var(--link);font-weight:700;white-space:nowrap}
+.cssrows .ins{font-family:var(--mono);font-size:13px;color:var(--ink);flex:1;min-width:220px;line-height:1.7}
+.nocss{font-size:14px;color:var(--muted)}
+.nocss code{font-family:var(--mono);background:var(--code-bg);padding:1px 6px;border-radius:4px;color:var(--ink)}
+.answer{border:1px dashed var(--line);border-radius:12px;overflow:hidden}
+.answer summary{cursor:pointer;padding:14px 18px;font-family:var(--mono);font-size:14px;color:var(--muted);list-style:none;user-select:none}
+.answer summary::-webkit-details-marker{display:none}
+.answer summary::before{content:"▶ ";color:var(--accent)}
+.answer[open] summary::before{content:"▼ "}
+.answer summary:hover{color:var(--accent)}
+.adin{padding:0 16px 16px}
+.answer-open{margin-top:4px}
+.aohead{font-family:var(--mono);font-size:13px;color:var(--muted);margin-bottom:10px}
+.codeblock{border:1px solid var(--line);border-radius:11px;overflow:hidden;margin-bottom:12px;background:var(--code-bg)}
+.cbhead{display:flex;align-items:center;gap:12px;padding:9px 12px;background:var(--surface2);border-bottom:1px solid var(--line)}
+.fname{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;gap:7px}
+.fdot{width:9px;height:9px;border-radius:2px;display:inline-block}
+.fdot.htmlf{background:#e34c26}.fdot.css{background:#2563eb}
+.cbnote{font-size:12px;color:var(--muted);font-family:var(--mono)}
+.copy{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:5px 11px;cursor:pointer}
+.copy:hover{border-color:var(--accent);color:var(--accent)}
+.copy.done{color:var(--accent);border-color:var(--accent)}
+pre.cbcode{margin:0;padding:15px 18px;overflow-x:auto;font-size:13px;line-height:1.7}
+pre.cbcode code{color:var(--ink);white-space:pre}
+.pagefoot{max-width:1200px;margin:0 auto;padding:0 28px 70px}
+.done{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:var(--shadow)}
+.done h2{font-family:var(--disp);font-size:21px;font-weight:600;margin-bottom:12px}
+.done p{color:var(--muted);font-size:15px}
+.done .steps{list-style:none;display:flex;flex-direction:column;gap:9px;margin-top:14px}
+.done .steps li{display:flex;gap:11px;font-size:15px;color:var(--ink)}
+.done .steps .n{font-family:var(--mono);color:var(--accent);font-weight:600}
+@media (max-width:860px){.layout{grid-template-columns:1fr;gap:24px}.toc{position:static;order:-1;border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--surface)}.toc ol{display:grid;grid-template-columns:1fr 1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+</head>
+<body>
+<header class="top"><div class="top-inner">
+  <div class="kicker">Web Programming · Week 1&ndash;2 · HTML &amp; CSS</div>
+  <h1 class="title">개발자 포트폴리오 실습 워크북</h1>
+  <p class="subtitle">완성 코드를 통째로 베끼는 게 아니라, <b>구역마다 주어진 미션을 직접 구현</b>하며 하나씩 완성합니다. 목표 화면을 보고 스스로 만들어 본 뒤, 막히면 힌트 → 그래도 안 되면 정답 순서로 확인하세요.</p>
+</div></header>
+
+<div class="layout">
+  <nav class="toc"><h3>미션 목록</h3><ol>
+<li><a href="#part00"><span class="tnum">00</span><span class="ttitle">프로젝트 준비</span></a></li>
+<li><a href="#part01"><span class="tnum">01</span><span class="ttitle">네비게이션 바</span></a></li>
+<li><a href="#part02"><span class="tnum">02</span><span class="ttitle">히어로 — 소개 텍스트</span></a></li>
+<li><a href="#part03"><span class="tnum">03</span><span class="ttitle">히어로 — 코드 창</span></a></li>
+<li><a href="#part04"><span class="tnum">04</span><span class="ttitle">About 섹션</span></a></li>
+<li><a href="#part05"><span class="tnum">05</span><span class="ttitle">Skills 섹션</span></a></li>
+<li><a href="#part06"><span class="tnum">06</span><span class="ttitle">Career — 타임라인</span></a></li>
+<li><a href="#part07"><span class="tnum">07</span><span class="ttitle">Projects — 카드</span></a></li>
+<li><a href="#part08"><span class="tnum">08</span><span class="ttitle">Blog — 글 목록</span></a></li>
+<li><a href="#part09"><span class="tnum">09</span><span class="ttitle">Contact — 입력 폼</span></a></li>
+<li><a href="#part10"><span class="tnum">10</span><span class="ttitle">Footer &amp; 반응형</span></a></li>
+  </ol></nav>
+  <main class="main">
+
+<section class="part" id="part00">
+  <div class="parthead"><div class="pnum">PART <b>00</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">프로젝트 준비</h2>
+  <div class="learnrow"><span class="tag">파일 하나</span><span class="tag">HTML 뼈대</span><span class="tag">내부 style</span></div>
+  
+  <div class="mission"><h4>미션</h4><p>index.html 파일 하나를 만듭니다. CSS는 &lt;head&gt; 안의 &lt;style&gt; 태그에, HTML은 &lt;body&gt; 안에 작성합니다. 파일 하나만 브라우저로 열면 내용과 스타일이 바로 함께 보입니다. 아래 시작 코드를 그대로 작성하고 시작하세요.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>파일 하나만 만들기: index.html</li><li>&lt;head&gt; 안에 &lt;style&gt; ... &lt;/style&gt; 넣기</li><li>&lt;style&gt; 맨 위에 기본 설정(초기화) 작성</li></ul></div>
+    
+    
+  </div>
+  <div class="answer-open"><div class="aohead">시작 파일 (그대로 작성)</div><div class="codeblock"><div class="cbhead"><span class="fname"><span class="fdot htmlf"></span>index.html</span><span class="cbnote">새 파일 — 이대로 시작</span><button class="copy" type="button">복사</button></div><pre class="cbcode"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;홍길동 · dev&lt;/title&gt;
+  &lt;style&gt;
+/* ===== 기본 설정 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #1f2328;
+  background-color: #fbfcfd;
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 내용을 가운데로 모으는 상자 */
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- 아래에 PART 1부터 순서대로 HTML을 추가합니다 --&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+</section>
+<section class="part" id="part01">
+  <div class="parthead"><div class="pnum">PART <b>01</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">네비게이션 바</h2>
+  <div class="learnrow"><span class="tag">flexbox</span><span class="tag">position:sticky</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:100px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* ===== 기본 설정 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #1f2328;
+  background-color: #fbfcfd;
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 내용을 가운데로 모으는 상자 */
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===== PART 1 · 네비게이션 ===== */
+.nav {
+  border-bottom: 1px solid #e3e7ec;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 62px;
+}
+
+.brand {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.brand .slash {
+  color: #16a34a;
+}
+
+.nav ul {
+  display: flex;
+  gap: 22px;
+  list-style: none;
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+}
+
+.nav a::before {
+  content: &quot;~/&quot;;
+  color: #c8cdd4;
+}
+
+.nav a:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 2 · 히어로 (소개 텍스트) ===== */
+.hero {
+  padding: 70px 0;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.prompt {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 20px;
+}
+
+.prompt .sign {
+  color: #16a34a;
+}
+
+/* 커서 모양 (초록 네모) */
+.cursor {
+  display: inline-block;
+  width: 9px;
+  height: 16px;
+  background-color: #16a34a;
+}
+
+.hero h1 {
+  font-size: 46px;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.hero .green {
+  color: #16a34a;
+}
+
+.hero .intro {
+  font-size: 17px;
+  color: #636c76;
+  margin-bottom: 28px;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  font-family: monospace;
+}
+
+.btn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  border: 1px solid #e3e7ec;
+}
+
+.btn-fill {
+  background-color: #1f2328;
+  color: #ffffff;
+}
+
+.btn-fill:hover {
+  background-color: #16a34a;
+}
+
+.btn-line {
+  background-color: #ffffff;
+  color: #1f2328;
+}
+
+.btn-line:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 3 · 코드 창 ===== */
+.window {
+  background-color: #ffffff;
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgb(20 30 50 / 8%);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e3e7ec;
+  background-color: #f6f8fa;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot.red    { background-color: #ff5f57; }
+.dot.yellow { background-color: #febc2e; }
+.dot.green  { background-color: #28c840; }
+
+.filename {
+  margin-left: 8px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #636c76;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.9;
+  padding: 18px 20px;
+}
+
+/* 코드 색칠 */
+.key  { color: #cf222e; }
+.prop { color: #0550ae; }
+.str  { color: #0a7d33; }
+
+/* ===== 섹션 공통 (PART 4~9에서 함께 사용) ===== */
+.section {
+  padding: 70px 0;
+  border-top: 1px solid #e3e7ec;
+}
+
+.tag-line {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 12px;
+}
+
+.tag-line b {
+  color: #16a34a;
+}
+
+.section h2 {
+  font-size: 32px;
+  margin-bottom: 14px;
+}
+
+.desc {
+  color: #636c76;
+  margin-bottom: 36px;
+}
+
+/* 칩 (PART 4 · 5 공용) */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: monospace;
+}
+
+.chip {
+  padding: 9px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.chip:hover {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+/* PART 5 · 추가할 CSS 없음!
+   PART 4에서 만든 .chips / .chip 스타일을 그대로 재사용합니다.
+   → 같은 class 이름을 쓰면 스타일이 자동으로 적용됩니다. */
+
+/* ===== PART 6 · 경력 타임라인 ===== */
+.item {
+  border-left: 3px solid #16a34a;
+  padding: 0 0 24px 20px;
+  margin-left: 6px;
+}
+
+.item:last-child {
+  padding-bottom: 0;
+}
+
+.year {
+  font-family: monospace;
+  font-size: 14px;
+  color: #16a34a;
+  margin-bottom: 4px;
+}
+
+.job {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.job-desc {
+  color: #636c76;
+  font-size: 14px;
+}
+
+/* ===== PART 7 · 프로젝트 카드 ===== */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.card {
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  padding: 22px;
+  background-color: #ffffff;
+}
+
+.card:hover {
+  border-color: #16a34a;
+}
+
+.card-title {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+  color: #2563eb;
+  margin-bottom: 10px;
+}
+
+.card-desc {
+  color: #636c76;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.card-foot {
+  display: flex;
+  gap: 18px;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.lang {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lang-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.lang-dot.js    { background-color: #f1e05a; }
+.lang-dot.css   { background-color: #563d7c; }
+.lang-dot.react { background-color: #61dafb; }
+.lang-dot.html  { background-color: #e34c26; }
+
+/* ===== PART 8 · 블로그 목록 ===== */
+.post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 4px;
+  border-bottom: 1px solid #e3e7ec;
+}
+
+.post-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.post-date {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.post:hover .post-title {
+  color: #16a34a;
+}
+
+/* ===== PART 9 · 연락 폼 ===== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 520px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.field input,
+.field textarea {
+  padding: 13px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.field textarea {
+  min-height: 120px;
+}
+
+/* 클릭했을 때 테두리 색 바꾸기 */
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: #16a34a;
+}
+
+.form .btn {
+  font-family: monospace;
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* ===== PART 10 · 푸터 ===== */
+.footer {
+  border-top: 1px solid #e3e7ec;
+  padding: 28px 0;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ===== 반응형 · 화면이 좁아지면 1열로 ===== */
+@media (max-width: 720px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#fbfcfd}
+body{padding:20px;overflow:hidden}
+.nav{position:static}
+.hero{padding:8px 0}
+.section{padding:20px 0;border-top:none}
+.desc{margin-bottom:18px}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;nav class=&quot;nav&quot;&gt;
+  &lt;div class=&quot;wrap nav-inner&quot;&gt;
+    &lt;div class=&quot;brand&quot;&gt;&amp;lt;홍길동&lt;span class=&quot;slash&quot;&gt;/&lt;/span&gt;&amp;gt;&lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#about&quot;&gt;about&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#skills&quot;&gt;skills&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#exp&quot;&gt;career&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#projects&quot;&gt;work&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#writing&quot;&gt;blog&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#contact&quot;&gt;contact&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>화면 맨 위에, 왼쪽 로고와 오른쪽 메뉴가 양 끝으로 벌어진 고정 바를 만드세요.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>왼쪽: &lt;홍길동/&gt; 로고 (/ 는 초록색)</li><li>오른쪽: 메뉴 6개</li><li>스크롤해도 맨 위에 고정</li><li>메뉴 글자 앞에 ~/ 붙이기</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;nav class=&quot;nav&quot;&gt; 안에 &lt;div class=&quot;wrap nav-inner&quot;&gt; 를 넣습니다</li><li>왼쪽 로고: &lt;div class=&quot;brand&quot;&gt; — 텍스트는 홍길동, 가운데 / 는 &lt;span class=&quot;slash&quot;&gt;/&lt;/span&gt; 로 (꺾쇠 &amp;lt; &amp;gt; 는 그대로 입력)</li><li>오른쪽 메뉴: &lt;ul&gt; 안에 &lt;li&gt;&lt;a href=&quot;#about&quot;&gt;about&lt;/a&gt;&lt;/li&gt; 형태로 6개 (about, skills, career, work, blog, contact)</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.nav</code><span class="ins">position: sticky; top: 0; background-color: #ffffff; border-bottom: 1px solid #e3e7ec;</span></li><li><code class="sel">.nav-inner</code><span class="ins">display: flex; justify-content: space-between; align-items: center; height: 62px;</span></li><li><code class="sel">.brand</code><span class="ins">font-family: monospace; font-weight: bold; font-size: 16px;</span></li><li><code class="sel">.brand .slash</code><span class="ins">color: #16a34a;</span></li><li><code class="sel">.nav ul</code><span class="ins">display: flex; gap: 22px; list-style: none; font-family: monospace; font-size: 14px; color: #636c76;</span></li><li><code class="sel">.nav a::before</code><span class="ins">content: &quot;~/&quot;; color: #c8cdd4;</span></li><li><code class="sel">.nav a:hover</code><span class="ins">color: #16a34a;</span></li></ul></div>
+  </div>
+  
+</section>
+<section class="part" id="part02">
+  <div class="parthead"><div class="pnum">PART <b>02</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">히어로 — 소개 텍스트</h2>
+  <div class="learnrow"><span class="tag">2단 grid</span><span class="tag">글자 스타일</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:330px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* ===== 기본 설정 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #1f2328;
+  background-color: #fbfcfd;
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 내용을 가운데로 모으는 상자 */
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===== PART 1 · 네비게이션 ===== */
+.nav {
+  border-bottom: 1px solid #e3e7ec;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 62px;
+}
+
+.brand {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.brand .slash {
+  color: #16a34a;
+}
+
+.nav ul {
+  display: flex;
+  gap: 22px;
+  list-style: none;
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+}
+
+.nav a::before {
+  content: &quot;~/&quot;;
+  color: #c8cdd4;
+}
+
+.nav a:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 2 · 히어로 (소개 텍스트) ===== */
+.hero {
+  padding: 70px 0;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.prompt {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 20px;
+}
+
+.prompt .sign {
+  color: #16a34a;
+}
+
+/* 커서 모양 (초록 네모) */
+.cursor {
+  display: inline-block;
+  width: 9px;
+  height: 16px;
+  background-color: #16a34a;
+}
+
+.hero h1 {
+  font-size: 46px;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.hero .green {
+  color: #16a34a;
+}
+
+.hero .intro {
+  font-size: 17px;
+  color: #636c76;
+  margin-bottom: 28px;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  font-family: monospace;
+}
+
+.btn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  border: 1px solid #e3e7ec;
+}
+
+.btn-fill {
+  background-color: #1f2328;
+  color: #ffffff;
+}
+
+.btn-fill:hover {
+  background-color: #16a34a;
+}
+
+.btn-line {
+  background-color: #ffffff;
+  color: #1f2328;
+}
+
+.btn-line:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 3 · 코드 창 ===== */
+.window {
+  background-color: #ffffff;
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgb(20 30 50 / 8%);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e3e7ec;
+  background-color: #f6f8fa;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot.red    { background-color: #ff5f57; }
+.dot.yellow { background-color: #febc2e; }
+.dot.green  { background-color: #28c840; }
+
+.filename {
+  margin-left: 8px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #636c76;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.9;
+  padding: 18px 20px;
+}
+
+/* 코드 색칠 */
+.key  { color: #cf222e; }
+.prop { color: #0550ae; }
+.str  { color: #0a7d33; }
+
+/* ===== 섹션 공통 (PART 4~9에서 함께 사용) ===== */
+.section {
+  padding: 70px 0;
+  border-top: 1px solid #e3e7ec;
+}
+
+.tag-line {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 12px;
+}
+
+.tag-line b {
+  color: #16a34a;
+}
+
+.section h2 {
+  font-size: 32px;
+  margin-bottom: 14px;
+}
+
+.desc {
+  color: #636c76;
+  margin-bottom: 36px;
+}
+
+/* 칩 (PART 4 · 5 공용) */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: monospace;
+}
+
+.chip {
+  padding: 9px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.chip:hover {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+/* PART 5 · 추가할 CSS 없음!
+   PART 4에서 만든 .chips / .chip 스타일을 그대로 재사용합니다.
+   → 같은 class 이름을 쓰면 스타일이 자동으로 적용됩니다. */
+
+/* ===== PART 6 · 경력 타임라인 ===== */
+.item {
+  border-left: 3px solid #16a34a;
+  padding: 0 0 24px 20px;
+  margin-left: 6px;
+}
+
+.item:last-child {
+  padding-bottom: 0;
+}
+
+.year {
+  font-family: monospace;
+  font-size: 14px;
+  color: #16a34a;
+  margin-bottom: 4px;
+}
+
+.job {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.job-desc {
+  color: #636c76;
+  font-size: 14px;
+}
+
+/* ===== PART 7 · 프로젝트 카드 ===== */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.card {
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  padding: 22px;
+  background-color: #ffffff;
+}
+
+.card:hover {
+  border-color: #16a34a;
+}
+
+.card-title {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+  color: #2563eb;
+  margin-bottom: 10px;
+}
+
+.card-desc {
+  color: #636c76;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.card-foot {
+  display: flex;
+  gap: 18px;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.lang {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lang-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.lang-dot.js    { background-color: #f1e05a; }
+.lang-dot.css   { background-color: #563d7c; }
+.lang-dot.react { background-color: #61dafb; }
+.lang-dot.html  { background-color: #e34c26; }
+
+/* ===== PART 8 · 블로그 목록 ===== */
+.post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 4px;
+  border-bottom: 1px solid #e3e7ec;
+}
+
+.post-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.post-date {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.post:hover .post-title {
+  color: #16a34a;
+}
+
+/* ===== PART 9 · 연락 폼 ===== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 520px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.field input,
+.field textarea {
+  padding: 13px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.field textarea {
+  min-height: 120px;
+}
+
+/* 클릭했을 때 테두리 색 바꾸기 */
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: #16a34a;
+}
+
+.form .btn {
+  font-family: monospace;
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* ===== PART 10 · 푸터 ===== */
+.footer {
+  border-top: 1px solid #e3e7ec;
+  padding: 28px 0;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ===== 반응형 · 화면이 좁아지면 1열로 ===== */
+@media (max-width: 720px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#fbfcfd}
+body{padding:20px;overflow:hidden}
+.nav{position:static}
+.hero{padding:8px 0}
+.section{padding:20px 0;border-top:none}
+.desc{margin-bottom:18px}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;header class=&quot;hero&quot;&gt;
+  &lt;div class=&quot;wrap hero-grid&quot;&gt;
+
+    &lt;!-- 왼쪽: 소개 --&gt;
+    &lt;div&gt;
+      &lt;p class=&quot;prompt&quot;&gt;&lt;span class=&quot;sign&quot;&gt;~$&lt;/span&gt; whoami &lt;span class=&quot;cursor&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+      &lt;h1&gt;홍길동,&lt;br&gt;&lt;span class=&quot;green&quot;&gt;Frontend Developer&lt;/span&gt;&lt;/h1&gt;
+      &lt;p class=&quot;intro&quot;&gt;웹을 만드는 게 좋아서 컴퓨터공학을 전공하고 있습니다. HTML/CSS부터 React까지, 배운 걸 직접 만들어봅니다.&lt;/p&gt;
+      &lt;div class=&quot;buttons&quot;&gt;
+        &lt;a href=&quot;#projects&quot; class=&quot;btn btn-fill&quot;&gt;./view-projects&lt;/a&gt;
+        &lt;a href=&quot;#contact&quot; class=&quot;btn btn-line&quot;&gt;./contact&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- 오른쪽: 코드 창 (PART 3에서 채웁니다) --&gt;
+
+  &lt;/div&gt;
+&lt;/header&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>첫 화면을 좌우 2칸으로 나누고 왼쪽에 자기소개를 배치하세요. (오른쪽은 다음 파트)</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>~$ whoami 줄 (~$ 초록 + 초록 네모 커서)</li><li>큰 제목: 이름 + Frontend Developer(초록)</li><li>한 줄 소개 문단</li><li>버튼 2개: 채운 버튼 · 테두리 버튼</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;header class=&quot;hero&quot;&gt; 안에 &lt;div class=&quot;wrap hero-grid&quot;&gt;</li><li>그 안에 왼쪽 칸용 &lt;div&gt; 하나 (오른쪽 칸은 PART 3에서 추가)</li><li>&lt;p class=&quot;prompt&quot;&gt; — ~$ 는 &lt;span class=&quot;sign&quot;&gt;, 커서는 빈 &lt;span class=&quot;cursor&quot;&gt;&lt;/span&gt;</li><li>&lt;h1&gt; — 이름 + &lt;br&gt; + &lt;span class=&quot;green&quot;&gt;Frontend Developer&lt;/span&gt;</li><li>&lt;p class=&quot;intro&quot;&gt; 소개글, 그 아래 &lt;div class=&quot;buttons&quot;&gt; 안에 &lt;a class=&quot;btn btn-fill&quot;&gt; 와 &lt;a class=&quot;btn btn-line&quot;&gt;</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.hero</code><span class="ins">padding: 70px 0;</span></li><li><code class="sel">.hero-grid</code><span class="ins">display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;</span></li><li><code class="sel">.prompt</code><span class="ins">font-family: monospace; font-size: 14px; color: #636c76; margin-bottom: 20px;</span></li><li><code class="sel">.prompt .sign</code><span class="ins">color: #16a34a;</span></li><li><code class="sel">.cursor</code><span class="ins">display: inline-block; width: 9px; height: 16px; background-color: #16a34a;</span></li><li><code class="sel">.hero h1</code><span class="ins">font-size: 46px; line-height: 1.1; margin-bottom: 18px;</span></li><li><code class="sel">.hero .green</code><span class="ins">color: #16a34a;</span></li><li><code class="sel">.hero .intro</code><span class="ins">font-size: 17px; color: #636c76; margin-bottom: 28px;</span></li><li><code class="sel">.buttons</code><span class="ins">display: flex; gap: 12px; font-family: monospace;</span></li><li><code class="sel">.btn</code><span class="ins">padding: 12px 20px; border-radius: 8px; font-weight: bold; border: 1px solid #e3e7ec;</span></li><li><code class="sel">.btn-fill</code><span class="ins">background-color: #1f2328; color: #ffffff;</span></li><li><code class="sel">.btn-fill:hover</code><span class="ins">background-color: #16a34a;</span></li><li><code class="sel">.btn-line</code><span class="ins">background-color: #ffffff; color: #1f2328;</span></li><li><code class="sel">.btn-line:hover</code><span class="ins">color: #16a34a;</span></li></ul></div>
+  </div>
+  
+</section>
+<section class="part" id="part03">
+  <div class="parthead"><div class="pnum">PART <b>03</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d on"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">히어로 — 코드 창</h2>
+  <div class="learnrow"><span class="tag">카드 UI</span><span class="tag">span 색칠</span><span class="tag">&amp;lt;pre&amp;gt;</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:300px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* ===== 기본 설정 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #1f2328;
+  background-color: #fbfcfd;
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 내용을 가운데로 모으는 상자 */
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===== PART 1 · 네비게이션 ===== */
+.nav {
+  border-bottom: 1px solid #e3e7ec;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 62px;
+}
+
+.brand {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.brand .slash {
+  color: #16a34a;
+}
+
+.nav ul {
+  display: flex;
+  gap: 22px;
+  list-style: none;
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+}
+
+.nav a::before {
+  content: &quot;~/&quot;;
+  color: #c8cdd4;
+}
+
+.nav a:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 2 · 히어로 (소개 텍스트) ===== */
+.hero {
+  padding: 70px 0;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.prompt {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 20px;
+}
+
+.prompt .sign {
+  color: #16a34a;
+}
+
+/* 커서 모양 (초록 네모) */
+.cursor {
+  display: inline-block;
+  width: 9px;
+  height: 16px;
+  background-color: #16a34a;
+}
+
+.hero h1 {
+  font-size: 46px;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.hero .green {
+  color: #16a34a;
+}
+
+.hero .intro {
+  font-size: 17px;
+  color: #636c76;
+  margin-bottom: 28px;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  font-family: monospace;
+}
+
+.btn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  border: 1px solid #e3e7ec;
+}
+
+.btn-fill {
+  background-color: #1f2328;
+  color: #ffffff;
+}
+
+.btn-fill:hover {
+  background-color: #16a34a;
+}
+
+.btn-line {
+  background-color: #ffffff;
+  color: #1f2328;
+}
+
+.btn-line:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 3 · 코드 창 ===== */
+.window {
+  background-color: #ffffff;
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgb(20 30 50 / 8%);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e3e7ec;
+  background-color: #f6f8fa;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot.red    { background-color: #ff5f57; }
+.dot.yellow { background-color: #febc2e; }
+.dot.green  { background-color: #28c840; }
+
+.filename {
+  margin-left: 8px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #636c76;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.9;
+  padding: 18px 20px;
+}
+
+/* 코드 색칠 */
+.key  { color: #cf222e; }
+.prop { color: #0550ae; }
+.str  { color: #0a7d33; }
+
+/* ===== 섹션 공통 (PART 4~9에서 함께 사용) ===== */
+.section {
+  padding: 70px 0;
+  border-top: 1px solid #e3e7ec;
+}
+
+.tag-line {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 12px;
+}
+
+.tag-line b {
+  color: #16a34a;
+}
+
+.section h2 {
+  font-size: 32px;
+  margin-bottom: 14px;
+}
+
+.desc {
+  color: #636c76;
+  margin-bottom: 36px;
+}
+
+/* 칩 (PART 4 · 5 공용) */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: monospace;
+}
+
+.chip {
+  padding: 9px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.chip:hover {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+/* PART 5 · 추가할 CSS 없음!
+   PART 4에서 만든 .chips / .chip 스타일을 그대로 재사용합니다.
+   → 같은 class 이름을 쓰면 스타일이 자동으로 적용됩니다. */
+
+/* ===== PART 6 · 경력 타임라인 ===== */
+.item {
+  border-left: 3px solid #16a34a;
+  padding: 0 0 24px 20px;
+  margin-left: 6px;
+}
+
+.item:last-child {
+  padding-bottom: 0;
+}
+
+.year {
+  font-family: monospace;
+  font-size: 14px;
+  color: #16a34a;
+  margin-bottom: 4px;
+}
+
+.job {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.job-desc {
+  color: #636c76;
+  font-size: 14px;
+}
+
+/* ===== PART 7 · 프로젝트 카드 ===== */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.card {
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  padding: 22px;
+  background-color: #ffffff;
+}
+
+.card:hover {
+  border-color: #16a34a;
+}
+
+.card-title {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+  color: #2563eb;
+  margin-bottom: 10px;
+}
+
+.card-desc {
+  color: #636c76;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.card-foot {
+  display: flex;
+  gap: 18px;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.lang {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lang-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.lang-dot.js    { background-color: #f1e05a; }
+.lang-dot.css   { background-color: #563d7c; }
+.lang-dot.react { background-color: #61dafb; }
+.lang-dot.html  { background-color: #e34c26; }
+
+/* ===== PART 8 · 블로그 목록 ===== */
+.post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 4px;
+  border-bottom: 1px solid #e3e7ec;
+}
+
+.post-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.post-date {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.post:hover .post-title {
+  color: #16a34a;
+}
+
+/* ===== PART 9 · 연락 폼 ===== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 520px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.field input,
+.field textarea {
+  padding: 13px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.field textarea {
+  min-height: 120px;
+}
+
+/* 클릭했을 때 테두리 색 바꾸기 */
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: #16a34a;
+}
+
+.form .btn {
+  font-family: monospace;
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* ===== PART 10 · 푸터 ===== */
+.footer {
+  border-top: 1px solid #e3e7ec;
+  padding: 28px 0;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ===== 반응형 · 화면이 좁아지면 1열로 ===== */
+@media (max-width: 720px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#fbfcfd}
+body{padding:20px;overflow:hidden}
+.nav{position:static}
+.hero{padding:8px 0}
+.section{padding:20px 0;border-top:none}
+.desc{margin-bottom:18px}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;window&quot;&gt;
+  &lt;div class=&quot;bar&quot;&gt;
+    &lt;span class=&quot;dot red&quot;&gt;&lt;/span&gt;
+    &lt;span class=&quot;dot yellow&quot;&gt;&lt;/span&gt;
+    &lt;span class=&quot;dot green&quot;&gt;&lt;/span&gt;
+    &lt;span class=&quot;filename&quot;&gt;developer.js&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;pre class=&quot;code&quot;&gt;&lt;span class=&quot;key&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;prop&quot;&gt;홍길동&lt;/span&gt; = {
+  &lt;span class=&quot;prop&quot;&gt;role&lt;/span&gt;: &lt;span class=&quot;str&quot;&gt;&quot;Frontend Developer&quot;&lt;/span&gt;,
+  &lt;span class=&quot;prop&quot;&gt;location&lt;/span&gt;: &lt;span class=&quot;str&quot;&gt;&quot;Seoul, KR&quot;&lt;/span&gt;,
+  &lt;span class=&quot;prop&quot;&gt;skills&lt;/span&gt;: [&lt;span class=&quot;str&quot;&gt;&quot;HTML&quot;&lt;/span&gt;, &lt;span class=&quot;str&quot;&gt;&quot;CSS&quot;&lt;/span&gt;, &lt;span class=&quot;str&quot;&gt;&quot;React&quot;&lt;/span&gt;],
+  &lt;span class=&quot;prop&quot;&gt;learning&lt;/span&gt;: &lt;span class=&quot;str&quot;&gt;&quot;TypeScript&quot;&lt;/span&gt;,
+  &lt;span class=&quot;prop&quot;&gt;available&lt;/span&gt;: &lt;span class=&quot;key&quot;&gt;true&lt;/span&gt;,
+};&lt;/pre&gt;
+&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>오른쪽 빈 칸에, 자기소개를 코드처럼 보여주는 편집기 창을 만드세요. 손이 좀 가는 파트입니다. 막히면 정답을 보며 따라 해도 좋아요.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>상단 바: 빨강·노랑·초록 점 3개 + developer.js</li><li>본문: const 홍길동 = { ... } 형태</li><li>키워드=빨강, 속성명=파랑, 문자열=초록</li><li>창: 흰 배경 · 둥근 모서리 · 그림자</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>PART 2의 오른쪽 자리에 &lt;div class=&quot;window&quot;&gt; 추가</li><li>&lt;div class=&quot;bar&quot;&gt; 안에 점 3개 &lt;span class=&quot;dot red&quot;&gt;&lt;/span&gt; (red / yellow / green) + &lt;span class=&quot;filename&quot;&gt;developer.js&lt;/span&gt;</li><li>코드는 &lt;pre class=&quot;code&quot;&gt; 안에 작성 (줄바꿈이 그대로 보입니다)</li><li>색칠할 단어를 &lt;span class=&quot;key&quot;&gt;, &lt;span class=&quot;prop&quot;&gt;, &lt;span class=&quot;str&quot;&gt; 로 감싸기</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.window</code><span class="ins">background-color: #ffffff; border: 1px solid #e3e7ec; border-radius: 12px; overflow: hidden; box-shadow: 0 12px 30px rgb(20 30 50 / 8%);</span></li><li><code class="sel">.bar</code><span class="ins">display: flex; align-items: center; gap: 7px; padding: 12px 14px; border-bottom: 1px solid #e3e7ec; background-color: #f6f8fa;</span></li><li><code class="sel">.dot</code><span class="ins">width: 12px; height: 12px; border-radius: 50%;</span></li><li><code class="sel">.dot.red</code><span class="ins">background-color: #ff5f57;</span></li><li><code class="sel">.dot.yellow</code><span class="ins">background-color: #febc2e;</span></li><li><code class="sel">.dot.green</code><span class="ins">background-color: #28c840;</span></li><li><code class="sel">.filename</code><span class="ins">margin-left: 8px; font-family: monospace; font-size: 12px; color: #636c76;</span></li><li><code class="sel">.code</code><span class="ins">font-family: monospace; font-size: 14px; line-height: 1.9; padding: 18px 20px;</span></li><li><code class="sel">.key</code><span class="ins">color: #cf222e;</span></li><li><code class="sel">.prop</code><span class="ins">color: #0550ae;</span></li><li><code class="sel">.str</code><span class="ins">color: #0a7d33;</span></li></ul></div>
+  </div>
+  
+</section>
+<section class="part" id="part04">
+  <div class="parthead"><div class="pnum">PART <b>04</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">About 섹션</h2>
+  <div class="learnrow"><span class="tag">섹션 구조</span><span class="tag">칩(chip)</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:250px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* ===== 기본 설정 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #1f2328;
+  background-color: #fbfcfd;
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 내용을 가운데로 모으는 상자 */
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===== PART 1 · 네비게이션 ===== */
+.nav {
+  border-bottom: 1px solid #e3e7ec;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 62px;
+}
+
+.brand {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.brand .slash {
+  color: #16a34a;
+}
+
+.nav ul {
+  display: flex;
+  gap: 22px;
+  list-style: none;
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+}
+
+.nav a::before {
+  content: &quot;~/&quot;;
+  color: #c8cdd4;
+}
+
+.nav a:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 2 · 히어로 (소개 텍스트) ===== */
+.hero {
+  padding: 70px 0;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.prompt {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 20px;
+}
+
+.prompt .sign {
+  color: #16a34a;
+}
+
+/* 커서 모양 (초록 네모) */
+.cursor {
+  display: inline-block;
+  width: 9px;
+  height: 16px;
+  background-color: #16a34a;
+}
+
+.hero h1 {
+  font-size: 46px;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.hero .green {
+  color: #16a34a;
+}
+
+.hero .intro {
+  font-size: 17px;
+  color: #636c76;
+  margin-bottom: 28px;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  font-family: monospace;
+}
+
+.btn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  border: 1px solid #e3e7ec;
+}
+
+.btn-fill {
+  background-color: #1f2328;
+  color: #ffffff;
+}
+
+.btn-fill:hover {
+  background-color: #16a34a;
+}
+
+.btn-line {
+  background-color: #ffffff;
+  color: #1f2328;
+}
+
+.btn-line:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 3 · 코드 창 ===== */
+.window {
+  background-color: #ffffff;
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgb(20 30 50 / 8%);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e3e7ec;
+  background-color: #f6f8fa;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot.red    { background-color: #ff5f57; }
+.dot.yellow { background-color: #febc2e; }
+.dot.green  { background-color: #28c840; }
+
+.filename {
+  margin-left: 8px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #636c76;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.9;
+  padding: 18px 20px;
+}
+
+/* 코드 색칠 */
+.key  { color: #cf222e; }
+.prop { color: #0550ae; }
+.str  { color: #0a7d33; }
+
+/* ===== 섹션 공통 (PART 4~9에서 함께 사용) ===== */
+.section {
+  padding: 70px 0;
+  border-top: 1px solid #e3e7ec;
+}
+
+.tag-line {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 12px;
+}
+
+.tag-line b {
+  color: #16a34a;
+}
+
+.section h2 {
+  font-size: 32px;
+  margin-bottom: 14px;
+}
+
+.desc {
+  color: #636c76;
+  margin-bottom: 36px;
+}
+
+/* 칩 (PART 4 · 5 공용) */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: monospace;
+}
+
+.chip {
+  padding: 9px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.chip:hover {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+/* PART 5 · 추가할 CSS 없음!
+   PART 4에서 만든 .chips / .chip 스타일을 그대로 재사용합니다.
+   → 같은 class 이름을 쓰면 스타일이 자동으로 적용됩니다. */
+
+/* ===== PART 6 · 경력 타임라인 ===== */
+.item {
+  border-left: 3px solid #16a34a;
+  padding: 0 0 24px 20px;
+  margin-left: 6px;
+}
+
+.item:last-child {
+  padding-bottom: 0;
+}
+
+.year {
+  font-family: monospace;
+  font-size: 14px;
+  color: #16a34a;
+  margin-bottom: 4px;
+}
+
+.job {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.job-desc {
+  color: #636c76;
+  font-size: 14px;
+}
+
+/* ===== PART 7 · 프로젝트 카드 ===== */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.card {
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  padding: 22px;
+  background-color: #ffffff;
+}
+
+.card:hover {
+  border-color: #16a34a;
+}
+
+.card-title {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+  color: #2563eb;
+  margin-bottom: 10px;
+}
+
+.card-desc {
+  color: #636c76;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.card-foot {
+  display: flex;
+  gap: 18px;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.lang {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lang-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.lang-dot.js    { background-color: #f1e05a; }
+.lang-dot.css   { background-color: #563d7c; }
+.lang-dot.react { background-color: #61dafb; }
+.lang-dot.html  { background-color: #e34c26; }
+
+/* ===== PART 8 · 블로그 목록 ===== */
+.post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 4px;
+  border-bottom: 1px solid #e3e7ec;
+}
+
+.post-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.post-date {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.post:hover .post-title {
+  color: #16a34a;
+}
+
+/* ===== PART 9 · 연락 폼 ===== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 520px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.field input,
+.field textarea {
+  padding: 13px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.field textarea {
+  min-height: 120px;
+}
+
+/* 클릭했을 때 테두리 색 바꾸기 */
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: #16a34a;
+}
+
+.form .btn {
+  font-family: monospace;
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* ===== PART 10 · 푸터 ===== */
+.footer {
+  border-top: 1px solid #e3e7ec;
+  padding: 28px 0;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ===== 반응형 · 화면이 좁아지면 1열로 ===== */
+@media (max-width: 720px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#fbfcfd}
+body{padding:20px;overflow:hidden}
+.nav{position:static}
+.hero{padding:8px 0}
+.section{padding:20px 0;border-top:none}
+.desc{margin-bottom:18px}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;section id=&quot;about&quot; class=&quot;section&quot;&gt;
+  &lt;div class=&quot;wrap&quot;&gt;
+    &lt;p class=&quot;tag-line&quot;&gt;// &lt;b&gt;01_about&lt;/b&gt;&lt;/p&gt;
+    &lt;h2&gt;소개&lt;/h2&gt;
+    &lt;p class=&quot;desc&quot;&gt;
+      작은 UI 디테일부터 전체 구조 설계까지, 문제를 나눠서 해결하는 과정을 즐깁니다.
+      코드가 실제 화면으로 움직이는 순간을 가장 좋아합니다.
+    &lt;/p&gt;
+    &lt;div class=&quot;chips&quot;&gt;
+      &lt;span class=&quot;chip&quot;&gt;exp: 2년&lt;/span&gt;
+      &lt;span class=&quot;chip&quot;&gt;projects: 12+&lt;/span&gt;
+      &lt;span class=&quot;chip&quot;&gt;coffee: ∞&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>본문 첫 섹션을 만드세요. 이후 섹션들이 함께 쓸 &#x27;공통 스타일&#x27;도 이번에 정의합니다.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>섹션 위 구분선</li><li>// 01_about 라벨 (숫자 초록)</li><li>제목 '소개' + 소개 문단</li><li>작은 칩 3개</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;section id=&quot;about&quot; class=&quot;section&quot;&gt; 안에 &lt;div class=&quot;wrap&quot;&gt;</li><li>&lt;p class=&quot;tag-line&quot;&gt;// &lt;b&gt;01_about&lt;/b&gt;&lt;/p&gt; 라벨</li><li>&lt;h2&gt;소개&lt;/h2&gt; 와 &lt;p class=&quot;desc&quot;&gt; 소개글</li><li>&lt;div class=&quot;chips&quot;&gt; 안에 &lt;span class=&quot;chip&quot;&gt; 3개</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.section</code><span class="ins">padding: 70px 0; border-top: 1px solid #e3e7ec;</span></li><li><code class="sel">.tag-line</code><span class="ins">font-family: monospace; font-size: 14px; color: #636c76; margin-bottom: 12px;</span></li><li><code class="sel">.tag-line b</code><span class="ins">color: #16a34a;</span></li><li><code class="sel">.section h2</code><span class="ins">font-size: 32px; margin-bottom: 14px;</span></li><li><code class="sel">.desc</code><span class="ins">color: #636c76; margin-bottom: 36px;</span></li><li><code class="sel">.chips</code><span class="ins">display: flex; flex-wrap: wrap; gap: 10px; font-family: monospace;</span></li><li><code class="sel">.chip</code><span class="ins">padding: 9px 15px; border: 1px solid #e3e7ec; border-radius: 8px; background-color: #ffffff;</span></li><li><code class="sel">.chip:hover</code><span class="ins">border-color: #16a34a; color: #16a34a;</span></li></ul></div>
+  </div>
+  
+</section>
+<section class="part" id="part05">
+  <div class="parthead"><div class="pnum">PART <b>05</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">Skills 섹션</h2>
+  <div class="learnrow"><span class="tag">class 재사용</span><span class="tag">flex-wrap</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:150px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* ===== 기본 설정 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #1f2328;
+  background-color: #fbfcfd;
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 내용을 가운데로 모으는 상자 */
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===== PART 1 · 네비게이션 ===== */
+.nav {
+  border-bottom: 1px solid #e3e7ec;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 62px;
+}
+
+.brand {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.brand .slash {
+  color: #16a34a;
+}
+
+.nav ul {
+  display: flex;
+  gap: 22px;
+  list-style: none;
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+}
+
+.nav a::before {
+  content: &quot;~/&quot;;
+  color: #c8cdd4;
+}
+
+.nav a:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 2 · 히어로 (소개 텍스트) ===== */
+.hero {
+  padding: 70px 0;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.prompt {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 20px;
+}
+
+.prompt .sign {
+  color: #16a34a;
+}
+
+/* 커서 모양 (초록 네모) */
+.cursor {
+  display: inline-block;
+  width: 9px;
+  height: 16px;
+  background-color: #16a34a;
+}
+
+.hero h1 {
+  font-size: 46px;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.hero .green {
+  color: #16a34a;
+}
+
+.hero .intro {
+  font-size: 17px;
+  color: #636c76;
+  margin-bottom: 28px;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  font-family: monospace;
+}
+
+.btn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  border: 1px solid #e3e7ec;
+}
+
+.btn-fill {
+  background-color: #1f2328;
+  color: #ffffff;
+}
+
+.btn-fill:hover {
+  background-color: #16a34a;
+}
+
+.btn-line {
+  background-color: #ffffff;
+  color: #1f2328;
+}
+
+.btn-line:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 3 · 코드 창 ===== */
+.window {
+  background-color: #ffffff;
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgb(20 30 50 / 8%);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e3e7ec;
+  background-color: #f6f8fa;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot.red    { background-color: #ff5f57; }
+.dot.yellow { background-color: #febc2e; }
+.dot.green  { background-color: #28c840; }
+
+.filename {
+  margin-left: 8px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #636c76;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.9;
+  padding: 18px 20px;
+}
+
+/* 코드 색칠 */
+.key  { color: #cf222e; }
+.prop { color: #0550ae; }
+.str  { color: #0a7d33; }
+
+/* ===== 섹션 공통 (PART 4~9에서 함께 사용) ===== */
+.section {
+  padding: 70px 0;
+  border-top: 1px solid #e3e7ec;
+}
+
+.tag-line {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 12px;
+}
+
+.tag-line b {
+  color: #16a34a;
+}
+
+.section h2 {
+  font-size: 32px;
+  margin-bottom: 14px;
+}
+
+.desc {
+  color: #636c76;
+  margin-bottom: 36px;
+}
+
+/* 칩 (PART 4 · 5 공용) */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: monospace;
+}
+
+.chip {
+  padding: 9px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.chip:hover {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+/* PART 5 · 추가할 CSS 없음!
+   PART 4에서 만든 .chips / .chip 스타일을 그대로 재사용합니다.
+   → 같은 class 이름을 쓰면 스타일이 자동으로 적용됩니다. */
+
+/* ===== PART 6 · 경력 타임라인 ===== */
+.item {
+  border-left: 3px solid #16a34a;
+  padding: 0 0 24px 20px;
+  margin-left: 6px;
+}
+
+.item:last-child {
+  padding-bottom: 0;
+}
+
+.year {
+  font-family: monospace;
+  font-size: 14px;
+  color: #16a34a;
+  margin-bottom: 4px;
+}
+
+.job {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.job-desc {
+  color: #636c76;
+  font-size: 14px;
+}
+
+/* ===== PART 7 · 프로젝트 카드 ===== */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.card {
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  padding: 22px;
+  background-color: #ffffff;
+}
+
+.card:hover {
+  border-color: #16a34a;
+}
+
+.card-title {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+  color: #2563eb;
+  margin-bottom: 10px;
+}
+
+.card-desc {
+  color: #636c76;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.card-foot {
+  display: flex;
+  gap: 18px;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.lang {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lang-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.lang-dot.js    { background-color: #f1e05a; }
+.lang-dot.css   { background-color: #563d7c; }
+.lang-dot.react { background-color: #61dafb; }
+.lang-dot.html  { background-color: #e34c26; }
+
+/* ===== PART 8 · 블로그 목록 ===== */
+.post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 4px;
+  border-bottom: 1px solid #e3e7ec;
+}
+
+.post-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.post-date {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.post:hover .post-title {
+  color: #16a34a;
+}
+
+/* ===== PART 9 · 연락 폼 ===== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 520px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.field input,
+.field textarea {
+  padding: 13px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.field textarea {
+  min-height: 120px;
+}
+
+/* 클릭했을 때 테두리 색 바꾸기 */
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: #16a34a;
+}
+
+.form .btn {
+  font-family: monospace;
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* ===== PART 10 · 푸터 ===== */
+.footer {
+  border-top: 1px solid #e3e7ec;
+  padding: 28px 0;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ===== 반응형 · 화면이 좁아지면 1열로 ===== */
+@media (max-width: 720px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#fbfcfd}
+body{padding:20px;overflow:hidden}
+.nav{position:static}
+.hero{padding:8px 0}
+.section{padding:20px 0;border-top:none}
+.desc{margin-bottom:18px}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;section id=&quot;skills&quot; class=&quot;section&quot;&gt;
+  &lt;div class=&quot;wrap&quot;&gt;
+    &lt;p class=&quot;tag-line&quot;&gt;// &lt;b&gt;02_skills&lt;/b&gt;&lt;/p&gt;
+    &lt;h2&gt;기술 스택&lt;/h2&gt;
+    &lt;p class=&quot;desc&quot;&gt;지금 다루는 도구들입니다.&lt;/p&gt;
+    &lt;div class=&quot;chips&quot;&gt;
+      &lt;span class=&quot;chip&quot;&gt;HTML&lt;/span&gt;
+      &lt;span class=&quot;chip&quot;&gt;CSS&lt;/span&gt;
+      &lt;span class=&quot;chip&quot;&gt;JavaScript&lt;/span&gt;
+      &lt;span class=&quot;chip&quot;&gt;React&lt;/span&gt;
+      &lt;span class=&quot;chip&quot;&gt;Git&lt;/span&gt;
+      &lt;span class=&quot;chip&quot;&gt;Figma&lt;/span&gt;
+      &lt;span class=&quot;chip&quot;&gt;반응형 웹&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>기술 스택을 칩으로 나열하세요. 이 파트의 핵심: CSS를 새로 쓰지 말 것! PART 4의 .chip을 그대로 재사용합니다.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>HTML/CSS/JavaScript ... 태그</li><li>class="chip" 재사용</li><li>마우스 올리면 초록 (이미 됨)</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;section id=&quot;skills&quot; class=&quot;section&quot;&gt; — PART 4와 똑같은 구조</li><li>&lt;div class=&quot;chips&quot;&gt; 안에 &lt;span class=&quot;chip&quot;&gt; 로 기술 태그 여러 개 (HTML, CSS, JavaScript, React ...)</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시</h4><p class="nocss">이 파트는 새로 작성할 CSS가 없습니다. PART 4에서 만든 <code>.chip</code> 스타일을 그대로 재사용하세요.</p></div>
+  </div>
+  
+</section>
+<section class="part" id="part06">
+  <div class="parthead"><div class="pnum">PART <b>06</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">Career — 타임라인</h2>
+  <div class="learnrow"><span class="tag">border-left</span><span class="tag">여백</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:250px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* ===== 기본 설정 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #1f2328;
+  background-color: #fbfcfd;
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 내용을 가운데로 모으는 상자 */
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===== PART 1 · 네비게이션 ===== */
+.nav {
+  border-bottom: 1px solid #e3e7ec;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 62px;
+}
+
+.brand {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.brand .slash {
+  color: #16a34a;
+}
+
+.nav ul {
+  display: flex;
+  gap: 22px;
+  list-style: none;
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+}
+
+.nav a::before {
+  content: &quot;~/&quot;;
+  color: #c8cdd4;
+}
+
+.nav a:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 2 · 히어로 (소개 텍스트) ===== */
+.hero {
+  padding: 70px 0;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.prompt {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 20px;
+}
+
+.prompt .sign {
+  color: #16a34a;
+}
+
+/* 커서 모양 (초록 네모) */
+.cursor {
+  display: inline-block;
+  width: 9px;
+  height: 16px;
+  background-color: #16a34a;
+}
+
+.hero h1 {
+  font-size: 46px;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.hero .green {
+  color: #16a34a;
+}
+
+.hero .intro {
+  font-size: 17px;
+  color: #636c76;
+  margin-bottom: 28px;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  font-family: monospace;
+}
+
+.btn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  border: 1px solid #e3e7ec;
+}
+
+.btn-fill {
+  background-color: #1f2328;
+  color: #ffffff;
+}
+
+.btn-fill:hover {
+  background-color: #16a34a;
+}
+
+.btn-line {
+  background-color: #ffffff;
+  color: #1f2328;
+}
+
+.btn-line:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 3 · 코드 창 ===== */
+.window {
+  background-color: #ffffff;
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgb(20 30 50 / 8%);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e3e7ec;
+  background-color: #f6f8fa;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot.red    { background-color: #ff5f57; }
+.dot.yellow { background-color: #febc2e; }
+.dot.green  { background-color: #28c840; }
+
+.filename {
+  margin-left: 8px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #636c76;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.9;
+  padding: 18px 20px;
+}
+
+/* 코드 색칠 */
+.key  { color: #cf222e; }
+.prop { color: #0550ae; }
+.str  { color: #0a7d33; }
+
+/* ===== 섹션 공통 (PART 4~9에서 함께 사용) ===== */
+.section {
+  padding: 70px 0;
+  border-top: 1px solid #e3e7ec;
+}
+
+.tag-line {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 12px;
+}
+
+.tag-line b {
+  color: #16a34a;
+}
+
+.section h2 {
+  font-size: 32px;
+  margin-bottom: 14px;
+}
+
+.desc {
+  color: #636c76;
+  margin-bottom: 36px;
+}
+
+/* 칩 (PART 4 · 5 공용) */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: monospace;
+}
+
+.chip {
+  padding: 9px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.chip:hover {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+/* PART 5 · 추가할 CSS 없음!
+   PART 4에서 만든 .chips / .chip 스타일을 그대로 재사용합니다.
+   → 같은 class 이름을 쓰면 스타일이 자동으로 적용됩니다. */
+
+/* ===== PART 6 · 경력 타임라인 ===== */
+.item {
+  border-left: 3px solid #16a34a;
+  padding: 0 0 24px 20px;
+  margin-left: 6px;
+}
+
+.item:last-child {
+  padding-bottom: 0;
+}
+
+.year {
+  font-family: monospace;
+  font-size: 14px;
+  color: #16a34a;
+  margin-bottom: 4px;
+}
+
+.job {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.job-desc {
+  color: #636c76;
+  font-size: 14px;
+}
+
+/* ===== PART 7 · 프로젝트 카드 ===== */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.card {
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  padding: 22px;
+  background-color: #ffffff;
+}
+
+.card:hover {
+  border-color: #16a34a;
+}
+
+.card-title {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+  color: #2563eb;
+  margin-bottom: 10px;
+}
+
+.card-desc {
+  color: #636c76;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.card-foot {
+  display: flex;
+  gap: 18px;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.lang {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lang-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.lang-dot.js    { background-color: #f1e05a; }
+.lang-dot.css   { background-color: #563d7c; }
+.lang-dot.react { background-color: #61dafb; }
+.lang-dot.html  { background-color: #e34c26; }
+
+/* ===== PART 8 · 블로그 목록 ===== */
+.post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 4px;
+  border-bottom: 1px solid #e3e7ec;
+}
+
+.post-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.post-date {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.post:hover .post-title {
+  color: #16a34a;
+}
+
+/* ===== PART 9 · 연락 폼 ===== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 520px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.field input,
+.field textarea {
+  padding: 13px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.field textarea {
+  min-height: 120px;
+}
+
+/* 클릭했을 때 테두리 색 바꾸기 */
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: #16a34a;
+}
+
+.form .btn {
+  font-family: monospace;
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* ===== PART 10 · 푸터 ===== */
+.footer {
+  border-top: 1px solid #e3e7ec;
+  padding: 28px 0;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ===== 반응형 · 화면이 좁아지면 1열로 ===== */
+@media (max-width: 720px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#fbfcfd}
+body{padding:20px;overflow:hidden}
+.nav{position:static}
+.hero{padding:8px 0}
+.section{padding:20px 0;border-top:none}
+.desc{margin-bottom:18px}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;section id=&quot;exp&quot; class=&quot;section&quot;&gt;
+  &lt;div class=&quot;wrap&quot;&gt;
+    &lt;p class=&quot;tag-line&quot;&gt;// &lt;b&gt;03_career&lt;/b&gt;&lt;/p&gt;
+    &lt;h2&gt;경력 &amp;amp; 활동&lt;/h2&gt;
+    &lt;div class=&quot;timeline&quot;&gt;
+      &lt;div class=&quot;item&quot;&gt;
+        &lt;p class=&quot;year&quot;&gt;2026&lt;/p&gt;
+        &lt;p class=&quot;job&quot;&gt;프론트엔드 개발 동아리 팀장&lt;/p&gt;
+        &lt;p class=&quot;job-desc&quot;&gt;주간 스터디 운영, 5명 팀으로 해커톤 참가&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;item&quot;&gt;
+        &lt;p class=&quot;year&quot;&gt;2025&lt;/p&gt;
+        &lt;p class=&quot;job&quot;&gt;웹 개발 부트캠프 수료&lt;/p&gt;
+        &lt;p class=&quot;job-desc&quot;&gt;HTML / CSS / JavaScript 기초와 실전 프로젝트&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;item&quot;&gt;
+        &lt;p class=&quot;year&quot;&gt;2024&lt;/p&gt;
+        &lt;p class=&quot;job&quot;&gt;컴퓨터공학과 입학&lt;/p&gt;
+        &lt;p class=&quot;job-desc&quot;&gt;프로그래밍 기초를 다지기 시작&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>경력·활동을, 왼쪽에 초록 세로선이 있는 타임라인으로 만드세요. (어려운 점·절대위치 없이 &#x27;왼쪽 테두리&#x27;만으로!)</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>항목마다 왼쪽에 초록 세로선</li><li>연도(초록) + 제목 + 설명</li><li>항목 3개</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;section id=&quot;exp&quot; class=&quot;section&quot;&gt; 안에 &lt;div class=&quot;wrap&quot;&gt;</li><li>&lt;div class=&quot;timeline&quot;&gt; 안에 &lt;div class=&quot;item&quot;&gt; 3개</li><li>각 item: &lt;p class=&quot;year&quot;&gt;2026&lt;/p&gt;, &lt;p class=&quot;job&quot;&gt;제목&lt;/p&gt;, &lt;p class=&quot;job-desc&quot;&gt;설명&lt;/p&gt;</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.item</code><span class="ins">border-left: 3px solid #16a34a; padding: 0 0 24px 20px; margin-left: 6px;</span></li><li><code class="sel">.item:last-child</code><span class="ins">padding-bottom: 0;</span></li><li><code class="sel">.year</code><span class="ins">font-family: monospace; font-size: 14px; color: #16a34a; margin-bottom: 4px;</span></li><li><code class="sel">.job</code><span class="ins">font-size: 17px; font-weight: bold;</span></li><li><code class="sel">.job-desc</code><span class="ins">color: #636c76; font-size: 14px;</span></li></ul></div>
+  </div>
+  
+</section>
+<section class="part" id="part07">
+  <div class="parthead"><div class="pnum">PART <b>07</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d on"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">Projects — 카드</h2>
+  <div class="learnrow"><span class="tag">grid 2열</span><span class="tag">카드 반복</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:430px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* ===== 기본 설정 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #1f2328;
+  background-color: #fbfcfd;
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 내용을 가운데로 모으는 상자 */
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===== PART 1 · 네비게이션 ===== */
+.nav {
+  border-bottom: 1px solid #e3e7ec;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 62px;
+}
+
+.brand {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.brand .slash {
+  color: #16a34a;
+}
+
+.nav ul {
+  display: flex;
+  gap: 22px;
+  list-style: none;
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+}
+
+.nav a::before {
+  content: &quot;~/&quot;;
+  color: #c8cdd4;
+}
+
+.nav a:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 2 · 히어로 (소개 텍스트) ===== */
+.hero {
+  padding: 70px 0;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.prompt {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 20px;
+}
+
+.prompt .sign {
+  color: #16a34a;
+}
+
+/* 커서 모양 (초록 네모) */
+.cursor {
+  display: inline-block;
+  width: 9px;
+  height: 16px;
+  background-color: #16a34a;
+}
+
+.hero h1 {
+  font-size: 46px;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.hero .green {
+  color: #16a34a;
+}
+
+.hero .intro {
+  font-size: 17px;
+  color: #636c76;
+  margin-bottom: 28px;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  font-family: monospace;
+}
+
+.btn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  border: 1px solid #e3e7ec;
+}
+
+.btn-fill {
+  background-color: #1f2328;
+  color: #ffffff;
+}
+
+.btn-fill:hover {
+  background-color: #16a34a;
+}
+
+.btn-line {
+  background-color: #ffffff;
+  color: #1f2328;
+}
+
+.btn-line:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 3 · 코드 창 ===== */
+.window {
+  background-color: #ffffff;
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgb(20 30 50 / 8%);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e3e7ec;
+  background-color: #f6f8fa;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot.red    { background-color: #ff5f57; }
+.dot.yellow { background-color: #febc2e; }
+.dot.green  { background-color: #28c840; }
+
+.filename {
+  margin-left: 8px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #636c76;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.9;
+  padding: 18px 20px;
+}
+
+/* 코드 색칠 */
+.key  { color: #cf222e; }
+.prop { color: #0550ae; }
+.str  { color: #0a7d33; }
+
+/* ===== 섹션 공통 (PART 4~9에서 함께 사용) ===== */
+.section {
+  padding: 70px 0;
+  border-top: 1px solid #e3e7ec;
+}
+
+.tag-line {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 12px;
+}
+
+.tag-line b {
+  color: #16a34a;
+}
+
+.section h2 {
+  font-size: 32px;
+  margin-bottom: 14px;
+}
+
+.desc {
+  color: #636c76;
+  margin-bottom: 36px;
+}
+
+/* 칩 (PART 4 · 5 공용) */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: monospace;
+}
+
+.chip {
+  padding: 9px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.chip:hover {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+/* PART 5 · 추가할 CSS 없음!
+   PART 4에서 만든 .chips / .chip 스타일을 그대로 재사용합니다.
+   → 같은 class 이름을 쓰면 스타일이 자동으로 적용됩니다. */
+
+/* ===== PART 6 · 경력 타임라인 ===== */
+.item {
+  border-left: 3px solid #16a34a;
+  padding: 0 0 24px 20px;
+  margin-left: 6px;
+}
+
+.item:last-child {
+  padding-bottom: 0;
+}
+
+.year {
+  font-family: monospace;
+  font-size: 14px;
+  color: #16a34a;
+  margin-bottom: 4px;
+}
+
+.job {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.job-desc {
+  color: #636c76;
+  font-size: 14px;
+}
+
+/* ===== PART 7 · 프로젝트 카드 ===== */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.card {
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  padding: 22px;
+  background-color: #ffffff;
+}
+
+.card:hover {
+  border-color: #16a34a;
+}
+
+.card-title {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+  color: #2563eb;
+  margin-bottom: 10px;
+}
+
+.card-desc {
+  color: #636c76;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.card-foot {
+  display: flex;
+  gap: 18px;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.lang {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lang-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.lang-dot.js    { background-color: #f1e05a; }
+.lang-dot.css   { background-color: #563d7c; }
+.lang-dot.react { background-color: #61dafb; }
+.lang-dot.html  { background-color: #e34c26; }
+
+/* ===== PART 8 · 블로그 목록 ===== */
+.post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 4px;
+  border-bottom: 1px solid #e3e7ec;
+}
+
+.post-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.post-date {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.post:hover .post-title {
+  color: #16a34a;
+}
+
+/* ===== PART 9 · 연락 폼 ===== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 520px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.field input,
+.field textarea {
+  padding: 13px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.field textarea {
+  min-height: 120px;
+}
+
+/* 클릭했을 때 테두리 색 바꾸기 */
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: #16a34a;
+}
+
+.form .btn {
+  font-family: monospace;
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* ===== PART 10 · 푸터 ===== */
+.footer {
+  border-top: 1px solid #e3e7ec;
+  padding: 28px 0;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ===== 반응형 · 화면이 좁아지면 1열로 ===== */
+@media (max-width: 720px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#fbfcfd}
+body{padding:20px;overflow:hidden}
+.nav{position:static}
+.hero{padding:8px 0}
+.section{padding:20px 0;border-top:none}
+.desc{margin-bottom:18px}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;section id=&quot;projects&quot; class=&quot;section&quot;&gt;
+  &lt;div class=&quot;wrap&quot;&gt;
+    &lt;p class=&quot;tag-line&quot;&gt;// &lt;b&gt;04_work&lt;/b&gt;&lt;/p&gt;
+    &lt;h2&gt;프로젝트&lt;/h2&gt;
+    &lt;p class=&quot;desc&quot;&gt;직접 기획하고 만든 결과물입니다.&lt;/p&gt;
+    &lt;div class=&quot;cards&quot;&gt;
+    &lt;a class=&quot;card&quot; href=&quot;#&quot;&gt;
+      &lt;p class=&quot;card-title&quot;&gt;weather-dashboard&lt;/p&gt;
+      &lt;p class=&quot;card-desc&quot;&gt;실시간 날씨 API를 연동한 반응형 대시보드.&lt;/p&gt;
+      &lt;div class=&quot;card-foot&quot;&gt;
+        &lt;span class=&quot;lang&quot;&gt;&lt;span class=&quot;lang-dot js&quot;&gt;&lt;/span&gt;JavaScript&lt;/span&gt;
+        &lt;span&gt;24 stars&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;card&quot; href=&quot;#&quot;&gt;
+      &lt;p class=&quot;card-title&quot;&gt;brand-landing&lt;/p&gt;
+      &lt;p class=&quot;card-desc&quot;&gt;제품 소개용 랜딩 페이지.&lt;/p&gt;
+      &lt;div class=&quot;card-foot&quot;&gt;
+        &lt;span class=&quot;lang&quot;&gt;&lt;span class=&quot;lang-dot css&quot;&gt;&lt;/span&gt;CSS&lt;/span&gt;
+        &lt;span&gt;18 stars&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;card&quot; href=&quot;#&quot;&gt;
+      &lt;p class=&quot;card-title&quot;&gt;todo-app&lt;/p&gt;
+      &lt;p class=&quot;card-desc&quot;&gt;할 일을 저장하는 심플한 투두 리스트.&lt;/p&gt;
+      &lt;div class=&quot;card-foot&quot;&gt;
+        &lt;span class=&quot;lang&quot;&gt;&lt;span class=&quot;lang-dot react&quot;&gt;&lt;/span&gt;React&lt;/span&gt;
+        &lt;span&gt;31 stars&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;card&quot; href=&quot;#&quot;&gt;
+      &lt;p class=&quot;card-title&quot;&gt;movie-finder&lt;/p&gt;
+      &lt;p class=&quot;card-desc&quot;&gt;카드와 검색을 구현한 클론 프로젝트.&lt;/p&gt;
+      &lt;div class=&quot;card-foot&quot;&gt;
+        &lt;span class=&quot;lang&quot;&gt;&lt;span class=&quot;lang-dot html&quot;&gt;&lt;/span&gt;HTML&lt;/span&gt;
+        &lt;span&gt;12 stars&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>프로젝트를 카드로 2열 배치하세요. 카드 하나를 만든 뒤 복사해서 4개로 늘리면 됩니다.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>카드 4개를 2열 grid로</li><li>각 카드: 이름(파랑) + 설명</li><li>하단: 언어 색 점 + 이름 + 스타 수</li><li>마우스 올리면 초록 테두리</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;section id=&quot;projects&quot; class=&quot;section&quot;&gt; 안에 &lt;div class=&quot;cards&quot;&gt;</li><li>&lt;a class=&quot;card&quot; href=&quot;#&quot;&gt; 를 4개</li><li>각 카드: &lt;p class=&quot;card-title&quot;&gt;이름&lt;/p&gt;, &lt;p class=&quot;card-desc&quot;&gt;설명&lt;/p&gt;, &lt;div class=&quot;card-foot&quot;&gt; 안에 &lt;span class=&quot;lang&quot;&gt;&lt;span class=&quot;lang-dot js&quot;&gt;&lt;/span&gt;JavaScript&lt;/span&gt; 와 &lt;span&gt;24 stars&lt;/span&gt;</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.cards</code><span class="ins">display: grid; grid-template-columns: 1fr 1fr; gap: 18px;</span></li><li><code class="sel">.card</code><span class="ins">border: 1px solid #e3e7ec; border-radius: 12px; padding: 22px; background-color: #ffffff;</span></li><li><code class="sel">.card:hover</code><span class="ins">border-color: #16a34a;</span></li><li><code class="sel">.card-title</code><span class="ins">font-family: monospace; font-weight: bold; font-size: 16px; color: #2563eb; margin-bottom: 10px;</span></li><li><code class="sel">.card-desc</code><span class="ins">color: #636c76; font-size: 14px; margin-bottom: 18px;</span></li><li><code class="sel">.card-foot</code><span class="ins">display: flex; gap: 18px; font-family: monospace; font-size: 13px; color: #636c76;</span></li><li><code class="sel">.lang</code><span class="ins">display: flex; align-items: center; gap: 6px;</span></li><li><code class="sel">.lang-dot</code><span class="ins">width: 11px; height: 11px; border-radius: 50%;</span></li><li><code class="sel">.lang-dot.js</code><span class="ins">background-color: #f1e05a;</span></li><li><code class="sel">.lang-dot.css</code><span class="ins">background-color: #563d7c;</span></li><li><code class="sel">.lang-dot.react</code><span class="ins">background-color: #61dafb;</span></li><li><code class="sel">.lang-dot.html</code><span class="ins">background-color: #e34c26;</span></li></ul></div>
+  </div>
+  
+</section>
+<section class="part" id="part08">
+  <div class="parthead"><div class="pnum">PART <b>08</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">Blog — 글 목록</h2>
+  <div class="learnrow"><span class="tag">flex 양끝</span><span class="tag">줄 반복</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:230px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* ===== 기본 설정 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #1f2328;
+  background-color: #fbfcfd;
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 내용을 가운데로 모으는 상자 */
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===== PART 1 · 네비게이션 ===== */
+.nav {
+  border-bottom: 1px solid #e3e7ec;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 62px;
+}
+
+.brand {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.brand .slash {
+  color: #16a34a;
+}
+
+.nav ul {
+  display: flex;
+  gap: 22px;
+  list-style: none;
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+}
+
+.nav a::before {
+  content: &quot;~/&quot;;
+  color: #c8cdd4;
+}
+
+.nav a:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 2 · 히어로 (소개 텍스트) ===== */
+.hero {
+  padding: 70px 0;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.prompt {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 20px;
+}
+
+.prompt .sign {
+  color: #16a34a;
+}
+
+/* 커서 모양 (초록 네모) */
+.cursor {
+  display: inline-block;
+  width: 9px;
+  height: 16px;
+  background-color: #16a34a;
+}
+
+.hero h1 {
+  font-size: 46px;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.hero .green {
+  color: #16a34a;
+}
+
+.hero .intro {
+  font-size: 17px;
+  color: #636c76;
+  margin-bottom: 28px;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  font-family: monospace;
+}
+
+.btn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  border: 1px solid #e3e7ec;
+}
+
+.btn-fill {
+  background-color: #1f2328;
+  color: #ffffff;
+}
+
+.btn-fill:hover {
+  background-color: #16a34a;
+}
+
+.btn-line {
+  background-color: #ffffff;
+  color: #1f2328;
+}
+
+.btn-line:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 3 · 코드 창 ===== */
+.window {
+  background-color: #ffffff;
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgb(20 30 50 / 8%);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e3e7ec;
+  background-color: #f6f8fa;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot.red    { background-color: #ff5f57; }
+.dot.yellow { background-color: #febc2e; }
+.dot.green  { background-color: #28c840; }
+
+.filename {
+  margin-left: 8px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #636c76;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.9;
+  padding: 18px 20px;
+}
+
+/* 코드 색칠 */
+.key  { color: #cf222e; }
+.prop { color: #0550ae; }
+.str  { color: #0a7d33; }
+
+/* ===== 섹션 공통 (PART 4~9에서 함께 사용) ===== */
+.section {
+  padding: 70px 0;
+  border-top: 1px solid #e3e7ec;
+}
+
+.tag-line {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 12px;
+}
+
+.tag-line b {
+  color: #16a34a;
+}
+
+.section h2 {
+  font-size: 32px;
+  margin-bottom: 14px;
+}
+
+.desc {
+  color: #636c76;
+  margin-bottom: 36px;
+}
+
+/* 칩 (PART 4 · 5 공용) */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: monospace;
+}
+
+.chip {
+  padding: 9px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.chip:hover {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+/* PART 5 · 추가할 CSS 없음!
+   PART 4에서 만든 .chips / .chip 스타일을 그대로 재사용합니다.
+   → 같은 class 이름을 쓰면 스타일이 자동으로 적용됩니다. */
+
+/* ===== PART 6 · 경력 타임라인 ===== */
+.item {
+  border-left: 3px solid #16a34a;
+  padding: 0 0 24px 20px;
+  margin-left: 6px;
+}
+
+.item:last-child {
+  padding-bottom: 0;
+}
+
+.year {
+  font-family: monospace;
+  font-size: 14px;
+  color: #16a34a;
+  margin-bottom: 4px;
+}
+
+.job {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.job-desc {
+  color: #636c76;
+  font-size: 14px;
+}
+
+/* ===== PART 7 · 프로젝트 카드 ===== */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.card {
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  padding: 22px;
+  background-color: #ffffff;
+}
+
+.card:hover {
+  border-color: #16a34a;
+}
+
+.card-title {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+  color: #2563eb;
+  margin-bottom: 10px;
+}
+
+.card-desc {
+  color: #636c76;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.card-foot {
+  display: flex;
+  gap: 18px;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.lang {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lang-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.lang-dot.js    { background-color: #f1e05a; }
+.lang-dot.css   { background-color: #563d7c; }
+.lang-dot.react { background-color: #61dafb; }
+.lang-dot.html  { background-color: #e34c26; }
+
+/* ===== PART 8 · 블로그 목록 ===== */
+.post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 4px;
+  border-bottom: 1px solid #e3e7ec;
+}
+
+.post-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.post-date {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.post:hover .post-title {
+  color: #16a34a;
+}
+
+/* ===== PART 9 · 연락 폼 ===== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 520px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.field input,
+.field textarea {
+  padding: 13px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.field textarea {
+  min-height: 120px;
+}
+
+/* 클릭했을 때 테두리 색 바꾸기 */
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: #16a34a;
+}
+
+.form .btn {
+  font-family: monospace;
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* ===== PART 10 · 푸터 ===== */
+.footer {
+  border-top: 1px solid #e3e7ec;
+  padding: 28px 0;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ===== 반응형 · 화면이 좁아지면 1열로 ===== */
+@media (max-width: 720px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#fbfcfd}
+body{padding:20px;overflow:hidden}
+.nav{position:static}
+.hero{padding:8px 0}
+.section{padding:20px 0;border-top:none}
+.desc{margin-bottom:18px}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;section id=&quot;writing&quot; class=&quot;section&quot;&gt;
+  &lt;div class=&quot;wrap&quot;&gt;
+    &lt;p class=&quot;tag-line&quot;&gt;// &lt;b&gt;05_blog&lt;/b&gt;&lt;/p&gt;
+    &lt;h2&gt;기록&lt;/h2&gt;
+    &lt;p class=&quot;desc&quot;&gt;공부하며 정리한 글들입니다.&lt;/p&gt;
+    &lt;div class=&quot;posts&quot;&gt;
+    &lt;a class=&quot;post&quot; href=&quot;#&quot;&gt;
+      &lt;span class=&quot;post-title&quot;&gt;CSS Flexbox, 이제 헷갈리지 않기&lt;/span&gt;
+      &lt;span class=&quot;post-date&quot;&gt;2026.08.20&lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;post&quot; href=&quot;#&quot;&gt;
+      &lt;span class=&quot;post-title&quot;&gt;Git 브랜치 전략 입문&lt;/span&gt;
+      &lt;span class=&quot;post-date&quot;&gt;2026.07.11&lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;post&quot; href=&quot;#&quot;&gt;
+      &lt;span class=&quot;post-title&quot;&gt;처음 만든 반응형 웹 회고&lt;/span&gt;
+      &lt;span class=&quot;post-date&quot;&gt;2026.06.02&lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;post&quot; href=&quot;#&quot;&gt;
+      &lt;span class=&quot;post-title&quot;&gt;JavaScript 이벤트 기초 정리&lt;/span&gt;
+      &lt;span class=&quot;post-date&quot;&gt;2026.05.15&lt;/span&gt;
+    &lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>공부 기록을 &#x27;제목(왼쪽) — 날짜(오른쪽)&#x27; 리스트로 만드세요.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>글 4줄, 각 줄 아래 구분선</li><li>제목은 왼쪽, 날짜는 오른쪽</li><li>마우스 올리면 제목이 초록으로</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;section id=&quot;writing&quot; class=&quot;section&quot;&gt; 안에 &lt;div class=&quot;posts&quot;&gt;</li><li>&lt;a class=&quot;post&quot; href=&quot;#&quot;&gt; 를 4개</li><li>각 post: &lt;span class=&quot;post-title&quot;&gt;제목&lt;/span&gt; + &lt;span class=&quot;post-date&quot;&gt;2026.08.20&lt;/span&gt;</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.post</code><span class="ins">display: flex; justify-content: space-between; align-items: center; padding: 18px 4px; border-bottom: 1px solid #e3e7ec;</span></li><li><code class="sel">.post-title</code><span class="ins">font-size: 16px; font-weight: bold;</span></li><li><code class="sel">.post-date</code><span class="ins">font-family: monospace; font-size: 13px; color: #636c76;</span></li><li><code class="sel">.post:hover .post-title</code><span class="ins">color: #16a34a;</span></li></ul></div>
+  </div>
+  
+</section>
+<section class="part" id="part09">
+  <div class="parthead"><div class="pnum">PART <b>09</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d on"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">Contact — 입력 폼</h2>
+  <div class="learnrow"><span class="tag">form / input</span><span class="tag">focus</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:430px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* ===== 기본 설정 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #1f2328;
+  background-color: #fbfcfd;
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 내용을 가운데로 모으는 상자 */
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===== PART 1 · 네비게이션 ===== */
+.nav {
+  border-bottom: 1px solid #e3e7ec;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 62px;
+}
+
+.brand {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.brand .slash {
+  color: #16a34a;
+}
+
+.nav ul {
+  display: flex;
+  gap: 22px;
+  list-style: none;
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+}
+
+.nav a::before {
+  content: &quot;~/&quot;;
+  color: #c8cdd4;
+}
+
+.nav a:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 2 · 히어로 (소개 텍스트) ===== */
+.hero {
+  padding: 70px 0;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.prompt {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 20px;
+}
+
+.prompt .sign {
+  color: #16a34a;
+}
+
+/* 커서 모양 (초록 네모) */
+.cursor {
+  display: inline-block;
+  width: 9px;
+  height: 16px;
+  background-color: #16a34a;
+}
+
+.hero h1 {
+  font-size: 46px;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.hero .green {
+  color: #16a34a;
+}
+
+.hero .intro {
+  font-size: 17px;
+  color: #636c76;
+  margin-bottom: 28px;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  font-family: monospace;
+}
+
+.btn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  border: 1px solid #e3e7ec;
+}
+
+.btn-fill {
+  background-color: #1f2328;
+  color: #ffffff;
+}
+
+.btn-fill:hover {
+  background-color: #16a34a;
+}
+
+.btn-line {
+  background-color: #ffffff;
+  color: #1f2328;
+}
+
+.btn-line:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 3 · 코드 창 ===== */
+.window {
+  background-color: #ffffff;
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgb(20 30 50 / 8%);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e3e7ec;
+  background-color: #f6f8fa;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot.red    { background-color: #ff5f57; }
+.dot.yellow { background-color: #febc2e; }
+.dot.green  { background-color: #28c840; }
+
+.filename {
+  margin-left: 8px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #636c76;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.9;
+  padding: 18px 20px;
+}
+
+/* 코드 색칠 */
+.key  { color: #cf222e; }
+.prop { color: #0550ae; }
+.str  { color: #0a7d33; }
+
+/* ===== 섹션 공통 (PART 4~9에서 함께 사용) ===== */
+.section {
+  padding: 70px 0;
+  border-top: 1px solid #e3e7ec;
+}
+
+.tag-line {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 12px;
+}
+
+.tag-line b {
+  color: #16a34a;
+}
+
+.section h2 {
+  font-size: 32px;
+  margin-bottom: 14px;
+}
+
+.desc {
+  color: #636c76;
+  margin-bottom: 36px;
+}
+
+/* 칩 (PART 4 · 5 공용) */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: monospace;
+}
+
+.chip {
+  padding: 9px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.chip:hover {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+/* PART 5 · 추가할 CSS 없음!
+   PART 4에서 만든 .chips / .chip 스타일을 그대로 재사용합니다.
+   → 같은 class 이름을 쓰면 스타일이 자동으로 적용됩니다. */
+
+/* ===== PART 6 · 경력 타임라인 ===== */
+.item {
+  border-left: 3px solid #16a34a;
+  padding: 0 0 24px 20px;
+  margin-left: 6px;
+}
+
+.item:last-child {
+  padding-bottom: 0;
+}
+
+.year {
+  font-family: monospace;
+  font-size: 14px;
+  color: #16a34a;
+  margin-bottom: 4px;
+}
+
+.job {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.job-desc {
+  color: #636c76;
+  font-size: 14px;
+}
+
+/* ===== PART 7 · 프로젝트 카드 ===== */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.card {
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  padding: 22px;
+  background-color: #ffffff;
+}
+
+.card:hover {
+  border-color: #16a34a;
+}
+
+.card-title {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+  color: #2563eb;
+  margin-bottom: 10px;
+}
+
+.card-desc {
+  color: #636c76;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.card-foot {
+  display: flex;
+  gap: 18px;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.lang {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lang-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.lang-dot.js    { background-color: #f1e05a; }
+.lang-dot.css   { background-color: #563d7c; }
+.lang-dot.react { background-color: #61dafb; }
+.lang-dot.html  { background-color: #e34c26; }
+
+/* ===== PART 8 · 블로그 목록 ===== */
+.post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 4px;
+  border-bottom: 1px solid #e3e7ec;
+}
+
+.post-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.post-date {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.post:hover .post-title {
+  color: #16a34a;
+}
+
+/* ===== PART 9 · 연락 폼 ===== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 520px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.field input,
+.field textarea {
+  padding: 13px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.field textarea {
+  min-height: 120px;
+}
+
+/* 클릭했을 때 테두리 색 바꾸기 */
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: #16a34a;
+}
+
+.form .btn {
+  font-family: monospace;
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* ===== PART 10 · 푸터 ===== */
+.footer {
+  border-top: 1px solid #e3e7ec;
+  padding: 28px 0;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ===== 반응형 · 화면이 좁아지면 1열로 ===== */
+@media (max-width: 720px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#fbfcfd}
+body{padding:20px;overflow:hidden}
+.nav{position:static}
+.hero{padding:8px 0}
+.section{padding:20px 0;border-top:none}
+.desc{margin-bottom:18px}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;section id=&quot;contact&quot; class=&quot;section&quot;&gt;
+  &lt;div class=&quot;wrap&quot;&gt;
+    &lt;p class=&quot;tag-line&quot;&gt;// &lt;b&gt;06_contact&lt;/b&gt;&lt;/p&gt;
+    &lt;h2&gt;같이 만들어요&lt;/h2&gt;
+    &lt;p class=&quot;desc&quot;&gt;협업이나 궁금한 점은 편하게 남겨주세요.&lt;/p&gt;
+    &lt;form class=&quot;form&quot;&gt;
+      &lt;div class=&quot;field&quot;&gt;
+        &lt;label&gt;name&lt;/label&gt;
+        &lt;input type=&quot;text&quot; placeholder=&quot;홍길동&quot;&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;field&quot;&gt;
+        &lt;label&gt;email&lt;/label&gt;
+        &lt;input type=&quot;email&quot; placeholder=&quot;you@example.com&quot;&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;field&quot;&gt;
+        &lt;label&gt;message&lt;/label&gt;
+        &lt;textarea placeholder=&quot;메시지를 입력하세요...&quot;&gt;&lt;/textarea&gt;
+      &lt;/div&gt;
+      &lt;button type=&quot;button&quot; class=&quot;btn btn-fill&quot;&gt;./send-message&lt;/button&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>이름·이메일·메시지를 입력받는 폼을 만드세요.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>입력칸 3개: name · email · message(각각 라벨)</li><li>세로로 쌓기</li><li>입력칸 클릭(focus) 시 테두리 초록</li><li>./send-message 버튼 (.btn-fill 재사용)</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;section id=&quot;contact&quot; class=&quot;section&quot;&gt; 안에 &lt;form class=&quot;form&quot;&gt;</li><li>입력 묶음 &lt;div class=&quot;field&quot;&gt; 3개 — 각각 &lt;label&gt; + 입력칸</li><li>name 은 &lt;input type=&quot;text&quot;&gt;, email 은 &lt;input type=&quot;email&quot;&gt;, message 는 &lt;textarea&gt;</li><li>맨 아래 &lt;button type=&quot;button&quot; class=&quot;btn btn-fill&quot;&gt;./send-message&lt;/button&gt;</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.form</code><span class="ins">display: flex; flex-direction: column; gap: 16px; max-width: 520px;</span></li><li><code class="sel">.field</code><span class="ins">display: flex; flex-direction: column; gap: 6px;</span></li><li><code class="sel">.field label</code><span class="ins">font-family: monospace; font-size: 13px; color: #636c76;</span></li><li><code class="sel">.field input, .field textarea</code><span class="ins">padding: 13px 15px; border: 1px solid #e3e7ec; border-radius: 8px; font-size: 15px; font-family: inherit;</span></li><li><code class="sel">.field textarea</code><span class="ins">min-height: 120px;</span></li><li><code class="sel">.field input:focus, .field textarea:focus</code><span class="ins">outline: none; border-color: #16a34a;</span></li><li><code class="sel">.form .btn</code><span class="ins">font-family: monospace; align-self: flex-start; cursor: pointer;</span></li></ul></div>
+  </div>
+  
+</section>
+<section class="part" id="part10">
+  <div class="parthead"><div class="pnum">PART <b>10</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">Footer &amp; 반응형</h2>
+  <div class="learnrow"><span class="tag">flex 양끝</span><span class="tag">@media</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:100px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* ===== 기본 설정 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #1f2328;
+  background-color: #fbfcfd;
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 내용을 가운데로 모으는 상자 */
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===== PART 1 · 네비게이션 ===== */
+.nav {
+  border-bottom: 1px solid #e3e7ec;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 62px;
+}
+
+.brand {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.brand .slash {
+  color: #16a34a;
+}
+
+.nav ul {
+  display: flex;
+  gap: 22px;
+  list-style: none;
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+}
+
+.nav a::before {
+  content: &quot;~/&quot;;
+  color: #c8cdd4;
+}
+
+.nav a:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 2 · 히어로 (소개 텍스트) ===== */
+.hero {
+  padding: 70px 0;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.prompt {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 20px;
+}
+
+.prompt .sign {
+  color: #16a34a;
+}
+
+/* 커서 모양 (초록 네모) */
+.cursor {
+  display: inline-block;
+  width: 9px;
+  height: 16px;
+  background-color: #16a34a;
+}
+
+.hero h1 {
+  font-size: 46px;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.hero .green {
+  color: #16a34a;
+}
+
+.hero .intro {
+  font-size: 17px;
+  color: #636c76;
+  margin-bottom: 28px;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  font-family: monospace;
+}
+
+.btn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  border: 1px solid #e3e7ec;
+}
+
+.btn-fill {
+  background-color: #1f2328;
+  color: #ffffff;
+}
+
+.btn-fill:hover {
+  background-color: #16a34a;
+}
+
+.btn-line {
+  background-color: #ffffff;
+  color: #1f2328;
+}
+
+.btn-line:hover {
+  color: #16a34a;
+}
+
+/* ===== PART 3 · 코드 창 ===== */
+.window {
+  background-color: #ffffff;
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgb(20 30 50 / 8%);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e3e7ec;
+  background-color: #f6f8fa;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot.red    { background-color: #ff5f57; }
+.dot.yellow { background-color: #febc2e; }
+.dot.green  { background-color: #28c840; }
+
+.filename {
+  margin-left: 8px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #636c76;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.9;
+  padding: 18px 20px;
+}
+
+/* 코드 색칠 */
+.key  { color: #cf222e; }
+.prop { color: #0550ae; }
+.str  { color: #0a7d33; }
+
+/* ===== 섹션 공통 (PART 4~9에서 함께 사용) ===== */
+.section {
+  padding: 70px 0;
+  border-top: 1px solid #e3e7ec;
+}
+
+.tag-line {
+  font-family: monospace;
+  font-size: 14px;
+  color: #636c76;
+  margin-bottom: 12px;
+}
+
+.tag-line b {
+  color: #16a34a;
+}
+
+.section h2 {
+  font-size: 32px;
+  margin-bottom: 14px;
+}
+
+.desc {
+  color: #636c76;
+  margin-bottom: 36px;
+}
+
+/* 칩 (PART 4 · 5 공용) */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: monospace;
+}
+
+.chip {
+  padding: 9px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.chip:hover {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+/* PART 5 · 추가할 CSS 없음!
+   PART 4에서 만든 .chips / .chip 스타일을 그대로 재사용합니다.
+   → 같은 class 이름을 쓰면 스타일이 자동으로 적용됩니다. */
+
+/* ===== PART 6 · 경력 타임라인 ===== */
+.item {
+  border-left: 3px solid #16a34a;
+  padding: 0 0 24px 20px;
+  margin-left: 6px;
+}
+
+.item:last-child {
+  padding-bottom: 0;
+}
+
+.year {
+  font-family: monospace;
+  font-size: 14px;
+  color: #16a34a;
+  margin-bottom: 4px;
+}
+
+.job {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.job-desc {
+  color: #636c76;
+  font-size: 14px;
+}
+
+/* ===== PART 7 · 프로젝트 카드 ===== */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.card {
+  border: 1px solid #e3e7ec;
+  border-radius: 12px;
+  padding: 22px;
+  background-color: #ffffff;
+}
+
+.card:hover {
+  border-color: #16a34a;
+}
+
+.card-title {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+  color: #2563eb;
+  margin-bottom: 10px;
+}
+
+.card-desc {
+  color: #636c76;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.card-foot {
+  display: flex;
+  gap: 18px;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.lang {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lang-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.lang-dot.js    { background-color: #f1e05a; }
+.lang-dot.css   { background-color: #563d7c; }
+.lang-dot.react { background-color: #61dafb; }
+.lang-dot.html  { background-color: #e34c26; }
+
+/* ===== PART 8 · 블로그 목록 ===== */
+.post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 4px;
+  border-bottom: 1px solid #e3e7ec;
+}
+
+.post-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.post-date {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.post:hover .post-title {
+  color: #16a34a;
+}
+
+/* ===== PART 9 · 연락 폼 ===== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 520px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.field input,
+.field textarea {
+  padding: 13px 15px;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.field textarea {
+  min-height: 120px;
+}
+
+/* 클릭했을 때 테두리 색 바꾸기 */
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: #16a34a;
+}
+
+.form .btn {
+  font-family: monospace;
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* ===== PART 10 · 푸터 ===== */
+.footer {
+  border-top: 1px solid #e3e7ec;
+  padding: 28px 0;
+  font-family: monospace;
+  font-size: 13px;
+  color: #636c76;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ===== 반응형 · 화면이 좁아지면 1열로 ===== */
+@media (max-width: 720px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#fbfcfd}
+body{padding:20px;overflow:hidden}
+.nav{position:static}
+.hero{padding:8px 0}
+.section{padding:20px 0;border-top:none}
+.desc{margin-bottom:18px}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;footer class=&quot;footer&quot;&gt;
+  &lt;div class=&quot;wrap footer-inner&quot;&gt;
+    &lt;span&gt;© 2026 홍길동&lt;/span&gt;
+    &lt;span&gt;GitHub · LinkedIn · Blog&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/footer&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>맨 아래 푸터를 만들고, 좁은 화면에서 2열이 1열로 바뀌게 마무리하세요.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>맨 아래: © (왼쪽) + 링크 (오른쪽)</li><li>좁은 화면에서 히어로·카드가 1열로 바뀌면 완성</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;footer class=&quot;footer&quot;&gt; 안에 &lt;div class=&quot;wrap footer-inner&quot;&gt;</li><li>&lt;span&gt;© 2026 홍길동&lt;/span&gt; 와 &lt;span&gt;GitHub · LinkedIn · Blog&lt;/span&gt; 두 개</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.footer</code><span class="ins">border-top: 1px solid #e3e7ec; padding: 28px 0; font-family: monospace; font-size: 13px; color: #636c76;</span></li><li><code class="sel">.footer-inner</code><span class="ins">display: flex; justify-content: space-between;</span></li><li><code class="sel">@media (max-width: 720px)</code><span class="ins">{ .hero-grid { grid-template-columns: 1fr; } .cards { grid-template-columns: 1fr; } .nav ul { display: none; } }</span></li></ul></div>
+  </div>
+  
+</section>
+  </main>
+</div>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(b){
+  b.addEventListener('click',function(){
+    var c=b.closest('.codeblock').querySelector('code').textContent;
+    try{navigator.clipboard.writeText(c).then(function(){b.textContent='복사됨';b.classList.add('done');setTimeout(function(){b.textContent='복사';b.classList.remove('done')},1400)},
+    function(){b.textContent='직접 선택';setTimeout(function(){b.textContent='복사'},1400)})}catch(e){b.textContent='직접 선택';setTimeout(function(){b.textContent='복사'},1400)}
+  });
+});
+</script>
+</body>
+</html>

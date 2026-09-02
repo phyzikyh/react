@@ -1,0 +1,12 @@
+* { box-sizing: border-box; }
+body { margin: 0; color: #1f2937; background: #f8fafc; font-family: system-ui, sans-serif; line-height: 1.65; }
+header, main, footer { width: min(100% - 40px, 850px); margin-inline: auto; }
+header { padding-block: 20px; border-bottom: 1px solid #dbe3ee; }
+.hero { padding-block: 54px 32px; }
+.hero > p:first-child, article span { color: #2563eb; font-weight: 800; }
+h1 { max-width: 650px; margin: 8px 0; font-size: clamp(34px, 6vw, 58px); line-height: 1.12; }
+h2 { margin-top: 30px; }
+article { padding: 24px; background: white; border: 1px solid #dbe3ee; border-radius: 14px; box-shadow: 0 12px 30px rgb(15 23 42 / 7%); }
+article h3 { margin: 8px 0; font-size: 24px; }
+footer { margin-top: 38px; padding-block: 22px; color: #64748b; border-top: 1px solid #dbe3ee; }
+

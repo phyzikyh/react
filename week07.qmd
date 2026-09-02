@@ -1,0 +1,518 @@
+---
+title: "7주차: 조건부 렌더링과 리스트"
+---
+
+웹사이트의 화면은 데이터와 상태에 따라 달라집니다. 로그인이 되었을 때만 관리 메뉴를 보여주고, 프로젝트 진행 상태에 따라 다른 배지를 표시하며, 검색 결과가 없으면 빈 화면 안내를 제공해야 합니다. 또한 여러 프로젝트를 같은 카드 구조로 표현하려면 배열을 JSX 목록으로 변환해야 합니다. React는 별도의 템플릿 문법 대신 JavaScript의 조건문, 논리 연산자, 배열 메서드를 JSX와 함께 사용합니다.
+
+# 조건에 따라 다른 JSX 반환하기
+
+컴포넌트는 일반 JavaScript 함수이므로 `if` 문으로 반환할 JSX를 선택할 수 있습니다. 두 화면의 구조가 크게 다를 때 가장 읽기 쉽습니다.
+
+```jsx
+function ProjectStatus({ isComplete }) {
+  if (isComplete) {
+    return <p className="status status-complete">완료</p>;
+  }
+
+  return <p className="status status-progress">진행 중</p>;
+}
+```
+
+이 컴포넌트는 포트폴리오 프로젝트 카드의 상태 배지, 회원 페이지의 로그인 상태, 서버 요청의 성공·실패 화면에 사용할 수 있습니다. 조건을 먼저 처리하고 반환하므로 각 경우에 무엇이 화면에 나타나는지 명확합니다.
+
+## 변수에 JSX 저장하기
+
+공통 구조 안의 일부만 바뀐다면 JSX를 변수에 저장하고 한 번 반환합니다.
+
+```jsx
+function ProjectCard({ project }) {
+  let statusBadge;
+
+  if (project.status === "complete") {
+    statusBadge = <span className="complete">완료</span>;
+  } else {
+    statusBadge = <span className="progress">진행 중</span>;
+  }
+
+  return (
+    <article>
+      {statusBadge}
+      <h2>{project.title}</h2>
+      <p>{project.description}</p>
+    </article>
+  );
+}
+```
+
+카드의 제목과 설명은 공통이고 배지만 달라집니다. 변수 이름이 화면 역할을 설명하므로 복잡한 조건식을 JSX 안에 길게 넣는 것보다 읽기 쉽습니다.
+
+# 삼항 연산자
+
+조건에 따라 두 값 또는 두 JSX 중 하나를 선택할 때 `condition ? A : B`를 사용합니다.
+
+```jsx
+function StatusBadge({ status }) {
+  return (
+    <span className={status === "complete" ? "complete" : "progress"}>
+      {status === "complete" ? "완료" : "진행 중"}
+    </span>
+  );
+}
+```
+
+삼항 연산자는 버튼 문구, 상태 배지, 아이콘과 클래스처럼 작고 명확한 두 경우에 적합합니다.
+
+```jsx
+function BioToggle() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <section>
+      <button onClick={() => setIsOpen((open) => !open)}>
+        {isOpen ? "자기소개 닫기" : "자기소개 열기"}
+      </button>
+      {isOpen ? <p>사용자 중심의 웹 인터페이스를 만듭니다.</p> : null}
+    </section>
+  );
+}
+```
+
+삼항 연산자가 여러 단계로 중첩되면 조건의 의미를 파악하기 어렵습니다. 별도 컴포넌트, `if` 문 또는 상태별 정보를 담은 객체로 분리합니다.
+
+# 논리 AND 연산자로 선택적으로 표시하기
+
+조건이 참일 때만 JSX를 포함하고 거짓일 때는 아무것도 표시하지 않으려면 `&&`를 사용할 수 있습니다.
+
+```jsx
+function ProjectCard({ project }) {
+  return (
+    <article>
+      {project.featured && <span className="featured">추천</span>}
+      <h2>{project.title}</h2>
+    </article>
+  );
+}
+```
+
+추천 프로젝트에만 배지를 표시하거나, 오류가 있을 때만 오류 메시지를 보여주고, 관리자에게만 편집 버튼을 제공하는 영역에 적합합니다.
+
+## 숫자를 조건으로 사용할 때의 주의점
+
+JavaScript에서 `0 && <p>...</p>`의 결과는 `false`가 아니라 숫자 `0`입니다. React는 숫자를 화면에 표시하므로 목록이 비었을 때 의도하지 않은 0이 나타날 수 있습니다.
+
+```jsx
+function ProjectCount({ projects }) {
+  return (
+    <section>
+      {projects.length && <p>{projects.length}개 프로젝트</p>}
+    </section>
+  );
+}
+```
+
+명시적인 불리언 조건을 사용합니다.
+
+```jsx
+function ProjectCount({ projects }) {
+  return (
+    <section>
+      {projects.length > 0 && <p>{projects.length}개 프로젝트</p>}
+    </section>
+  );
+}
+```
+
+# null로 아무것도 렌더링하지 않기
+
+컴포넌트가 특정 조건에서 아무것도 표시하지 않도록 `null`을 반환할 수 있습니다.
+
+```jsx
+function AdminEditButton({ isAdmin }) {
+  if (!isAdmin) {
+    return null;
+  }
+
+  return <button type="button">프로젝트 편집</button>;
+}
+```
+
+화면에서 숨기는 것과 권한을 보호하는 것은 다릅니다. 관리 버튼을 숨기더라도 서버는 실제 편집 요청에서 사용자의 권한을 다시 확인해야 합니다.
+
+# 배열을 JSX 리스트로 변환하기
+
+여러 프로젝트를 개별 JSX로 복사하면 데이터가 추가될 때 마크업도 반복 수정해야 합니다. 데이터를 객체 배열로 만들고 `map()`으로 각 항목을 JSX에 대응시킵니다.
+
+```jsx
+const technologies = ["HTML", "CSS", "React"];
+
+function SkillList() {
+  const skillItems = technologies.map((technology) => (
+    <li key={technology}>{technology}</li>
+  ));
+
+  return <ul>{skillItems}</ul>;
+}
+```
+
+`map()`은 원본 배열의 각 원소를 변환해 같은 길이의 새 배열을 만듭니다. 여기서는 문자열 배열이 JSX 요소 배열로 바뀝니다.
+
+## 프로젝트 객체 배열 렌더링
+
+```jsx
+const projects = [
+  {
+    id: "learning-log",
+    title: "학습 기록 서비스",
+    description: "학습 내용과 진행 상황을 기록합니다.",
+  },
+  {
+    id: "portfolio",
+    title: "개발자 포트폴리오",
+    description: "프로젝트와 기술을 소개합니다.",
+  },
+];
+
+function ProjectList() {
+  return (
+    <section>
+      {projects.map((project) => (
+        <article key={project.id}>
+          <h2>{project.title}</h2>
+          <p>{project.description}</p>
+        </article>
+      ))}
+    </section>
+  );
+}
+```
+
+이 패턴은 프로젝트 카드뿐 아니라 기술 배지, 경력, 게시글, 상품, 알림과 표의 행처럼 같은 구조가 반복되는 모든 영역에 적용됩니다.
+
+# key로 항목의 정체성 표현하기
+
+`map()`이 반환하는 직접적인 JSX 항목에는 형제 사이에서 고유한 `key`가 필요합니다. React는 key를 이용해 이전 목록과 다음 목록의 항목을 대응시킵니다. 삽입, 삭제와 정렬이 발생해도 어떤 컴포넌트가 같은 항목인지 판단할 수 있습니다.
+
+```jsx
+projects.map((project) => (
+  <ProjectCard key={project.id} project={project} />
+));
+```
+
+key는 다음 조건을 만족해야 합니다.
+
+- 같은 배열의 형제 사이에서 고유합니다.
+- 데이터의 항목이 유지되는 동안 바뀌지 않습니다.
+- 렌더링 중 새로 만들지 않고 데이터에 포함된 ID를 사용합니다.
+
+## 배열 인덱스를 key로 사용하지 않기
+
+```jsx
+projects.map((project, index) => (
+  <ProjectCard key={index} project={project} />
+));
+```
+
+정렬·삽입·삭제가 없는 고정 목록에서는 우연히 문제가 드러나지 않을 수 있습니다. 그러나 항목 순서가 바뀌면 인덱스가 다른 데이터에 재할당되어 입력값이나 로컬 State가 잘못된 카드에 남을 수 있습니다.
+
+## 렌더링 중 key 생성하지 않기
+
+```jsx
+projects.map((project) => (
+  <ProjectCard key={Math.random()} project={project} />
+));
+```
+
+매 렌더링마다 key가 달라져 React는 모든 항목을 새 컴포넌트로 판단합니다. DOM을 다시 만들고 카드 내부 State와 사용자 입력도 잃습니다. 로컬에서 항목을 생성할 때 `crypto.randomUUID()` 등으로 ID를 한 번 만들고 데이터에 저장합니다.
+
+## key는 컴포넌트의 prop이 아니다
+
+React가 내부 대응에 사용하는 특별한 값이므로 자식 컴포넌트에서 `props.key`로 읽을 수 없습니다. ID가 필요하면 별도 prop으로 전달합니다.
+
+```jsx
+<ProjectCard
+  key={project.id}
+  projectId={project.id}
+  project={project}
+/>
+```
+
+# Fragment 목록에 key 지정하기
+
+하나의 데이터 항목이 여러 형제 요소를 반환하지만 불필요한 DOM 컨테이너를 만들고 싶지 않다면 명시적인 `Fragment`를 사용합니다. 짧은 `<>...</>` 문법에는 key를 전달할 수 없습니다.
+
+```jsx
+import { Fragment } from "react";
+
+function ProjectDetails({ projects }) {
+  return (
+    <dl>
+      {projects.map((project) => (
+        <Fragment key={project.id}>
+          <dt>{project.title}</dt>
+          <dd>{project.description}</dd>
+        </Fragment>
+      ))}
+    </dl>
+  );
+}
+```
+
+# filter와 map 결합하기
+
+`filter()`는 조건을 만족하는 원소만 담은 새 배열을 만들고 `map()`은 그 배열을 JSX로 변환합니다. 원본 배열은 변경하지 않습니다.
+
+```jsx
+function CompletedProjects({ projects }) {
+  const completedProjects = projects.filter(
+    (project) => project.status === "complete"
+  );
+
+  return (
+    <section>
+      {completedProjects.map((project) => (
+        <ProjectCard key={project.id} project={project} />
+      ))}
+    </section>
+  );
+}
+```
+
+포트폴리오에서 기술별 프로젝트, 완료 프로젝트와 추천 프로젝트를 보여주는 데 사용합니다.
+
+## 검색어와 기술 필터 적용
+
+```jsx
+function ProjectGallery({ projects }) {
+  const [query, setQuery] = useState("");
+  const [technology, setTechnology] = useState("all");
+
+  const visibleProjects = projects.filter((project) => {
+    const matchesQuery = project.title
+      .toLowerCase()
+      .includes(query.toLowerCase());
+    const matchesTechnology =
+      technology === "all" || project.technologies.includes(technology);
+
+    return matchesQuery && matchesTechnology;
+  });
+
+  return (
+    <main>
+      <input
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+        aria-label="프로젝트 검색"
+      />
+      <select
+        value={technology}
+        onChange={(event) => setTechnology(event.target.value)}
+      >
+        <option value="all">전체</option>
+        <option value="React">React</option>
+        <option value="CSS">CSS</option>
+      </select>
+
+      {visibleProjects.map((project) => (
+        <ProjectCard key={project.id} project={project} />
+      ))}
+    </main>
+  );
+}
+```
+
+필터 결과는 기존 State에서 계산할 수 있으므로 별도 State나 Effect로 저장하지 않습니다. 렌더링할 때 `projects`, `query`, `technology`로 계산하면 값이 어긋나지 않습니다.
+
+# 빈 목록과 결과 상태 처리하기
+
+검색 결과가 없는데 빈 영역만 보여주면 사용자는 로딩 중인지 오류인지 알기 어렵습니다. 목록 길이에 따라 결과 또는 안내 화면을 렌더링합니다.
+
+```jsx
+function ProjectResults({ projects }) {
+  if (projects.length === 0) {
+    return (
+      <section>
+        <h2>조건에 맞는 프로젝트가 없습니다</h2>
+        <p>검색어 또는 필터를 변경해 보세요.</p>
+      </section>
+    );
+  }
+
+  return (
+    <section>
+      {projects.map((project) => (
+        <ProjectCard key={project.id} project={project} />
+      ))}
+    </section>
+  );
+}
+```
+
+검색 결과 개수처럼 사용자의 조작으로 갱신되는 상태 메시지는 `role="status"` 또는 적절한 live region을 사용하면 포커스를 이동하지 않고도 보조 기술에 변화를 알릴 수 있습니다.
+
+```jsx
+<p role="status">검색 결과 {visibleProjects.length}개</p>
+```
+
+# 중첩 목록 렌더링
+
+각 프로젝트의 기술 배열도 `map()`으로 렌더링할 수 있습니다. key는 각 형제 배열 안에서만 고유하면 됩니다.
+
+```jsx
+function ProjectCard({ project }) {
+  return (
+    <article>
+      <h2>{project.title}</h2>
+      <ul aria-label={`${project.title} 사용 기술`}>
+        {project.technologies.map((technology) => (
+          <li key={technology}>{technology}</li>
+        ))}
+      </ul>
+    </article>
+  );
+}
+```
+
+하나의 프로젝트 안에서 기술명이 중복되지 않는다면 문자열 자체를 key로 사용할 수 있습니다. 데이터가 중복될 수 있다면 기술 ID를 별도로 둡니다.
+
+# key로 State 초기화하기
+
+key는 목록 밖에서도 컴포넌트의 정체성을 바꿀 수 있습니다. 선택한 프로젝트가 바뀔 때 편집 폼의 입력을 새 프로젝트 값으로 초기화해야 한다면 프로젝트 ID를 key로 전달합니다.
+
+```jsx
+function ProjectEditor({ selectedProject }) {
+  return (
+    <EditForm
+      key={selectedProject.id}
+      project={selectedProject}
+    />
+  );
+}
+
+function EditForm({ project }) {
+  const [title, setTitle] = useState(project.title);
+  return <input value={title} onChange={(e) => setTitle(e.target.value)} />;
+}
+```
+
+`selectedProject.id`가 바뀌면 React는 이전 EditForm을 제거하고 새 State로 다시 만듭니다. key를 무분별하게 바꾸면 State가 예상치 않게 사라지므로 “다른 개체로 전환되어 초기화가 필요한가”라는 의도가 있을 때만 사용합니다.
+
+# 종합 예제: 검색하고 필터링하는 프로젝트 목록
+
+```jsx
+import { useState } from "react";
+
+const projects = [
+  { id: "learning-log", title: "학습 기록", status: "complete", technologies: ["React", "CSS"], featured: true },
+  { id: "portfolio", title: "개발자 포트폴리오", status: "progress", technologies: ["React", "HTML"], featured: true },
+  { id: "weather", title: "날씨 대시보드", status: "progress", technologies: ["JavaScript", "CSS"], featured: false },
+];
+
+function ProjectCard({ project }) {
+  return (
+    <article>
+      {project.featured && <strong>추천</strong>}
+      <span>{project.status === "complete" ? "완료" : "진행 중"}</span>
+      <h2>{project.title}</h2>
+      <ul>
+        {project.technologies.map((technology) => (
+          <li key={technology}>{technology}</li>
+        ))}
+      </ul>
+    </article>
+  );
+}
+
+export default function PortfolioProjects() {
+  const [query, setQuery] = useState("");
+  const [completeOnly, setCompleteOnly] = useState(false);
+
+  const visibleProjects = projects.filter((project) => {
+    const matchesQuery = project.title.toLowerCase().includes(query.toLowerCase());
+    const matchesStatus = !completeOnly || project.status === "complete";
+    return matchesQuery && matchesStatus;
+  });
+
+  return (
+    <main>
+      <h1>프로젝트</h1>
+      <input value={query} onChange={(e) => setQuery(e.target.value)} aria-label="프로젝트 검색" />
+      <label>
+        <input type="checkbox" checked={completeOnly} onChange={(e) => setCompleteOnly(e.target.checked)} />
+        완료 프로젝트만
+      </label>
+      <p role="status">검색 결과 {visibleProjects.length}개</p>
+
+      {visibleProjects.length > 0 ? (
+        <section>
+          {visibleProjects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
+        </section>
+      ) : (
+        <p>조건에 맞는 프로젝트가 없습니다.</p>
+      )}
+    </main>
+  );
+}
+```
+
+# 실행 결과: 검색과 필터가 적용된 프로젝트 목록
+
+검색어, 기술 선택과 완료 프로젝트 필터를 변경합니다. `filter()`가 표시할 프로젝트를 계산하고 `map()`이 카드 목록을 생성합니다. 추천 배지와 상태 문구는 조건부로 렌더링되며 결과가 없으면 빈 목록 안내로 전환됩니다.
+
+<iframe class="demo-frame demo-frame--tall" src="examples/week07/index.html" title="7주차 조건부 렌더링과 리스트 실행 결과" loading="lazy"></iframe>
+
+<p class="demo-caption"><a href="examples/week07/index.html" target="_blank">실행 결과를 새 창에서 보기</a></p>
+
+# 자주 발생하는 오류
+
+## map 콜백에서 return 누락
+
+중괄호 본문을 사용하면 명시적으로 반환해야 합니다.
+
+```jsx
+projects.map((project) => {
+  return <ProjectCard key={project.id} project={project} />;
+});
+```
+
+## key 누락 또는 잘못된 위치
+
+key는 `map()`이 직접 반환하는 가장 바깥 JSX에 지정합니다. ProjectCard 내부 article에 key를 넣어도 부모 목록 대응에는 사용되지 않습니다.
+
+## 원본 배열 직접 변경
+
+`sort()`와 `reverse()`는 원본 배열을 변경합니다. Props나 State 배열을 정렬할 때는 먼저 복사합니다.
+
+```jsx
+const sortedProjects = [...projects].sort((a, b) =>
+  a.title.localeCompare(b.title, "ko")
+);
+```
+
+## 복잡한 조건식 중첩
+
+JSX 안에 여러 삼항 연산자를 중첩하지 않습니다. 의미 있는 변수, 별도 함수 또는 작은 컴포넌트로 분리합니다.
+
+## 필터 결과를 별도 State로 저장
+
+원본 데이터와 필터 조건에서 계산 가능한 값은 렌더링 중 계산합니다. 중복 State는 값 불일치와 불필요한 Effect를 만듭니다.
+
+# 참고문헌 및 자료
+
+## React 공식 문서
+
+- [Conditional Rendering](https://react.dev/learn/conditional-rendering)
+- [Rendering Lists](https://react.dev/learn/rendering-lists)
+- [Preserving and Resetting State](https://react.dev/learn/preserving-and-resetting-state)
+- [Updating Arrays in State](https://react.dev/learn/updating-arrays-in-state)
+
+## 웹 접근성 자료
+
+- W3C WAI. [ARIA22: Using role=status to present status messages](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA22).
+- W3C WAI. [WAI-ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/).
+
+## 교육 자료 설계에 참고한 연구
+
+- Muldner, K., Jennings, J., & Chiarelli, V. (2023). [A Review of Worked Examples in Programming Activities](https://doi.org/10.1145/3579643). *ACM Transactions on Computing Education, 23*(1), Article 13.
+- Vieira, C., Yan, J., & Magana, A. J. (2015). [Exploring Design Characteristics of Worked Examples to Support Programming and Algorithm Design](https://doi.org/10.22369/issn.2153-4136/6/1/1). *Journal of Computational Science Education, 6*(1), 2–15.

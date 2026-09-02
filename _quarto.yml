@@ -1,0 +1,66 @@
+project:
+  type: book
+  output-dir: _book
+  resources:
+    - examples/**
+
+book:
+  title: "고급웹프로그래밍:React"
+  subtitle: "2026학년도 2학기"
+  author: "신기홍"
+  search: true
+  page-footer:
+    left: "고급웹프로그래밍:React"
+    right: "© 2026 신기홍"
+  chapters:
+    - index.qmd
+    - week01.qmd
+    - week02.qmd
+    - week03.qmd
+    - week04.qmd
+    - week05.qmd
+    - week06.qmd
+    - week07.qmd
+
+crossref:
+  fig-title: "그림"
+  tbl-title: "표"
+  fig-prefix: "그림"
+  tbl-prefix: "표"
+  eq-prefix: "식"
+  sec-prefix: "절"
+  title-delim: "."
+
+lang: ko
+
+format:
+  html:
+    theme:
+      light: [cosmo, styles.scss]
+    lang: ko
+    toc: true
+    toc-title: "목차"
+    toc-depth: 3
+    number-sections: true
+    number-depth: 2
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+    fig-cap-location: bottom
+    tbl-cap-location: top
+    fig-align: center
+    fig-format: png
+    html-math-method: mathjax
+    include-in-header:
+      text: |
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+    include-after-body: interactive.html
+    mermaid:
+      theme: neutral
+
+execute:
+  freeze: auto
+  warning: false
+  echo: false

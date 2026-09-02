@@ -1,0 +1,18 @@
+
+# 2장 참고문헌 및 자료
+
+## 공식 문서와 표준
+
+1. MDN Web Docs. *CSS: Cascading Style Sheets*. <https://developer.mozilla.org/en-US/docs/Web/CSS>
+2. MDN Web Docs. *CSS styling basics*. <https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics>
+3. MDN Web Docs. *CSS layout*. <https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout>
+4. MDN Web Docs. *CSS selectors*. <https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors>
+5. MDN Web Docs. *CSS box model*. <https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model>
+6. World Wide Web Consortium. *CSS Snapshot*. <https://www.w3.org/TR/CSS/>
+7. World Wide Web Consortium. *Web Content Accessibility Guidelines (WCAG) 2.2*. <https://www.w3.org/TR/WCAG22/>
+8. web.dev. *Learn Responsive Design*. <https://web.dev/learn/design/>
+
+## 교육 자료 설계에 참고한 연구
+
+1. Freeman, S., Eddy, S. L., McDonough, M., Smith, M. K., Okoroafor, N., Jordt, H., & Wenderoth, M. P. (2014). Active learning increases student performance in science, engineering, and mathematics. *Proceedings of the National Academy of Sciences, 111*(23), 8410–8415. <https://doi.org/10.1073/pnas.1319030111>
+2. Vieira, C., Yan, J., & Magana, A. J. (2015). Exploring design characteristics of worked examples to support programming and algorithm design. *Journal of Computational Science Education, 6*(1), 2–15. <https://doi.org/10.22369/issn.2153-4136/6/1/1>

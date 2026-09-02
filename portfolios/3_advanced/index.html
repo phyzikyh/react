@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="고급 웹 개발자 박고급의 인터랙티브 포트폴리오">
+  <title>박고급 // Frontend Engineer (고급)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 헤더 -->
+  <header class="site-header">
+    <div class="wrap nav-wrap">
+      <a href="#" class="terminal-brand">
+        <span class="prompt-sign">&gt;</span> dev.park<span class="blinking-cursor">_</span>
+      </a>
+      <nav aria-label="메인 메뉴">
+        <ul class="nav-list">
+          <li><a href="#about">~/about</a></li>
+          <li><a href="#projects">~/projects</a></li>
+          <li><a href="#experience">~/experience</a></li>
+          <li><a href="#contact">~/contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- 히어로 섹션 (코드 스니펫 + 자기소개) -->
+    <section id="about" class="hero-section">
+      <div class="wrap hero-grid">
+        <div class="hero-content">
+          <div class="status-badge">
+            <span class="status-dot"></span> Available for Hiring / 2026
+          </div>
+          <h1 class="glitch-title">
+            Crafting <span class="highlight-gradient">Interactive</span> & Resilient Web.
+          </h1>
+          <p class="hero-lead">
+            웹 표준과 시맨틱 아키텍처를 기반으로 확장 가능하고 반응성이 뛰어난 인터페이스를 만듭니다. 
+            단순한 구현을 넘어 성능과 사용자 접근성을 우선순위에 둡니다.
+          </p>
+          <div class="stats-row">
+            <div class="stat-item">
+              <span class="stat-num">100%</span>
+              <span class="stat-label">Web Standards</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">12+</span>
+              <span class="stat-label">Mini Projects</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">0.1s</span>
+              <span class="stat-label">Fast Interaction</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 터미널 코드 윈도우 UI -->
+        <div class="code-window">
+          <div class="window-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="window-title">profile.json</span>
+          </div>
+          <pre class="code-body"><code>{
+  <span class="key">"name"</span>: <span class="str">"박고급"</span>,
+  <span class="key">"role"</span>: <span class="str">"Frontend Developer"</span>,
+  <span class="key">"stack"</span>: [
+    <span class="str">"Semantic HTML"</span>,
+    <span class="str">"Modern CSS (Grid/Flex)"</span>,
+    <span class="str">"JavaScript ES6+"</span>,
+    <span class="str">"React"</span>
+  ],
+  <span class="key">"passion"</span>: <span class="str">"Writing Clean, Accessible Code"</span>,
+  <span class="key">"location"</span>: <span class="str">"Seoul, Korea"</span>
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 프로젝트 쇼케이스 섹션 -->
+    <section id="projects" class="section">
+      <div class="wrap">
+        <div class="section-title-wrap">
+          <span class="sub-title">PORTFOLIO WORK</span>
+          <h2>선별된 프로젝트</h2>
+        </div>
+
+        <div class="tech-project-grid">
+          <!-- 프로젝트 1 (Featured - 넓은 카드) -->
+          <article class="tech-card featured">
+            <div class="card-visual">
+              <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800" alt="반응형 차트 분석 플랫폼 대시보드">
+            </div>
+            <div class="card-info">
+              <div class="card-meta">
+                <span class="tech-pill">CSS Grid Area</span>
+                <span class="tech-pill">Responsive Design</span>
+              </div>
+              <h3>DataViz · 차트 & 데이터 분석 인터페이스</h3>
+              <p>
+                CSS Grid Template Areas를 활용한 복합 레이아웃 시스템입니다. 
+                시스템 다크모드와 연동되어 주야간 환경에 구애받지 않고 높은 가독성을 제공합니다.
+              </p>
+              <div class="link-group">
+                <a href="#" class="action-btn">라이브 데모 ↗</a>
+                <a href="#" class="action-btn outline">GitHub 소스코드</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 프로젝트 2 -->
+          <article class="tech-card">
+            <div class="card-visual">
+              <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600" alt="사이버펑크 테마 웹터미널">
+            </div>
+            <div class="card-info">
+              <div class="card-meta">
+                <span class="tech-pill">Keyframe Animation</span>
+              </div>
+              <h3>Web Terminal & Task Tracker</h3>
+              <p>CSS 키프레임 애니메이션과 트랜지션을 적극 활용한 개발자 친화적 작업 관리 웹앱입니다.</p>
+              <a href="#" class="action-btn">프로젝트 리뷰 ↗</a>
+            </div>
+          </article>
+
+          <!-- 프로젝트 3 -->
+          <article class="tech-card">
+            <div class="card-visual">
+              <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600" alt="반응형 웹 매거진">
+            </div>
+            <div class="card-info">
+              <div class="card-meta">
+                <span class="tech-pill">Semantic HTML</span>
+                <span class="tech-pill">Typography</span>
+              </div>
+              <h3>Tech Magazine Article Layout</h3>
+              <p>HTML5 시맨틱 태그와 fluid typography(clamp())를 적용하여 어떤 디바이스에서도 완벽한 읽기 경험을 선사합니다.</p>
+              <a href="#" class="action-btn">프로젝트 리뷰 ↗</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 경험 & 기술 인터랙티브 섹션 -->
+    <section id="experience" class="section alt-bg">
+      <div class="wrap">
+        <div class="section-title-wrap">
+          <span class="sub-title">TIMELINE & SPECS</span>
+          <h2>역량 및 히스토리</h2>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-card">
+            <span class="timeline-date">2026.08 - Present</span>
+            <h4>프론트엔드 모던 웹 아키텍처 학습</h4>
+            <p>시맨틱 HTML 구조 설계, 모바일 퍼스트 CSS 미디어 쿼리, CSS 변수 시스템화 및 컴포넌트 단위 스타일링 심화 습득.</p>
+          </div>
+          <div class="timeline-card">
+            <span class="timeline-date">2026.03 - 2026.06</span>
+            <h4>웹 프로그래밍 기초 및 CS 전공 심화</h4>
+            <p>자료구조, 알고리즘, 컴퓨터 네트워크 학습 및 기초 웹 인터랙션 프로젝트 다수 완수.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 문의 터미널 폼 -->
+    <section id="contact" class="section">
+      <div class="wrap contact-wrap">
+        <div class="section-title-wrap text-center">
+          <span class="sub-title">INITIATE TRANSMISSION</span>
+          <h2>메시지 전송</h2>
+          <p>새로운 프로젝트 협업이나 인턴십 제안을 환영합니다.</p>
+        </div>
+
+        <form class="terminal-form" action="#" method="post">
+          <div class="input-grid">
+            <div class="field-wrap">
+              <label for="p-name">CALLSIGN / NAME</label>
+              <input type="text" id="p-name" name="name" placeholder="홍길동" required>
+            </div>
+            <div class="field-wrap">
+              <label for="p-email">ELECTRONIC MAIL</label>
+              <input type="email" id="p-email" name="email" placeholder="dev@domain.com" required>
+            </div>
+          </div>
+          <div class="field-wrap">
+            <label for="p-msg">TRANSMISSION CONTENT</label>
+            <textarea id="p-msg" name="message" rows="4" placeholder="작성하실 내용을 입력하세요..." required></textarea>
+          </div>
+          <button type="submit" class="transmit-btn">
+            <span>TRANSMIT MESSAGE</span> &rarr;
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div>
+        <p class="brand-sub">ParkGoGeup // System Architect</p>
+        <p class="copyright">&copy; 2026 Park. All code licensed under MIT.</p>
+      </div>
+      <div class="footer-nav">
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="mailto:contact@domain.com">Email</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

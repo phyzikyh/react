@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>김초보 | 웹 개발자 포트폴리오 (기초)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 헤더 & 네비게이션 -->
+  <header class="header">
+    <div class="header-container">
+      <h1 class="logo">김초보.dev</h1>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="#about">소개</a></li>
+          <li><a href="#skills">기술</a></li>
+          <li><a href="#activities">활동</a></li>
+          <li><a href="#contact">연락처</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <!-- 소개 섹션 -->
+    <section id="about" class="section about-section">
+      <div class="profile-card">
+        <img 
+          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400" 
+          alt="김초보의 프로필 사진" 
+          class="profile-img"
+        >
+        <h2>안녕하세요! 프론트엔드 개발자를 꿈꾸는 <strong>김초보</strong>입니다.</h2>
+        <p>기초가 탄탄한 코드를 작성하고, 사용자 경험을 고민하는 개발자가 되기 위해 꾸준히 공부하고 있습니다.</p>
+        <p>현재 <em>HTML5와 CSS3의 웹 표준 및 접근성</em>을 집중적으로 학습하고 있습니다.</p>
+      </div>
+    </section>
+
+    <!-- 기술 스택 섹션 -->
+    <section id="skills" class="section">
+      <h2>보유 기술</h2>
+      <ul class="skills-list">
+        <li>HTML5 (시맨틱 웹)</li>
+        <li>CSS3 (스타일링 & 레이아웃)</li>
+        <li>Git & GitHub</li>
+        <li>VS Code</li>
+      </ul>
+    </section>
+
+    <!-- 학력 및 활동 표 섹션 -->
+    <section id="activities" class="section">
+      <h2>학력 및 주요 활동</h2>
+      <table class="activity-table">
+        <caption>학습 및 프로젝트 참여 이력</caption>
+        <thead>
+          <tr>
+            <th scope="col">기간</th>
+            <th scope="col">구분</th>
+            <th scope="col">내용</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2026.03 ~ 현재</td>
+            <td>대학교</td>
+            <td>컴퓨터소프트웨어공학과 재학</td>
+          </tr>
+          <tr>
+            <td>2026.08 ~ 2026.09</td>
+            <td>수업 실습</td>
+            <td>웹 표준 시맨틱 포트폴리오 웹페이지 제작</td>
+          </tr>
+          <tr>
+            <td>2026.09</td>
+            <td>스터디</td>
+            <td>HTML/CSS 마크업 기초 스터디 참여</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 연락처 폼 섹션 -->
+    <section id="contact" class="section">
+      <h2>연락하기</h2>
+      <form class="contact-form" action="#" method="post">
+        <div class="form-group">
+          <label for="name">성함</label>
+          <input type="text" id="name" name="name" placeholder="이름을 입력하세요" required>
+        </div>
+        <div class="form-group">
+          <label for="email">이메일</label>
+          <input type="email" id="email" name="email" placeholder="example@email.com" required>
+        </div>
+        <div class="form-group">
+          <label for="message">문의 내용</label>
+          <textarea id="message" name="message" rows="4" placeholder="메시지를 남겨주세요"></textarea>
+        </div>
+        <button type="submit" class="submit-btn">메시지 보내기</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- 푸터 & 연락처 정보 -->
+  <footer class="footer">
+    <address>
+      이메일: <a href="mailto:chobo@example.com">chobo@example.com</a> | 전화: <a href="tel:01012345678">010-1234-5678</a>
+    </address>
+    <p><small>&copy; 2026 김초보. All rights reserved.</small></p>
+  </footer>
+
+</body>
+</html>

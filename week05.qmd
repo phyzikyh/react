@@ -1,0 +1,456 @@
+---
+title: "5주차: State와 이벤트 처리"
+---
+
+React 인터페이스는 사용자 행동을 입력으로 받아 화면을 바꿉니다. 사용자가 버튼을 누르면 상세 설명이 열리고, 폼에 글자를 입력하면 미리보기가 갱신되며, 좋아요 버튼을 누르면 숫자가 증가합니다. 이때 **이벤트 처리기**는 어떤 행동이 발생했는지 받아들이고, **State**는 렌더링 사이에 기억해야 할 값을 보관합니다. State가 바뀌면 React는 컴포넌트를 다시 렌더링하여 새로운 화면을 만듭니다.
+
+# 이벤트에 응답하기
+
+JSX에서는 DOM 요소에 함수를 prop으로 전달하여 이벤트를 처리합니다. 이벤트 prop은 `onClick`, `onChange`, `onSubmit`처럼 `on`으로 시작하며 camelCase로 작성합니다. 처리 함수는 보통 `handleClick`, `handleChange`, `handleSubmit`처럼 `handle` 뒤에 대상 이벤트를 붙여 이름만 읽어도 역할을 알 수 있게 합니다.
+
+```jsx
+function ContactButton() {
+  function handleClick() {
+    alert("이메일: student@example.com");
+  }
+
+  return <button onClick={handleClick}>연락처 보기</button>;
+}
+```
+
+이 코드는 포트폴리오의 Hero 또는 연락처 영역에서 방문자가 연락 방법을 확인하도록 만들 수 있습니다. `onClick={handleClick}`은 함수를 **전달**합니다. 렌더링 중 함수를 호출하지 않고 클릭이 발생했을 때 React가 호출합니다.
+
+## 함수 전달과 함수 호출 구분
+
+다음 두 표현은 결과가 완전히 다릅니다.
+
+```jsx
+// 올바름: 클릭할 때 실행할 함수를 전달한다.
+<button onClick={handleClick}>연락처 보기</button>
+```
+
+```jsx
+// 잘못됨: 렌더링하는 즉시 함수를 호출한다.
+<button onClick={handleClick()}>연락처 보기</button>
+```
+
+두 번째 코드는 `handleClick()`의 반환값을 `onClick`에 전달합니다. 함수가 상태를 변경한다면 반복 렌더링 오류까지 일으킬 수 있습니다. 인수가 필요한 경우에는 화살표 함수로 감쌉니다.
+
+```jsx
+function ProjectLink() {
+  function openProject(projectId) {
+    alert(`${projectId} 프로젝트를 엽니다.`);
+  }
+
+  return (
+    <button onClick={() => openProject("learning-log")}>
+      프로젝트 열기
+    </button>
+  );
+}
+```
+
+## 이벤트 객체 사용
+
+React는 처리 함수에 이벤트 객체를 전달합니다. 관례적으로 `event` 또는 `e`라고 이름 붙입니다. 이벤트 객체의 `target`은 이벤트가 시작된 요소이고 `currentTarget`은 현재 처리기가 등록된 요소입니다.
+
+```jsx
+function SkillFilter() {
+  function handleChange(event) {
+    alert(`선택한 기술: ${event.target.value}`);
+  }
+
+  return (
+    <label>
+      기술 필터
+      <select onChange={handleChange} defaultValue="all">
+        <option value="all">전체</option>
+        <option value="react">React</option>
+        <option value="css">CSS</option>
+      </select>
+    </label>
+  );
+}
+```
+
+이 패턴은 프로젝트 목록의 기술 필터, 정렬 선택, 테마 선택과 같은 입력 영역에 사용합니다.
+
+# 이벤트 전파
+
+자식 요소에서 발생한 이벤트는 조상 요소 방향으로 전파됩니다. 이를 버블링이라고 합니다. 카드 전체와 카드 안의 버튼에 각각 클릭 처리기가 있으면 버튼 클릭 시 두 처리기가 모두 실행될 수 있습니다.
+
+```jsx
+function ProjectCard() {
+  return (
+    <article onClick={() => alert("프로젝트 상세 열기")}> 
+      <h2>학습 기록 서비스</h2>
+      <button onClick={() => alert("좋아요 저장")}>좋아요</button>
+    </article>
+  );
+}
+```
+
+버튼 클릭이 카드까지 전달되면 안 되는 구조라면 `stopPropagation()`을 사용합니다. 다만 전파를 무조건 차단하기보다 컴포넌트 역할과 상호작용 구조를 먼저 단순화합니다.
+
+```jsx
+function ProjectCard() {
+  function handleLike(event) {
+    event.stopPropagation();
+    alert("좋아요 저장");
+  }
+
+  return (
+    <article onClick={() => alert("프로젝트 상세 열기")}>
+      <h2>학습 기록 서비스</h2>
+      <button onClick={handleLike}>좋아요</button>
+    </article>
+  );
+}
+```
+
+# 브라우저 기본 동작 막기
+
+폼 제출은 기본적으로 페이지를 다시 불러옵니다. React가 입력값을 검사하거나 저장 작업을 수행하려면 `preventDefault()`로 기본 제출을 막고 필요한 로직을 실행합니다. 이벤트 전파를 막는 `stopPropagation()`과 브라우저 기본 동작을 막는 `preventDefault()`는 서로 다른 기능입니다.
+
+```jsx
+function ContactForm() {
+  function handleSubmit(event) {
+    event.preventDefault();
+    alert("문의 내용을 확인했습니다.");
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label htmlFor="message">문의 내용</label>
+      <textarea id="message" name="message" />
+      <button type="submit">보내기</button>
+    </form>
+  );
+}
+```
+
+제출 처리는 버튼의 `onClick`보다 form의 `onSubmit`에 연결하는 편이 좋습니다. 그러면 버튼 클릭뿐 아니라 입력 도중 Enter를 누르는 기본 폼 동작도 함께 처리할 수 있습니다.
+
+# State: 컴포넌트의 기억
+
+일반 지역 변수는 렌더링 사이에 유지되지 않으며 값을 바꾸어도 React에 다시 렌더링하라고 알리지 못합니다. `useState`는 현재 렌더링에서 사용할 값과 그 값을 갱신하며 재렌더링을 요청하는 setter 함수를 제공합니다.
+
+```jsx
+import { useState } from "react";
+
+function LikeButton() {
+  const [likes, setLikes] = useState(0);
+
+  function handleLike() {
+    setLikes(likes + 1);
+  }
+
+  return <button onClick={handleLike}>좋아요 {likes}</button>;
+}
+```
+
+`useState(0)`의 `0`은 첫 렌더링의 초기값입니다. `likes`는 현재 렌더링의 State이고 `setLikes`는 다음 렌더링에 사용할 값을 요청합니다. setter를 호출하면 기존 DOM을 직접 찾아 숫자를 바꾸는 것이 아니라 React가 컴포넌트를 다시 호출하고 새 JSX 결과를 DOM에 반영합니다.
+
+포트폴리오에서는 프로젝트 추천 수, 자기소개 펼침 여부, 선택된 기술 필터, 입력 중인 문의 내용과 같은 값을 State로 관리할 수 있습니다.
+
+## Hook 호출 규칙
+
+`useState`처럼 이름이 `use`로 시작하는 함수는 Hook입니다. Hook은 컴포넌트의 최상위 수준에서 같은 순서로 호출해야 합니다. 조건문, 반복문 또는 중첩 함수 안에서 호출하지 않습니다.
+
+```jsx
+function Profile({ isOwner }) {
+  // 올바름: 항상 같은 위치에서 호출한다.
+  const [isOpen, setIsOpen] = useState(false);
+
+  if (!isOwner) {
+    return <p>공개 프로필입니다.</p>;
+  }
+
+  return (
+    <button onClick={() => setIsOpen(!isOpen)}>
+      {isOpen ? "관리 메뉴 닫기" : "관리 메뉴 열기"}
+    </button>
+  );
+}
+```
+
+```jsx
+function Profile({ isOwner }) {
+  // 잘못됨: 조건에 따라 Hook 호출 순서가 달라진다.
+  if (isOwner) {
+    const [isOpen, setIsOpen] = useState(false);
+  }
+
+  return <p>프로필</p>;
+}
+```
+
+# State는 렌더링의 스냅샷이다
+
+State는 함수 밖에서 계속 변하는 일반 변수처럼 동작하지 않습니다. React가 컴포넌트를 호출할 때 해당 렌더링에 맞는 State 스냅샷을 제공합니다. 이벤트 처리 함수도 그 렌더링의 값을 기억합니다.
+
+```jsx
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  function handleClick() {
+    setCount(count + 1);
+    console.log(count);
+  }
+
+  return <button onClick={handleClick}>클릭 {count}</button>;
+}
+```
+
+처음 클릭할 때 콘솔에는 `0`이 출력됩니다. `setCount`가 현재 실행 중인 `count` 변수를 즉시 바꾸는 것이 아니라 다음 렌더링을 요청하기 때문입니다. 이 특성을 이해하면 setter 호출 직후 이전 값이 보이는 현상을 오류로 오해하지 않게 됩니다.
+
+# 여러 State 업데이트와 배치 처리
+
+React는 이벤트 처리기의 코드가 모두 끝난 뒤 State 업데이트를 처리합니다. 같은 스냅샷의 `count`를 이용해 `setCount(count + 1)`을 세 번 호출하면 모두 같은 다음 값 `1`을 요청하므로 한 번만 증가한 것처럼 보입니다.
+
+```jsx
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <button onClick={() => {
+      setCount(count + 1);
+      setCount(count + 1);
+      setCount(count + 1);
+    }}>
+      3 증가? 현재 {count}
+    </button>
+  );
+}
+```
+
+이전 업데이트 결과를 이어서 계산해야 하면 setter에 **업데이터 함수**를 전달합니다. React는 큐의 이전 결과를 다음 함수의 인수로 전달합니다.
+
+```jsx
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <button onClick={() => {
+      setCount((previous) => previous + 1);
+      setCount((previous) => previous + 1);
+      setCount((previous) => previous + 1);
+    }}>
+      3씩 증가: {count}
+    </button>
+  );
+}
+```
+
+좋아요, 장바구니 수량처럼 이전 값에 기반해 다음 값을 계산할 때는 업데이터 함수가 의도를 더 정확히 표현합니다.
+
+# 불리언 State로 화면 열고 닫기
+
+상세 설명이 열렸는지는 `true` 또는 `false` 하나로 표현할 수 있습니다. setter의 업데이터 함수는 현재 상태를 반전하는 토글 구현에도 적합합니다.
+
+```jsx
+function Bio() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <section>
+      <h2>자기소개</h2>
+      <button
+        type="button"
+        aria-expanded={isOpen}
+        onClick={() => setIsOpen((open) => !open)}
+      >
+        {isOpen ? "소개 닫기" : "소개 더 보기"}
+      </button>
+      {isOpen && (
+        <p>접근 가능하고 유지보수하기 좋은 웹을 만드는 개발자입니다.</p>
+      )}
+    </section>
+  );
+}
+```
+
+버튼 문구와 본문 표시가 같은 `isOpen`에서 결정되므로 화면이 서로 어긋나지 않습니다. `aria-expanded`도 같은 State에 연결해 보조 기술 사용자에게 펼침 상태를 전달합니다.
+
+# 입력값을 State로 관리하기
+
+입력 요소의 `value`를 State에 연결하고 `onChange`에서 갱신하면 React가 입력값의 기준이 됩니다. 이를 제어 컴포넌트라고 합니다.
+
+```jsx
+function NamePreview() {
+  const [name, setName] = useState("");
+
+  return (
+    <section>
+      <label htmlFor="name">이름</label>
+      <input
+        id="name"
+        value={name}
+        onChange={(event) => setName(event.target.value)}
+      />
+      <p aria-live="polite">포트폴리오 작성자: {name || "이름 미입력"}</p>
+    </section>
+  );
+}
+```
+
+이 구조는 실시간 프로필 미리보기, 검색어, 글자 수 표시와 유효성 검사에 사용합니다. `value`만 지정하고 `onChange`로 State를 갱신하지 않으면 사용자가 입력해도 값이 바뀌지 않는 읽기 전용 입력이 됩니다.
+
+# State의 위치와 독립성
+
+State는 JSX 태그가 아니라 화면에서 그 컴포넌트가 놓인 위치에 연결됩니다. 같은 컴포넌트를 두 번 렌더링하면 각 인스턴스는 독립적인 State를 가집니다.
+
+```jsx
+function LikeButton() {
+  const [likes, setLikes] = useState(0);
+  return (
+    <button onClick={() => setLikes((value) => value + 1)}>
+      좋아요 {likes}
+    </button>
+  );
+}
+
+function ProjectList() {
+  return (
+    <section>
+      <article><h2>프로젝트 A</h2><LikeButton /></article>
+      <article><h2>프로젝트 B</h2><LikeButton /></article>
+    </section>
+  );
+}
+```
+
+프로젝트 A의 버튼을 눌러도 프로젝트 B의 숫자는 바뀌지 않습니다. 두 값을 함께 제어해야 한다면 공통 부모로 State를 올리고 Props로 전달하는 설계가 필요합니다.
+
+# 종합 예제: 상호작용하는 포트폴리오
+
+다음 예제는 자기소개 토글, 프로젝트 좋아요와 문의 입력을 한 화면에 결합합니다. 각 State는 필요한 가장 가까운 컴포넌트에 둡니다.
+
+```jsx
+import { useState } from "react";
+
+function ProjectCard({ title, description }) {
+  const [likes, setLikes] = useState(0);
+
+  return (
+    <article>
+      <h2>{title}</h2>
+      <p>{description}</p>
+      <button onClick={() => setLikes((count) => count + 1)}>
+        좋아요 {likes}
+      </button>
+    </article>
+  );
+}
+
+export default function Portfolio() {
+  const [isBioOpen, setIsBioOpen] = useState(false);
+  const [email, setEmail] = useState("");
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    alert(`${email} 주소로 연락 요청을 저장했습니다.`);
+  }
+
+  return (
+    <main>
+      <section>
+        <h1>홍길동의 포트폴리오</h1>
+        <button
+          aria-expanded={isBioOpen}
+          onClick={() => setIsBioOpen((open) => !open)}
+        >
+          {isBioOpen ? "소개 닫기" : "소개 더 보기"}
+        </button>
+        {isBioOpen && <p>사용자 중심의 웹 인터페이스를 만듭니다.</p>}
+      </section>
+
+      <ProjectCard
+        title="학습 기록 서비스"
+        description="매일 학습한 내용과 진행 상황을 기록합니다."
+      />
+
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="email">이메일</label>
+        <input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+        />
+        <button type="submit">연락 요청</button>
+      </form>
+    </main>
+  );
+}
+```
+
+# 실행 결과: State와 이벤트가 연결된 포트폴리오
+
+아래 화면에서 소개 버튼, 좋아요 버튼과 이메일 입력을 직접 조작합니다. 각 행동은 이벤트 처리기를 실행하고, setter가 State 업데이트를 요청하며, React가 변경된 부분을 다시 렌더링합니다.
+
+<iframe class="demo-frame demo-frame--tall" src="examples/week05/index.html" title="5주차 State와 이벤트 처리 실행 결과" loading="lazy"></iframe>
+
+<p class="demo-caption"><a href="examples/week05/index.html" target="_blank">실행 결과를 새 창에서 보기</a></p>
+
+# 자주 발생하는 오류
+
+## 이벤트 처리기를 즉시 호출함
+
+```jsx
+<button onClick={handleClick()}>클릭</button>
+```
+
+`handleClick`의 실행 결과를 전달하는 코드입니다. `onClick={handleClick}` 또는 인수가 필요할 때 `onClick={() => handleClick(id)}`로 작성합니다.
+
+## State를 직접 대입함
+
+```jsx
+likes = likes + 1;
+```
+
+State 변수에 직접 대입해도 React는 다시 렌더링할 이유를 알지 못합니다. `setLikes((likes) => likes + 1)`처럼 setter를 사용합니다.
+
+## 이벤트 처리기에서 setter 뒤의 값이 즉시 바뀐다고 기대함
+
+```jsx
+setLikes(likes + 1);
+console.log(likes);
+```
+
+현재 처리기는 현재 렌더링의 State 스냅샷을 사용합니다. 다음 값이 필요하면 지역 변수로 먼저 계산하거나 업데이터 함수 안에서 계산합니다.
+
+## 버튼 타입을 생략함
+
+form 안의 button은 기본적으로 submit 버튼입니다. 단순 토글이나 삭제 버튼이면 `type="button"`을 명시하여 의도하지 않은 제출을 막습니다.
+
+## State가 너무 많거나 중복됨
+
+`firstName`, `lastName`이 있는데 `fullName`까지 State로 저장하면 서로 불일치할 가능성이 생깁니다. 렌더링 중 계산할 수 있는 값은 별도 State로 만들지 않습니다.
+
+```jsx
+const [firstName, setFirstName] = useState("길동");
+const [lastName, setLastName] = useState("홍");
+const fullName = `${lastName}${firstName}`;
+```
+
+# 참고문헌 및 자료
+
+## React 공식 문서
+
+- [Responding to Events](https://react.dev/learn/responding-to-events)
+- [State: A Component's Memory](https://react.dev/learn/state-a-components-memory)
+- [Render and Commit](https://react.dev/learn/render-and-commit)
+- [State as a Snapshot](https://react.dev/learn/state-as-a-snapshot)
+- [Queueing a Series of State Updates](https://react.dev/learn/queueing-a-series-of-state-updates)
+- [`useState` API Reference](https://react.dev/reference/react/useState)
+
+## 웹 표준
+
+- W3C. [UI Events](https://www.w3.org/TR/uievents/). 사용자 인터페이스 이벤트의 유형과 동작을 정의합니다.
+- WHATWG. [DOM Standard: Events](https://dom.spec.whatwg.org/#events). 이벤트 전파와 이벤트 객체 모델의 표준입니다.
+
+## 교육 자료 설계에 참고한 연구
+
+- Vieira, C., Yan, J., & Magana, A. J. (2015). [Exploring Design Characteristics of Worked Examples to Support Programming and Algorithm Design](https://doi.org/10.22369/issn.2153-4136/6/1/1). *Journal of Computational Science Education, 6*(1), 2–15.
+- Heitzmann, N., et al. (2021). [Learning programming from erroneous worked-examples: Which type of error is beneficial for learning?](https://doi.org/10.1016/j.learninstruc.2021.101497). *Learning and Instruction, 75*, 101497.

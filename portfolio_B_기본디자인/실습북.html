@@ -1,0 +1,3057 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>포트폴리오 실습 워크북</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#f6f8fc;--surface:#ffffff;--surface2:#eef2f8;--code-bg:#f5f7fb;
+  --ink:#1c2128;--muted:#5b6570;--faint:#8b95a1;--line:#dce3ec;
+  --accent:#2f6feb;--accent-soft:#e6efff;--link:#1e54c9;
+  --shadow:0 1px 2px rgb(20 30 50 / 4%),0 8px 24px rgb(20 30 50 / 5%);
+  --disp:'Bricolage Grotesque','Segoe UI',sans-serif;
+  --sans:'IBM Plex Sans','Malgun Gothic','Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d1117;--surface:#161b22;--surface2:#1c222b;--code-bg:#12171e;
+  --ink:#e6edf3;--muted:#9aa4b0;--faint:#6e7781;--line:#2a313a;
+  --accent:#6ea0ff;--accent-soft:#16263f;--link:#6ea0ff;
+  --shadow:0 1px 2px rgb(0 0 0 / 30%),0 10px 30px rgb(0 0 0 / 35%);
+}}
+:root[data-theme="dark"]{
+  --bg:#0d1117;--surface:#161b22;--surface2:#1c222b;--code-bg:#12171e;
+  --ink:#e6edf3;--muted:#9aa4b0;--faint:#6e7781;--line:#2a313a;
+  --accent:#6ea0ff;--accent-soft:#16263f;--link:#6ea0ff;
+  --shadow:0 1px 2px rgb(0 0 0 / 30%),0 10px 30px rgb(0 0 0 / 35%);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+code,pre{font-family:var(--mono)}
+a{color:inherit;text-decoration:none}
+.top{border-bottom:1px solid var(--line);background:radial-gradient(720px 240px at 12% -10%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 70%)}
+.top-inner{max-width:1200px;margin:0 auto;padding:52px 28px 42px}
+.kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+h1.title{font-family:var(--disp);font-weight:800;font-size:clamp(30px,5vw,50px);line-height:1.05;letter-spacing:-.02em;text-wrap:balance;max-width:18ch}
+.subtitle{color:var(--muted);font-size:17px;margin-top:15px;max-width:62ch}
+.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.mchip{font-family:var(--mono);font-size:13px;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--muted)}
+.mchip b{color:var(--ink);font-weight:600}
+.layout{max-width:1200px;margin:0 auto;padding:40px 28px 80px;display:grid;grid-template-columns:210px 1fr;gap:44px;align-items:start}
+.toc{position:sticky;top:22px}
+.toc h3{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+.toc ol{list-style:none;display:flex;flex-direction:column;gap:2px}
+.toc a{display:flex;gap:11px;padding:7px 10px;border-radius:8px;color:var(--muted);font-size:14px;transition:.15s}
+.toc a:hover{background:var(--surface2);color:var(--ink)}
+.toc .tnum{font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600;min-width:20px}
+.main{min-width:0;display:flex;flex-direction:column;gap:20px}
+.intro{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 26px;box-shadow:var(--shadow)}
+.intro h2{font-family:var(--disp);font-size:19px;margin-bottom:12px;font-weight:600}
+.flow{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-family:var(--mono);font-size:13px}
+.flow span{background:var(--surface2);padding:6px 12px;border-radius:7px}
+.flow .arw{background:none;color:var(--faint);padding:6px 2px}
+.intro .note{color:var(--muted);font-size:14px;margin-top:14px}
+.part{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px 28px 24px;box-shadow:var(--shadow);scroll-margin-top:18px}
+.parthead{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.pnum{font-family:var(--mono);font-size:13px;letter-spacing:.08em;color:var(--faint)}
+.pnum b{color:var(--accent);font-weight:600}
+.pmeta{display:flex;align-items:center;gap:14px}
+.level{display:inline-flex;gap:4px}
+.level .d{width:7px;height:7px;border-radius:50%;background:var(--line)}
+.level .d.on{background:var(--accent)}
+h2.ptitle{font-family:var(--disp);font-weight:600;font-size:25px;letter-spacing:-.01em;margin:11px 0 13px}
+.learnrow{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
+.tag{font-family:var(--mono);font-size:12px;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:6px}
+.goal{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--code-bg);margin-bottom:18px}
+.glabel{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);padding:9px 14px;border-bottom:1px solid var(--line);background:var(--surface2)}
+iframe.pv{width:100%;border:0;display:block;background:#ffffff}
+.mission{background:var(--surface2);border-radius:12px;padding:18px 20px;margin-bottom:16px}
+.mission h4{font-size:14px;margin-bottom:8px;font-family:var(--sans);font-weight:700}
+.mission>p{font-size:15px;color:var(--ink);margin-bottom:16px}
+.reqs{margin-top:14px}
+.reqs h4{font-size:13px;margin-bottom:9px;font-weight:700;color:var(--muted);letter-spacing:.02em}
+.reqs ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+.reqs li{position:relative;padding-left:26px;font-size:14.5px;color:var(--ink)}
+.reqs li::before{content:"";position:absolute;left:4px;top:7px;width:9px;height:9px;border:2px solid var(--accent);border-radius:3px}
+.htmlguide{margin-top:16px}
+.htmlguide h4{font-size:13px;margin-bottom:10px;font-weight:700;color:var(--muted)}
+.hrows{list-style:none;display:flex;flex-direction:column;gap:7px;border-left:3px solid var(--accent);padding-left:16px}
+.hrows li{font-size:14px;color:var(--ink)}
+.cssguide{margin-top:16px}
+.cssguide h4{font-size:13px;margin-bottom:10px;font-weight:700;color:var(--muted)}
+.cssrows{list-style:none;display:flex;flex-direction:column;gap:8px}
+.cssrows li{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;padding:11px 14px;background:var(--code-bg);border:1px solid var(--line);border-radius:9px}
+.cssrows .sel{font-family:var(--mono);font-size:13px;color:var(--link);font-weight:700;white-space:nowrap}
+.cssrows .ins{font-family:var(--mono);font-size:13px;color:var(--ink);flex:1;min-width:220px;line-height:1.7}
+.answer-open{margin-top:4px}
+.aohead{font-family:var(--mono);font-size:13px;color:var(--muted);margin-bottom:10px}
+.codeblock{border:1px solid var(--line);border-radius:11px;overflow:hidden;margin-bottom:12px;background:var(--code-bg)}
+.cbhead{display:flex;align-items:center;gap:12px;padding:9px 12px;background:var(--surface2);border-bottom:1px solid var(--line)}
+.fname{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;gap:7px}
+.fdot{width:9px;height:9px;border-radius:2px;display:inline-block}
+.fdot.htmlf{background:#2f6feb}
+.cbnote{font-size:12px;color:var(--muted);font-family:var(--mono)}
+.copy{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:5px 11px;cursor:pointer}
+.copy:hover{border-color:var(--accent);color:var(--accent)}
+.copy.done{color:var(--accent);border-color:var(--accent)}
+pre.cbcode{margin:0;padding:15px 18px;overflow-x:auto;font-size:13px;line-height:1.7}
+pre.cbcode code{color:var(--ink);white-space:pre}
+.pagefoot{max-width:1200px;margin:0 auto;padding:0 28px 70px}
+.done{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:var(--shadow)}
+.done h2{font-family:var(--disp);font-size:21px;font-weight:600;margin-bottom:12px}
+.done p{color:var(--muted);font-size:15px}
+.done .steps{list-style:none;display:flex;flex-direction:column;gap:9px;margin-top:14px}
+.done .steps li{display:flex;gap:11px;font-size:15px;color:var(--ink)}
+.done .steps .n{font-family:var(--mono);color:var(--accent);font-weight:600}
+@media (max-width:860px){.layout{grid-template-columns:1fr;gap:24px}.toc{position:static;order:-1;border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--surface)}.toc ol{display:grid;grid-template-columns:1fr 1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+</head>
+<body>
+<header class="top"><div class="top-inner">
+  <div class="kicker">Web · HTML &amp; CSS 기초</div>
+  <h1 class="title">포트폴리오 실습 워크북</h1>
+  <p class="subtitle">기본 HTML/CSS만으로 자기소개 포트폴리오를 만듭니다. 구역마다 <b>목표 화면</b>을 보고, <b>HTML 구조</b>와 <b>CSS 값</b> 지시를 그대로 따라 직접 작성하면 완성됩니다.</p>
+</div></header>
+
+<div class="layout">
+  <nav class="toc"><h3>미션 목록</h3><ol>
+<li><a href="#part00"><span class="tnum">00</span><span class="ttitle">파일 만들기</span></a></li>
+<li><a href="#part01"><span class="tnum">01</span><span class="ttitle">네비게이션</span></a></li>
+<li><a href="#part02"><span class="tnum">02</span><span class="ttitle">히어로 — 소개 텍스트</span></a></li>
+<li><a href="#part03"><span class="tnum">03</span><span class="ttitle">프로필 사진</span></a></li>
+<li><a href="#part04"><span class="tnum">04</span><span class="ttitle">소개 섹션</span></a></li>
+<li><a href="#part05"><span class="tnum">05</span><span class="ttitle">기술</span></a></li>
+<li><a href="#part06"><span class="tnum">06</span><span class="ttitle">경력</span></a></li>
+<li><a href="#part07"><span class="tnum">07</span><span class="ttitle">프로젝트</span></a></li>
+<li><a href="#part08"><span class="tnum">08</span><span class="ttitle">블로그</span></a></li>
+<li><a href="#part09"><span class="tnum">09</span><span class="ttitle">연락처 폼</span></a></li>
+<li><a href="#part10"><span class="tnum">10</span><span class="ttitle">푸터 + 반응형</span></a></li>
+  </ol></nav>
+  <main class="main">
+
+<section class="part" id="part00">
+  <div class="parthead"><div class="pnum">PART <b>00</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">파일 만들기</h2>
+  <div class="learnrow"><span class="tag">파일 하나</span><span class="tag">HTML 뼈대</span><span class="tag">내부 style</span></div>
+  
+  <div class="mission"><h4>미션</h4><p>index.html 파일 하나를 만듭니다. CSS는 &lt;head&gt; 안의 &lt;style&gt; 태그에, HTML은 &lt;body&gt; 안에 작성합니다. 파일 하나만 열면 결과가 바로 보입니다. 아래 시작 코드를 그대로 작성하고 시작하세요.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>파일 하나만: index.html</li><li>&lt;head&gt; 안에 &lt;style&gt; ... &lt;/style&gt;</li><li>&lt;style&gt; 맨 위에 기본 설정(초기화·배경·글꼴) 작성</li></ul></div>
+    
+    
+  </div>
+  <div class="answer-open"><div class="aohead">시작 파일 (그대로 작성)</div><div class="codeblock"><div class="cbhead"><span class="fname"><span class="fdot htmlf"></span>index.html</span><span class="cbnote">새 파일 — 이대로 시작</span><button class="copy" type="button">복사</button></div><pre class="cbcode"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;홍길동 · 포트폴리오&lt;/title&gt;
+  &lt;style&gt;
+/* 기본 설정 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #222222;
+  background-color: #ffffff;
+  line-height: 1.7;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- 아래에 PART 1부터 순서대로 HTML을 추가합니다 --&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+</section>
+<section class="part" id="part01">
+  <div class="parthead"><div class="pnum">PART <b>01</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">네비게이션</h2>
+  <div class="learnrow"><span class="tag">flex 양끝</span><span class="tag">sticky</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:90px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* 기본 설정 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #222222;
+  background-color: #ffffff;
+  line-height: 1.7;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* PART 1 · 네비게이션 */
+.nav {
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2f6feb;
+}
+.nav ul {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  font-size: 15px;
+}
+.nav a:hover {
+  color: #2f6feb;
+}
+
+/* PART 2 · 히어로 (소개 텍스트) */
+.hero {
+  padding: 70px 0;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.hero h1 {
+  font-size: 40px;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.role {
+  color: #2f6feb;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+.hero-desc {
+  color: #666666;
+  margin-bottom: 24px;
+}
+.hero-buttons {
+  display: flex;
+  gap: 12px;
+}
+.btn {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+}
+.btn-fill {
+  background-color: #2f6feb;
+  color: #ffffff;
+  border-color: #2f6feb;
+}
+.btn-fill:hover {
+  background-color: #1e54c9;
+}
+.btn-line {
+  background-color: #ffffff;
+  color: #222222;
+}
+.btn-line:hover {
+  border-color: #2f6feb;
+  color: #2f6feb;
+}
+
+/* PART 3 · 프로필 사진 (원형) */
+.hero-photo {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 50%;
+  font-size: 72px;
+  line-height: 180px;
+  text-align: center;
+}
+
+/* 섹션 공통 (PART 4~9) */
+.section {
+  padding: 60px 0;
+  border-top: 1px solid #e5e5e5;
+}
+.section-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* PART 4 · 소개 */
+.about-text {
+  color: #555555;
+  font-size: 16px;
+  max-width: 640px;
+}
+
+/* PART 5 · 기술 */
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.skill {
+  padding: 8px 16px;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+/* PART 6 · 경력 */
+.career-item {
+  border-left: 3px solid #2f6feb;
+  padding: 2px 0 20px 18px;
+  margin-left: 4px;
+}
+.career-item:last-child {
+  padding-bottom: 0;
+}
+.career-year {
+  color: #2f6feb;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.career-title {
+  font-size: 17px;
+  font-weight: bold;
+}
+.career-desc {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 7 · 프로젝트 */
+.projects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.project {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 20px;
+}
+.project:hover {
+  border-color: #2f6feb;
+}
+.project h3 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+.project p {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 8 · 블로그 */
+.posts {
+  list-style: none;
+}
+.post {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+.post-date {
+  color: #999999;
+  font-size: 14px;
+}
+
+/* PART 9 · 연락처 폼 */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+}
+.form input,
+.form textarea {
+  padding: 12px 14px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+.form textarea {
+  min-height: 120px;
+}
+.form input:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: #2f6feb;
+}
+.form .btn {
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* PART 10 · 푸터 + 반응형 */
+.footer {
+  border-top: 1px solid #e5e5e5;
+  padding: 24px 0;
+  color: #999999;
+  font-size: 14px;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+@media (max-width: 720px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .projects {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#ffffff}
+body{padding:16px;overflow:hidden}
+.nav{position:static}
+.hero{padding:10px 0}
+.section{padding:18px 0;border-top:none}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;nav class=&quot;nav&quot;&gt;
+  &lt;div class=&quot;wrap nav-inner&quot;&gt;
+    &lt;div class=&quot;logo&quot;&gt;홍길동&lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#about&quot;&gt;소개&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#skills&quot;&gt;기술&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#career&quot;&gt;경력&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#projects&quot;&gt;프로젝트&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#blog&quot;&gt;블로그&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#contact&quot;&gt;연락처&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>화면 맨 위에 로고와 메뉴 바를 만드세요.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>왼쪽 로고(이름)</li><li>오른쪽 메뉴 6개 (소개·기술·경력·프로젝트·블로그·연락처)</li><li>스크롤해도 맨 위에 고정</li><li>마우스 올리면 메뉴 색 변화</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;nav class=&quot;nav&quot;&gt; 안에 &lt;div class=&quot;wrap nav-inner&quot;&gt;</li><li>왼쪽 로고 &lt;div class=&quot;logo&quot;&gt;홍길동&lt;/div&gt;</li><li>오른쪽 메뉴 &lt;ul&gt; 안에 &lt;li&gt;&lt;a href=&quot;#about&quot;&gt;소개&lt;/a&gt;&lt;/li&gt; 형태로 6개</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.nav</code><span class="ins">border-bottom: 1px solid #e5e5e5; position: sticky; top: 0; background-color: #ffffff;</span></li><li><code class="sel">.nav-inner</code><span class="ins">display: flex; justify-content: space-between; align-items: center; height: 64px;</span></li><li><code class="sel">.logo</code><span class="ins">font-size: 20px; font-weight: bold; color: #2f6feb;</span></li><li><code class="sel">.nav ul</code><span class="ins">display: flex; gap: 24px; list-style: none; font-size: 15px;</span></li><li><code class="sel">.nav a:hover</code><span class="ins">color: #2f6feb;</span></li></ul></div>
+  </div>
+  
+</section>
+<section class="part" id="part02">
+  <div class="parthead"><div class="pnum">PART <b>02</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">히어로 — 소개 텍스트</h2>
+  <div class="learnrow"><span class="tag">2단 grid</span><span class="tag">버튼</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:300px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* 기본 설정 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #222222;
+  background-color: #ffffff;
+  line-height: 1.7;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* PART 1 · 네비게이션 */
+.nav {
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2f6feb;
+}
+.nav ul {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  font-size: 15px;
+}
+.nav a:hover {
+  color: #2f6feb;
+}
+
+/* PART 2 · 히어로 (소개 텍스트) */
+.hero {
+  padding: 70px 0;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.hero h1 {
+  font-size: 40px;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.role {
+  color: #2f6feb;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+.hero-desc {
+  color: #666666;
+  margin-bottom: 24px;
+}
+.hero-buttons {
+  display: flex;
+  gap: 12px;
+}
+.btn {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+}
+.btn-fill {
+  background-color: #2f6feb;
+  color: #ffffff;
+  border-color: #2f6feb;
+}
+.btn-fill:hover {
+  background-color: #1e54c9;
+}
+.btn-line {
+  background-color: #ffffff;
+  color: #222222;
+}
+.btn-line:hover {
+  border-color: #2f6feb;
+  color: #2f6feb;
+}
+
+/* PART 3 · 프로필 사진 (원형) */
+.hero-photo {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 50%;
+  font-size: 72px;
+  line-height: 180px;
+  text-align: center;
+}
+
+/* 섹션 공통 (PART 4~9) */
+.section {
+  padding: 60px 0;
+  border-top: 1px solid #e5e5e5;
+}
+.section-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* PART 4 · 소개 */
+.about-text {
+  color: #555555;
+  font-size: 16px;
+  max-width: 640px;
+}
+
+/* PART 5 · 기술 */
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.skill {
+  padding: 8px 16px;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+/* PART 6 · 경력 */
+.career-item {
+  border-left: 3px solid #2f6feb;
+  padding: 2px 0 20px 18px;
+  margin-left: 4px;
+}
+.career-item:last-child {
+  padding-bottom: 0;
+}
+.career-year {
+  color: #2f6feb;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.career-title {
+  font-size: 17px;
+  font-weight: bold;
+}
+.career-desc {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 7 · 프로젝트 */
+.projects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.project {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 20px;
+}
+.project:hover {
+  border-color: #2f6feb;
+}
+.project h3 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+.project p {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 8 · 블로그 */
+.posts {
+  list-style: none;
+}
+.post {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+.post-date {
+  color: #999999;
+  font-size: 14px;
+}
+
+/* PART 9 · 연락처 폼 */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+}
+.form input,
+.form textarea {
+  padding: 12px 14px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+.form textarea {
+  min-height: 120px;
+}
+.form input:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: #2f6feb;
+}
+.form .btn {
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* PART 10 · 푸터 + 반응형 */
+.footer {
+  border-top: 1px solid #e5e5e5;
+  padding: 24px 0;
+  color: #999999;
+  font-size: 14px;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+@media (max-width: 720px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .projects {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#ffffff}
+body{padding:16px;overflow:hidden}
+.nav{position:static}
+.hero{padding:10px 0}
+.section{padding:18px 0;border-top:none}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;header class=&quot;hero&quot;&gt;
+  &lt;div class=&quot;wrap hero-inner&quot;&gt;
+    &lt;div class=&quot;hero-text&quot;&gt;
+      &lt;h1&gt;안녕하세요,&lt;br&gt;홍길동입니다&lt;/h1&gt;
+      &lt;p class=&quot;role&quot;&gt;프론트엔드 개발자를 꿈꾸는 학생&lt;/p&gt;
+      &lt;p class=&quot;hero-desc&quot;&gt;웹을 만드는 게 좋아서 컴퓨터공학을 전공하고 있습니다.&lt;/p&gt;
+      &lt;div class=&quot;hero-buttons&quot;&gt;
+        &lt;a href=&quot;#projects&quot; class=&quot;btn btn-fill&quot;&gt;프로젝트 보기&lt;/a&gt;
+        &lt;a href=&quot;#contact&quot; class=&quot;btn btn-line&quot;&gt;연락하기&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/header&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>첫 화면을 좌우 2칸으로 나누고 왼쪽에 인사말·소개·버튼을 넣으세요. (오른쪽은 PART 3)</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>큰 인사 제목</li><li>한 줄 소개 + 소개 문단</li><li>버튼 2개 (채운 것 · 테두리 것)</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;header class=&quot;hero&quot;&gt; 안에 &lt;div class=&quot;wrap hero-inner&quot;&gt;</li><li>왼쪽 &lt;div class=&quot;hero-text&quot;&gt; 안에: &lt;h1&gt;인사말&lt;/h1&gt;, &lt;p class=&quot;role&quot;&gt;한 줄 소개&lt;/p&gt;, &lt;p class=&quot;hero-desc&quot;&gt;소개 문단&lt;/p&gt;</li><li>그 아래 &lt;div class=&quot;hero-buttons&quot;&gt; 안에 &lt;a class=&quot;btn btn-fill&quot;&gt; 와 &lt;a class=&quot;btn btn-line&quot;&gt;</li><li>오른쪽 자리는 PART 3에서 채웁니다</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.hero</code><span class="ins">padding: 70px 0;</span></li><li><code class="sel">.hero-inner</code><span class="ins">display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;</span></li><li><code class="sel">.hero h1</code><span class="ins">font-size: 40px; line-height: 1.2; margin-bottom: 12px;</span></li><li><code class="sel">.role</code><span class="ins">color: #2f6feb; font-size: 18px; margin-bottom: 16px;</span></li><li><code class="sel">.hero-desc</code><span class="ins">color: #666666; margin-bottom: 24px;</span></li><li><code class="sel">.hero-buttons</code><span class="ins">display: flex; gap: 12px;</span></li><li><code class="sel">.btn</code><span class="ins">display: inline-block; padding: 12px 22px; border-radius: 8px; border: 1px solid #e5e5e5;</span></li><li><code class="sel">.btn-fill</code><span class="ins">background-color: #2f6feb; color: #ffffff; border-color: #2f6feb;</span></li><li><code class="sel">.btn-fill:hover</code><span class="ins">background-color: #1e54c9;</span></li><li><code class="sel">.btn-line</code><span class="ins">background-color: #ffffff; color: #222222;</span></li><li><code class="sel">.btn-line:hover</code><span class="ins">border-color: #2f6feb; color: #2f6feb;</span></li></ul></div>
+  </div>
+  
+</section>
+<section class="part" id="part03">
+  <div class="parthead"><div class="pnum">PART <b>03</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">프로필 사진</h2>
+  <div class="learnrow"><span class="tag">원 만들기</span><span class="tag">가운데</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:320px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* 기본 설정 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #222222;
+  background-color: #ffffff;
+  line-height: 1.7;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* PART 1 · 네비게이션 */
+.nav {
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2f6feb;
+}
+.nav ul {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  font-size: 15px;
+}
+.nav a:hover {
+  color: #2f6feb;
+}
+
+/* PART 2 · 히어로 (소개 텍스트) */
+.hero {
+  padding: 70px 0;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.hero h1 {
+  font-size: 40px;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.role {
+  color: #2f6feb;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+.hero-desc {
+  color: #666666;
+  margin-bottom: 24px;
+}
+.hero-buttons {
+  display: flex;
+  gap: 12px;
+}
+.btn {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+}
+.btn-fill {
+  background-color: #2f6feb;
+  color: #ffffff;
+  border-color: #2f6feb;
+}
+.btn-fill:hover {
+  background-color: #1e54c9;
+}
+.btn-line {
+  background-color: #ffffff;
+  color: #222222;
+}
+.btn-line:hover {
+  border-color: #2f6feb;
+  color: #2f6feb;
+}
+
+/* PART 3 · 프로필 사진 (원형) */
+.hero-photo {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 50%;
+  font-size: 72px;
+  line-height: 180px;
+  text-align: center;
+}
+
+/* 섹션 공통 (PART 4~9) */
+.section {
+  padding: 60px 0;
+  border-top: 1px solid #e5e5e5;
+}
+.section-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* PART 4 · 소개 */
+.about-text {
+  color: #555555;
+  font-size: 16px;
+  max-width: 640px;
+}
+
+/* PART 5 · 기술 */
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.skill {
+  padding: 8px 16px;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+/* PART 6 · 경력 */
+.career-item {
+  border-left: 3px solid #2f6feb;
+  padding: 2px 0 20px 18px;
+  margin-left: 4px;
+}
+.career-item:last-child {
+  padding-bottom: 0;
+}
+.career-year {
+  color: #2f6feb;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.career-title {
+  font-size: 17px;
+  font-weight: bold;
+}
+.career-desc {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 7 · 프로젝트 */
+.projects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.project {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 20px;
+}
+.project:hover {
+  border-color: #2f6feb;
+}
+.project h3 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+.project p {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 8 · 블로그 */
+.posts {
+  list-style: none;
+}
+.post {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+.post-date {
+  color: #999999;
+  font-size: 14px;
+}
+
+/* PART 9 · 연락처 폼 */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+}
+.form input,
+.form textarea {
+  padding: 12px 14px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+.form textarea {
+  min-height: 120px;
+}
+.form input:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: #2f6feb;
+}
+.form .btn {
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* PART 10 · 푸터 + 반응형 */
+.footer {
+  border-top: 1px solid #e5e5e5;
+  padding: 24px 0;
+  color: #999999;
+  font-size: 14px;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+@media (max-width: 720px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .projects {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#ffffff}
+body{padding:16px;overflow:hidden}
+.nav{position:static}
+.hero{padding:10px 0}
+.section{padding:18px 0;border-top:none}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;header class=&quot;hero&quot;&gt;
+  &lt;div class=&quot;wrap hero-inner&quot;&gt;
+    &lt;div class=&quot;hero-text&quot;&gt;
+      &lt;h1&gt;안녕하세요,&lt;br&gt;홍길동입니다&lt;/h1&gt;
+      &lt;p class=&quot;role&quot;&gt;프론트엔드 개발자를 꿈꾸는 학생&lt;/p&gt;
+      &lt;p class=&quot;hero-desc&quot;&gt;웹을 만드는 게 좋아서 컴퓨터공학을 전공하고 있습니다.&lt;/p&gt;
+      &lt;div class=&quot;hero-buttons&quot;&gt;
+        &lt;a href=&quot;#projects&quot; class=&quot;btn btn-fill&quot;&gt;프로젝트 보기&lt;/a&gt;
+        &lt;a href=&quot;#contact&quot; class=&quot;btn btn-line&quot;&gt;연락하기&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;hero-photo&quot;&gt;홍&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/header&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>히어로 오른쪽에 동그란 프로필을 넣으세요. (사진 대신 이름 첫 글자)</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>정사각형 크기 후 border-radius 로 원</li><li>연한 배경 + 파란 글자</li><li>가운데 배치</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>hero-inner 오른쪽에 &lt;div class=&quot;hero-photo&quot;&gt;홍&lt;/div&gt; (이름 첫 글자, 나중에 실제 사진으로 교체 가능)</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.hero-photo</code><span class="ins">width: 180px; height: 180px; margin: 0 auto; background-color: #eef3ff; color: #2f6feb; border-radius: 50%; font-size: 72px; line-height: 180px; text-align: center;</span></li></ul></div>
+  </div>
+  
+</section>
+<section class="part" id="part04">
+  <div class="parthead"><div class="pnum">PART <b>04</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">소개 섹션</h2>
+  <div class="learnrow"><span class="tag">섹션 공통</span><span class="tag">제목·문단</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:200px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* 기본 설정 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #222222;
+  background-color: #ffffff;
+  line-height: 1.7;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* PART 1 · 네비게이션 */
+.nav {
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2f6feb;
+}
+.nav ul {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  font-size: 15px;
+}
+.nav a:hover {
+  color: #2f6feb;
+}
+
+/* PART 2 · 히어로 (소개 텍스트) */
+.hero {
+  padding: 70px 0;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.hero h1 {
+  font-size: 40px;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.role {
+  color: #2f6feb;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+.hero-desc {
+  color: #666666;
+  margin-bottom: 24px;
+}
+.hero-buttons {
+  display: flex;
+  gap: 12px;
+}
+.btn {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+}
+.btn-fill {
+  background-color: #2f6feb;
+  color: #ffffff;
+  border-color: #2f6feb;
+}
+.btn-fill:hover {
+  background-color: #1e54c9;
+}
+.btn-line {
+  background-color: #ffffff;
+  color: #222222;
+}
+.btn-line:hover {
+  border-color: #2f6feb;
+  color: #2f6feb;
+}
+
+/* PART 3 · 프로필 사진 (원형) */
+.hero-photo {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 50%;
+  font-size: 72px;
+  line-height: 180px;
+  text-align: center;
+}
+
+/* 섹션 공통 (PART 4~9) */
+.section {
+  padding: 60px 0;
+  border-top: 1px solid #e5e5e5;
+}
+.section-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* PART 4 · 소개 */
+.about-text {
+  color: #555555;
+  font-size: 16px;
+  max-width: 640px;
+}
+
+/* PART 5 · 기술 */
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.skill {
+  padding: 8px 16px;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+/* PART 6 · 경력 */
+.career-item {
+  border-left: 3px solid #2f6feb;
+  padding: 2px 0 20px 18px;
+  margin-left: 4px;
+}
+.career-item:last-child {
+  padding-bottom: 0;
+}
+.career-year {
+  color: #2f6feb;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.career-title {
+  font-size: 17px;
+  font-weight: bold;
+}
+.career-desc {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 7 · 프로젝트 */
+.projects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.project {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 20px;
+}
+.project:hover {
+  border-color: #2f6feb;
+}
+.project h3 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+.project p {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 8 · 블로그 */
+.posts {
+  list-style: none;
+}
+.post {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+.post-date {
+  color: #999999;
+  font-size: 14px;
+}
+
+/* PART 9 · 연락처 폼 */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+}
+.form input,
+.form textarea {
+  padding: 12px 14px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+.form textarea {
+  min-height: 120px;
+}
+.form input:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: #2f6feb;
+}
+.form .btn {
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* PART 10 · 푸터 + 반응형 */
+.footer {
+  border-top: 1px solid #e5e5e5;
+  padding: 24px 0;
+  color: #999999;
+  font-size: 14px;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+@media (max-width: 720px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .projects {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#ffffff}
+body{padding:16px;overflow:hidden}
+.nav{position:static}
+.hero{padding:10px 0}
+.section{padding:18px 0;border-top:none}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;section id=&quot;about&quot; class=&quot;section&quot;&gt;
+  &lt;div class=&quot;wrap&quot;&gt;
+    &lt;h2 class=&quot;section-title&quot;&gt;소개&lt;/h2&gt;
+    &lt;p class=&quot;about-text&quot;&gt;작은 UI 디테일부터 전체 구조 설계까지, 문제를 나눠서 해결하는 과정을 즐깁니다. 코드가 실제 화면으로 움직이는 순간을 가장 좋아합니다.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>본문 첫 섹션을 만드세요. 이후 섹션이 공유할 공통 스타일도 함께 작성합니다.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>섹션 위 구분선</li><li>제목 소개</li><li>소개 문단</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;section id=&quot;about&quot; class=&quot;section&quot;&gt; 안에 &lt;div class=&quot;wrap&quot;&gt;</li><li>&lt;h2 class=&quot;section-title&quot;&gt;소개&lt;/h2&gt; 와 &lt;p class=&quot;about-text&quot;&gt;소개글&lt;/p&gt;</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.section</code><span class="ins">padding: 60px 0; border-top: 1px solid #e5e5e5;</span></li><li><code class="sel">.section-title</code><span class="ins">font-size: 28px; margin-bottom: 20px;</span></li><li><code class="sel">.about-text</code><span class="ins">color: #555555; font-size: 16px; max-width: 640px;</span></li></ul></div>
+  </div>
+  
+</section>
+<section class="part" id="part05">
+  <div class="parthead"><div class="pnum">PART <b>05</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">기술</h2>
+  <div class="learnrow"><span class="tag">배지</span><span class="tag">flex-wrap</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:150px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* 기본 설정 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #222222;
+  background-color: #ffffff;
+  line-height: 1.7;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* PART 1 · 네비게이션 */
+.nav {
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2f6feb;
+}
+.nav ul {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  font-size: 15px;
+}
+.nav a:hover {
+  color: #2f6feb;
+}
+
+/* PART 2 · 히어로 (소개 텍스트) */
+.hero {
+  padding: 70px 0;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.hero h1 {
+  font-size: 40px;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.role {
+  color: #2f6feb;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+.hero-desc {
+  color: #666666;
+  margin-bottom: 24px;
+}
+.hero-buttons {
+  display: flex;
+  gap: 12px;
+}
+.btn {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+}
+.btn-fill {
+  background-color: #2f6feb;
+  color: #ffffff;
+  border-color: #2f6feb;
+}
+.btn-fill:hover {
+  background-color: #1e54c9;
+}
+.btn-line {
+  background-color: #ffffff;
+  color: #222222;
+}
+.btn-line:hover {
+  border-color: #2f6feb;
+  color: #2f6feb;
+}
+
+/* PART 3 · 프로필 사진 (원형) */
+.hero-photo {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 50%;
+  font-size: 72px;
+  line-height: 180px;
+  text-align: center;
+}
+
+/* 섹션 공통 (PART 4~9) */
+.section {
+  padding: 60px 0;
+  border-top: 1px solid #e5e5e5;
+}
+.section-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* PART 4 · 소개 */
+.about-text {
+  color: #555555;
+  font-size: 16px;
+  max-width: 640px;
+}
+
+/* PART 5 · 기술 */
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.skill {
+  padding: 8px 16px;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+/* PART 6 · 경력 */
+.career-item {
+  border-left: 3px solid #2f6feb;
+  padding: 2px 0 20px 18px;
+  margin-left: 4px;
+}
+.career-item:last-child {
+  padding-bottom: 0;
+}
+.career-year {
+  color: #2f6feb;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.career-title {
+  font-size: 17px;
+  font-weight: bold;
+}
+.career-desc {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 7 · 프로젝트 */
+.projects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.project {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 20px;
+}
+.project:hover {
+  border-color: #2f6feb;
+}
+.project h3 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+.project p {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 8 · 블로그 */
+.posts {
+  list-style: none;
+}
+.post {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+.post-date {
+  color: #999999;
+  font-size: 14px;
+}
+
+/* PART 9 · 연락처 폼 */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+}
+.form input,
+.form textarea {
+  padding: 12px 14px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+.form textarea {
+  min-height: 120px;
+}
+.form input:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: #2f6feb;
+}
+.form .btn {
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* PART 10 · 푸터 + 반응형 */
+.footer {
+  border-top: 1px solid #e5e5e5;
+  padding: 24px 0;
+  color: #999999;
+  font-size: 14px;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+@media (max-width: 720px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .projects {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#ffffff}
+body{padding:16px;overflow:hidden}
+.nav{position:static}
+.hero{padding:10px 0}
+.section{padding:18px 0;border-top:none}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;section id=&quot;skills&quot; class=&quot;section&quot;&gt;
+  &lt;div class=&quot;wrap&quot;&gt;
+    &lt;h2 class=&quot;section-title&quot;&gt;기술&lt;/h2&gt;
+    &lt;div class=&quot;skills&quot;&gt;
+      &lt;span class=&quot;skill&quot;&gt;HTML&lt;/span&gt;
+      &lt;span class=&quot;skill&quot;&gt;CSS&lt;/span&gt;
+      &lt;span class=&quot;skill&quot;&gt;JavaScript&lt;/span&gt;
+      &lt;span class=&quot;skill&quot;&gt;React&lt;/span&gt;
+      &lt;span class=&quot;skill&quot;&gt;Git&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>내가 다루는 기술을 배지로 나열하세요.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>제목 기술</li><li>기술 이름 배지 여러 개</li><li>둥근 모양 + 연한 배경</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;section id=&quot;skills&quot; class=&quot;section&quot;&gt; 안에 &lt;h2 class=&quot;section-title&quot;&gt;기술&lt;/h2&gt;</li><li>&lt;div class=&quot;skills&quot;&gt; 안에 &lt;span class=&quot;skill&quot;&gt;HTML&lt;/span&gt; 을 여러 개</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.skills</code><span class="ins">display: flex; flex-wrap: wrap; gap: 10px;</span></li><li><code class="sel">.skill</code><span class="ins">padding: 8px 16px; background-color: #eef3ff; color: #2f6feb; border-radius: 20px; font-size: 14px;</span></li></ul></div>
+  </div>
+  
+</section>
+<section class="part" id="part06">
+  <div class="parthead"><div class="pnum">PART <b>06</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">경력</h2>
+  <div class="learnrow"><span class="tag">왼쪽 선</span><span class="tag">여백</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:260px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* 기본 설정 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #222222;
+  background-color: #ffffff;
+  line-height: 1.7;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* PART 1 · 네비게이션 */
+.nav {
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2f6feb;
+}
+.nav ul {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  font-size: 15px;
+}
+.nav a:hover {
+  color: #2f6feb;
+}
+
+/* PART 2 · 히어로 (소개 텍스트) */
+.hero {
+  padding: 70px 0;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.hero h1 {
+  font-size: 40px;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.role {
+  color: #2f6feb;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+.hero-desc {
+  color: #666666;
+  margin-bottom: 24px;
+}
+.hero-buttons {
+  display: flex;
+  gap: 12px;
+}
+.btn {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+}
+.btn-fill {
+  background-color: #2f6feb;
+  color: #ffffff;
+  border-color: #2f6feb;
+}
+.btn-fill:hover {
+  background-color: #1e54c9;
+}
+.btn-line {
+  background-color: #ffffff;
+  color: #222222;
+}
+.btn-line:hover {
+  border-color: #2f6feb;
+  color: #2f6feb;
+}
+
+/* PART 3 · 프로필 사진 (원형) */
+.hero-photo {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 50%;
+  font-size: 72px;
+  line-height: 180px;
+  text-align: center;
+}
+
+/* 섹션 공통 (PART 4~9) */
+.section {
+  padding: 60px 0;
+  border-top: 1px solid #e5e5e5;
+}
+.section-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* PART 4 · 소개 */
+.about-text {
+  color: #555555;
+  font-size: 16px;
+  max-width: 640px;
+}
+
+/* PART 5 · 기술 */
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.skill {
+  padding: 8px 16px;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+/* PART 6 · 경력 */
+.career-item {
+  border-left: 3px solid #2f6feb;
+  padding: 2px 0 20px 18px;
+  margin-left: 4px;
+}
+.career-item:last-child {
+  padding-bottom: 0;
+}
+.career-year {
+  color: #2f6feb;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.career-title {
+  font-size: 17px;
+  font-weight: bold;
+}
+.career-desc {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 7 · 프로젝트 */
+.projects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.project {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 20px;
+}
+.project:hover {
+  border-color: #2f6feb;
+}
+.project h3 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+.project p {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 8 · 블로그 */
+.posts {
+  list-style: none;
+}
+.post {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+.post-date {
+  color: #999999;
+  font-size: 14px;
+}
+
+/* PART 9 · 연락처 폼 */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+}
+.form input,
+.form textarea {
+  padding: 12px 14px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+.form textarea {
+  min-height: 120px;
+}
+.form input:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: #2f6feb;
+}
+.form .btn {
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* PART 10 · 푸터 + 반응형 */
+.footer {
+  border-top: 1px solid #e5e5e5;
+  padding: 24px 0;
+  color: #999999;
+  font-size: 14px;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+@media (max-width: 720px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .projects {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#ffffff}
+body{padding:16px;overflow:hidden}
+.nav{position:static}
+.hero{padding:10px 0}
+.section{padding:18px 0;border-top:none}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;section id=&quot;career&quot; class=&quot;section&quot;&gt;
+  &lt;div class=&quot;wrap&quot;&gt;
+    &lt;h2 class=&quot;section-title&quot;&gt;경력 &amp;amp; 활동&lt;/h2&gt;
+    &lt;div class=&quot;career-item&quot;&gt;
+      &lt;p class=&quot;career-year&quot;&gt;2026&lt;/p&gt;
+      &lt;p class=&quot;career-title&quot;&gt;프론트엔드 개발 동아리 팀장&lt;/p&gt;
+      &lt;p class=&quot;career-desc&quot;&gt;주간 스터디 운영, 해커톤 참가&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;career-item&quot;&gt;
+      &lt;p class=&quot;career-year&quot;&gt;2025&lt;/p&gt;
+      &lt;p class=&quot;career-title&quot;&gt;웹 개발 부트캠프 수료&lt;/p&gt;
+      &lt;p class=&quot;career-desc&quot;&gt;HTML / CSS / JavaScript 기초와 실전&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;career-item&quot;&gt;
+      &lt;p class=&quot;career-year&quot;&gt;2024&lt;/p&gt;
+      &lt;p class=&quot;career-title&quot;&gt;컴퓨터공학과 입학&lt;/p&gt;
+      &lt;p class=&quot;career-desc&quot;&gt;프로그래밍 기초 시작&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>경력·활동을 왼쪽에 파란 세로선이 있는 목록으로 만드세요.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>항목마다 왼쪽 파란 세로선</li><li>연도(파랑) + 제목 + 설명</li><li>항목 3개</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;section id=&quot;career&quot; class=&quot;section&quot;&gt; 안에 &lt;h2 class=&quot;section-title&quot;&gt;경력 &amp;amp; 활동&lt;/h2&gt;</li><li>&lt;div class=&quot;career-item&quot;&gt; 를 3개 — 각각 &lt;p class=&quot;career-year&quot;&gt;, &lt;p class=&quot;career-title&quot;&gt;, &lt;p class=&quot;career-desc&quot;&gt;</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.career-item</code><span class="ins">border-left: 3px solid #2f6feb; padding: 2px 0 20px 18px; margin-left: 4px;</span></li><li><code class="sel">.career-item:last-child</code><span class="ins">padding-bottom: 0;</span></li><li><code class="sel">.career-year</code><span class="ins">color: #2f6feb; font-size: 14px; margin-bottom: 4px;</span></li><li><code class="sel">.career-title</code><span class="ins">font-size: 17px; font-weight: bold;</span></li><li><code class="sel">.career-desc</code><span class="ins">color: #666666; font-size: 14px;</span></li></ul></div>
+  </div>
+  
+</section>
+<section class="part" id="part07">
+  <div class="parthead"><div class="pnum">PART <b>07</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">프로젝트</h2>
+  <div class="learnrow"><span class="tag">2열 grid</span><span class="tag">카드</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:340px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* 기본 설정 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #222222;
+  background-color: #ffffff;
+  line-height: 1.7;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* PART 1 · 네비게이션 */
+.nav {
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2f6feb;
+}
+.nav ul {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  font-size: 15px;
+}
+.nav a:hover {
+  color: #2f6feb;
+}
+
+/* PART 2 · 히어로 (소개 텍스트) */
+.hero {
+  padding: 70px 0;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.hero h1 {
+  font-size: 40px;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.role {
+  color: #2f6feb;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+.hero-desc {
+  color: #666666;
+  margin-bottom: 24px;
+}
+.hero-buttons {
+  display: flex;
+  gap: 12px;
+}
+.btn {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+}
+.btn-fill {
+  background-color: #2f6feb;
+  color: #ffffff;
+  border-color: #2f6feb;
+}
+.btn-fill:hover {
+  background-color: #1e54c9;
+}
+.btn-line {
+  background-color: #ffffff;
+  color: #222222;
+}
+.btn-line:hover {
+  border-color: #2f6feb;
+  color: #2f6feb;
+}
+
+/* PART 3 · 프로필 사진 (원형) */
+.hero-photo {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 50%;
+  font-size: 72px;
+  line-height: 180px;
+  text-align: center;
+}
+
+/* 섹션 공통 (PART 4~9) */
+.section {
+  padding: 60px 0;
+  border-top: 1px solid #e5e5e5;
+}
+.section-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* PART 4 · 소개 */
+.about-text {
+  color: #555555;
+  font-size: 16px;
+  max-width: 640px;
+}
+
+/* PART 5 · 기술 */
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.skill {
+  padding: 8px 16px;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+/* PART 6 · 경력 */
+.career-item {
+  border-left: 3px solid #2f6feb;
+  padding: 2px 0 20px 18px;
+  margin-left: 4px;
+}
+.career-item:last-child {
+  padding-bottom: 0;
+}
+.career-year {
+  color: #2f6feb;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.career-title {
+  font-size: 17px;
+  font-weight: bold;
+}
+.career-desc {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 7 · 프로젝트 */
+.projects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.project {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 20px;
+}
+.project:hover {
+  border-color: #2f6feb;
+}
+.project h3 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+.project p {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 8 · 블로그 */
+.posts {
+  list-style: none;
+}
+.post {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+.post-date {
+  color: #999999;
+  font-size: 14px;
+}
+
+/* PART 9 · 연락처 폼 */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+}
+.form input,
+.form textarea {
+  padding: 12px 14px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+.form textarea {
+  min-height: 120px;
+}
+.form input:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: #2f6feb;
+}
+.form .btn {
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* PART 10 · 푸터 + 반응형 */
+.footer {
+  border-top: 1px solid #e5e5e5;
+  padding: 24px 0;
+  color: #999999;
+  font-size: 14px;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+@media (max-width: 720px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .projects {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#ffffff}
+body{padding:16px;overflow:hidden}
+.nav{position:static}
+.hero{padding:10px 0}
+.section{padding:18px 0;border-top:none}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;section id=&quot;projects&quot; class=&quot;section&quot;&gt;
+  &lt;div class=&quot;wrap&quot;&gt;
+    &lt;h2 class=&quot;section-title&quot;&gt;프로젝트&lt;/h2&gt;
+    &lt;div class=&quot;projects&quot;&gt;
+      &lt;div class=&quot;project&quot;&gt;
+        &lt;h3&gt;날씨 대시보드&lt;/h3&gt;
+        &lt;p&gt;실시간 날씨를 보여주는 반응형 웹앱&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;project&quot;&gt;
+        &lt;h3&gt;투두 리스트&lt;/h3&gt;
+        &lt;p&gt;할 일을 관리하는 간단한 웹앱&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;project&quot;&gt;
+        &lt;h3&gt;브랜드 랜딩&lt;/h3&gt;
+        &lt;p&gt;제품 소개용 랜딩 페이지&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;project&quot;&gt;
+        &lt;h3&gt;영화 검색&lt;/h3&gt;
+        &lt;p&gt;영화 정보를 검색하는 사이트&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>프로젝트를 2열 카드로 배치하세요. 카드 하나를 만들고 복사해서 늘리면 됩니다.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>카드 4개를 2열 grid로</li><li>각 카드: 제목 + 설명</li><li>테두리 + 둥근 모서리, 마우스 올리면 파란 테두리</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;section id=&quot;projects&quot; class=&quot;section&quot;&gt; 안에 &lt;h2 class=&quot;section-title&quot;&gt;프로젝트&lt;/h2&gt;</li><li>&lt;div class=&quot;projects&quot;&gt; 안에 &lt;div class=&quot;project&quot;&gt; 를 4개 — 각 카드에 &lt;h3&gt;제목&lt;/h3&gt; + &lt;p&gt;설명&lt;/p&gt;</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.projects</code><span class="ins">display: grid; grid-template-columns: 1fr 1fr; gap: 16px;</span></li><li><code class="sel">.project</code><span class="ins">border: 1px solid #e5e5e5; border-radius: 10px; padding: 20px;</span></li><li><code class="sel">.project:hover</code><span class="ins">border-color: #2f6feb;</span></li><li><code class="sel">.project h3</code><span class="ins">font-size: 17px; margin-bottom: 8px;</span></li><li><code class="sel">.project p</code><span class="ins">color: #666666; font-size: 14px;</span></li></ul></div>
+  </div>
+  
+</section>
+<section class="part" id="part08">
+  <div class="parthead"><div class="pnum">PART <b>08</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">블로그</h2>
+  <div class="learnrow"><span class="tag">양끝 목록</span><span class="tag">반복</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:220px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* 기본 설정 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #222222;
+  background-color: #ffffff;
+  line-height: 1.7;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* PART 1 · 네비게이션 */
+.nav {
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2f6feb;
+}
+.nav ul {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  font-size: 15px;
+}
+.nav a:hover {
+  color: #2f6feb;
+}
+
+/* PART 2 · 히어로 (소개 텍스트) */
+.hero {
+  padding: 70px 0;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.hero h1 {
+  font-size: 40px;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.role {
+  color: #2f6feb;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+.hero-desc {
+  color: #666666;
+  margin-bottom: 24px;
+}
+.hero-buttons {
+  display: flex;
+  gap: 12px;
+}
+.btn {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+}
+.btn-fill {
+  background-color: #2f6feb;
+  color: #ffffff;
+  border-color: #2f6feb;
+}
+.btn-fill:hover {
+  background-color: #1e54c9;
+}
+.btn-line {
+  background-color: #ffffff;
+  color: #222222;
+}
+.btn-line:hover {
+  border-color: #2f6feb;
+  color: #2f6feb;
+}
+
+/* PART 3 · 프로필 사진 (원형) */
+.hero-photo {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 50%;
+  font-size: 72px;
+  line-height: 180px;
+  text-align: center;
+}
+
+/* 섹션 공통 (PART 4~9) */
+.section {
+  padding: 60px 0;
+  border-top: 1px solid #e5e5e5;
+}
+.section-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* PART 4 · 소개 */
+.about-text {
+  color: #555555;
+  font-size: 16px;
+  max-width: 640px;
+}
+
+/* PART 5 · 기술 */
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.skill {
+  padding: 8px 16px;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+/* PART 6 · 경력 */
+.career-item {
+  border-left: 3px solid #2f6feb;
+  padding: 2px 0 20px 18px;
+  margin-left: 4px;
+}
+.career-item:last-child {
+  padding-bottom: 0;
+}
+.career-year {
+  color: #2f6feb;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.career-title {
+  font-size: 17px;
+  font-weight: bold;
+}
+.career-desc {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 7 · 프로젝트 */
+.projects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.project {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 20px;
+}
+.project:hover {
+  border-color: #2f6feb;
+}
+.project h3 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+.project p {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 8 · 블로그 */
+.posts {
+  list-style: none;
+}
+.post {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+.post-date {
+  color: #999999;
+  font-size: 14px;
+}
+
+/* PART 9 · 연락처 폼 */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+}
+.form input,
+.form textarea {
+  padding: 12px 14px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+.form textarea {
+  min-height: 120px;
+}
+.form input:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: #2f6feb;
+}
+.form .btn {
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* PART 10 · 푸터 + 반응형 */
+.footer {
+  border-top: 1px solid #e5e5e5;
+  padding: 24px 0;
+  color: #999999;
+  font-size: 14px;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+@media (max-width: 720px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .projects {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#ffffff}
+body{padding:16px;overflow:hidden}
+.nav{position:static}
+.hero{padding:10px 0}
+.section{padding:18px 0;border-top:none}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;section id=&quot;blog&quot; class=&quot;section&quot;&gt;
+  &lt;div class=&quot;wrap&quot;&gt;
+    &lt;h2 class=&quot;section-title&quot;&gt;블로그&lt;/h2&gt;
+    &lt;ul class=&quot;posts&quot;&gt;
+      &lt;li class=&quot;post&quot;&gt;&lt;span&gt;CSS Flexbox 정리&lt;/span&gt;&lt;span class=&quot;post-date&quot;&gt;2026.08.20&lt;/span&gt;&lt;/li&gt;
+      &lt;li class=&quot;post&quot;&gt;&lt;span&gt;Git 입문&lt;/span&gt;&lt;span class=&quot;post-date&quot;&gt;2026.07.11&lt;/span&gt;&lt;/li&gt;
+      &lt;li class=&quot;post&quot;&gt;&lt;span&gt;반응형 웹 회고&lt;/span&gt;&lt;span class=&quot;post-date&quot;&gt;2026.06.02&lt;/span&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>글 목록을 제목(왼쪽) 날짜(오른쪽)로 만드세요.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>글 여러 줄</li><li>각 줄 제목 왼쪽 · 날짜 오른쪽</li><li>줄마다 아래 구분선</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;section id=&quot;blog&quot; class=&quot;section&quot;&gt; 안에 &lt;h2 class=&quot;section-title&quot;&gt;블로그&lt;/h2&gt;</li><li>&lt;ul class=&quot;posts&quot;&gt; 안에 &lt;li class=&quot;post&quot;&gt;&lt;span&gt;제목&lt;/span&gt;&lt;span class=&quot;post-date&quot;&gt;날짜&lt;/span&gt;&lt;/li&gt; 를 여러 개</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.posts</code><span class="ins">list-style: none;</span></li><li><code class="sel">.post</code><span class="ins">display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #e5e5e5;</span></li><li><code class="sel">.post-date</code><span class="ins">color: #999999; font-size: 14px;</span></li></ul></div>
+  </div>
+  
+</section>
+<section class="part" id="part09">
+  <div class="parthead"><div class="pnum">PART <b>09</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">연락처 폼</h2>
+  <div class="learnrow"><span class="tag">form</span><span class="tag">focus</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:360px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* 기본 설정 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #222222;
+  background-color: #ffffff;
+  line-height: 1.7;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* PART 1 · 네비게이션 */
+.nav {
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2f6feb;
+}
+.nav ul {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  font-size: 15px;
+}
+.nav a:hover {
+  color: #2f6feb;
+}
+
+/* PART 2 · 히어로 (소개 텍스트) */
+.hero {
+  padding: 70px 0;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.hero h1 {
+  font-size: 40px;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.role {
+  color: #2f6feb;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+.hero-desc {
+  color: #666666;
+  margin-bottom: 24px;
+}
+.hero-buttons {
+  display: flex;
+  gap: 12px;
+}
+.btn {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+}
+.btn-fill {
+  background-color: #2f6feb;
+  color: #ffffff;
+  border-color: #2f6feb;
+}
+.btn-fill:hover {
+  background-color: #1e54c9;
+}
+.btn-line {
+  background-color: #ffffff;
+  color: #222222;
+}
+.btn-line:hover {
+  border-color: #2f6feb;
+  color: #2f6feb;
+}
+
+/* PART 3 · 프로필 사진 (원형) */
+.hero-photo {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 50%;
+  font-size: 72px;
+  line-height: 180px;
+  text-align: center;
+}
+
+/* 섹션 공통 (PART 4~9) */
+.section {
+  padding: 60px 0;
+  border-top: 1px solid #e5e5e5;
+}
+.section-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* PART 4 · 소개 */
+.about-text {
+  color: #555555;
+  font-size: 16px;
+  max-width: 640px;
+}
+
+/* PART 5 · 기술 */
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.skill {
+  padding: 8px 16px;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+/* PART 6 · 경력 */
+.career-item {
+  border-left: 3px solid #2f6feb;
+  padding: 2px 0 20px 18px;
+  margin-left: 4px;
+}
+.career-item:last-child {
+  padding-bottom: 0;
+}
+.career-year {
+  color: #2f6feb;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.career-title {
+  font-size: 17px;
+  font-weight: bold;
+}
+.career-desc {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 7 · 프로젝트 */
+.projects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.project {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 20px;
+}
+.project:hover {
+  border-color: #2f6feb;
+}
+.project h3 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+.project p {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 8 · 블로그 */
+.posts {
+  list-style: none;
+}
+.post {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+.post-date {
+  color: #999999;
+  font-size: 14px;
+}
+
+/* PART 9 · 연락처 폼 */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+}
+.form input,
+.form textarea {
+  padding: 12px 14px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+.form textarea {
+  min-height: 120px;
+}
+.form input:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: #2f6feb;
+}
+.form .btn {
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* PART 10 · 푸터 + 반응형 */
+.footer {
+  border-top: 1px solid #e5e5e5;
+  padding: 24px 0;
+  color: #999999;
+  font-size: 14px;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+@media (max-width: 720px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .projects {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#ffffff}
+body{padding:16px;overflow:hidden}
+.nav{position:static}
+.hero{padding:10px 0}
+.section{padding:18px 0;border-top:none}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;section id=&quot;contact&quot; class=&quot;section&quot;&gt;
+  &lt;div class=&quot;wrap&quot;&gt;
+    &lt;h2 class=&quot;section-title&quot;&gt;연락처&lt;/h2&gt;
+    &lt;form class=&quot;form&quot;&gt;
+      &lt;input type=&quot;text&quot; placeholder=&quot;이름&quot;&gt;
+      &lt;input type=&quot;email&quot; placeholder=&quot;이메일&quot;&gt;
+      &lt;textarea placeholder=&quot;메시지&quot;&gt;&lt;/textarea&gt;
+      &lt;button type=&quot;button&quot; class=&quot;btn btn-fill&quot;&gt;보내기&lt;/button&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>이름·이메일·메시지 입력 폼을 만드세요.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>입력칸 3개 (이름·이메일·메시지)</li><li>세로로 쌓기</li><li>클릭(focus) 시 테두리 파랑</li><li>보내기 버튼 (PART 2의 btn-fill 재사용)</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;section id=&quot;contact&quot; class=&quot;section&quot;&gt; 안에 &lt;h2 class=&quot;section-title&quot;&gt;연락처&lt;/h2&gt;</li><li>&lt;form class=&quot;form&quot;&gt; 안에 &lt;input type=&quot;text&quot;&gt;, &lt;input type=&quot;email&quot;&gt;, &lt;textarea&gt;, 그리고 &lt;button class=&quot;btn btn-fill&quot;&gt;보내기&lt;/button&gt;</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.form</code><span class="ins">display: flex; flex-direction: column; gap: 12px; max-width: 480px;</span></li><li><code class="sel">.form input, .form textarea</code><span class="ins">padding: 12px 14px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 15px; font-family: inherit;</span></li><li><code class="sel">.form textarea</code><span class="ins">min-height: 120px;</span></li><li><code class="sel">.form input:focus, .form textarea:focus</code><span class="ins">outline: none; border-color: #2f6feb;</span></li><li><code class="sel">.form .btn</code><span class="ins">align-self: flex-start; cursor: pointer;</span></li></ul></div>
+  </div>
+  
+</section>
+<section class="part" id="part10">
+  <div class="parthead"><div class="pnum">PART <b>10</b></div><div class="pmeta"><span class="level" title="난이도"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div></div>
+  <h2 class="ptitle">푸터 + 반응형</h2>
+  <div class="learnrow"><span class="tag">양끝 정렬</span><span class="tag">@media</span></div>
+  <div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:90px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* 기본 설정 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: &#x27;Segoe UI&#x27;, &#x27;Malgun Gothic&#x27;, sans-serif;
+  color: #222222;
+  background-color: #ffffff;
+  line-height: 1.7;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* PART 1 · 네비게이션 */
+.nav {
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+}
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2f6feb;
+}
+.nav ul {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  font-size: 15px;
+}
+.nav a:hover {
+  color: #2f6feb;
+}
+
+/* PART 2 · 히어로 (소개 텍스트) */
+.hero {
+  padding: 70px 0;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.hero h1 {
+  font-size: 40px;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.role {
+  color: #2f6feb;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+.hero-desc {
+  color: #666666;
+  margin-bottom: 24px;
+}
+.hero-buttons {
+  display: flex;
+  gap: 12px;
+}
+.btn {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+}
+.btn-fill {
+  background-color: #2f6feb;
+  color: #ffffff;
+  border-color: #2f6feb;
+}
+.btn-fill:hover {
+  background-color: #1e54c9;
+}
+.btn-line {
+  background-color: #ffffff;
+  color: #222222;
+}
+.btn-line:hover {
+  border-color: #2f6feb;
+  color: #2f6feb;
+}
+
+/* PART 3 · 프로필 사진 (원형) */
+.hero-photo {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 50%;
+  font-size: 72px;
+  line-height: 180px;
+  text-align: center;
+}
+
+/* 섹션 공통 (PART 4~9) */
+.section {
+  padding: 60px 0;
+  border-top: 1px solid #e5e5e5;
+}
+.section-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* PART 4 · 소개 */
+.about-text {
+  color: #555555;
+  font-size: 16px;
+  max-width: 640px;
+}
+
+/* PART 5 · 기술 */
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.skill {
+  padding: 8px 16px;
+  background-color: #eef3ff;
+  color: #2f6feb;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+/* PART 6 · 경력 */
+.career-item {
+  border-left: 3px solid #2f6feb;
+  padding: 2px 0 20px 18px;
+  margin-left: 4px;
+}
+.career-item:last-child {
+  padding-bottom: 0;
+}
+.career-year {
+  color: #2f6feb;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.career-title {
+  font-size: 17px;
+  font-weight: bold;
+}
+.career-desc {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 7 · 프로젝트 */
+.projects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.project {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 20px;
+}
+.project:hover {
+  border-color: #2f6feb;
+}
+.project h3 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+.project p {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* PART 8 · 블로그 */
+.posts {
+  list-style: none;
+}
+.post {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+.post-date {
+  color: #999999;
+  font-size: 14px;
+}
+
+/* PART 9 · 연락처 폼 */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+}
+.form input,
+.form textarea {
+  padding: 12px 14px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+.form textarea {
+  min-height: 120px;
+}
+.form input:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: #2f6feb;
+}
+.form .btn {
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* PART 10 · 푸터 + 반응형 */
+.footer {
+  border-top: 1px solid #e5e5e5;
+  padding: 24px 0;
+  color: #999999;
+  font-size: 14px;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+@media (max-width: 720px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .projects {
+    grid-template-columns: 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+
+html,body{background:#ffffff}
+body{padding:16px;overflow:hidden}
+.nav{position:static}
+.hero{padding:10px 0}
+.section{padding:18px 0;border-top:none}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;footer class=&quot;footer&quot;&gt;
+  &lt;div class=&quot;wrap footer-inner&quot;&gt;
+    &lt;span&gt;© 2026 홍길동&lt;/span&gt;
+    &lt;span&gt;GitHub · LinkedIn · Blog&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/footer&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div>
+  <div class="mission"><h4>미션</h4><p>맨 아래 푸터를 만들고, 좁은 화면에서 2열이 1열이 되게 마무리하세요.</p>
+    <div class="reqs"><h4>요구사항</h4><ul><li>맨 아래 저작권(왼쪽) + 링크(오른쪽)</li><li>좁은 화면에서 히어로·프로젝트가 1열로 바뀌면 완성</li></ul></div>
+    <div class="htmlguide"><h4>HTML 구조 — 이렇게 만드세요</h4><ul class="hrows"><li>&lt;footer class=&quot;footer&quot;&gt; 안에 &lt;div class=&quot;wrap footer-inner&quot;&gt;</li><li>&lt;span&gt;© 2026 홍길동&lt;/span&gt; 와 &lt;span&gt;GitHub · LinkedIn · Blog&lt;/span&gt; 두 개</li></ul></div>
+    <div class="cssguide"><h4>CSS 지시 — &lt;style&gt; 안에 아래 값 그대로 작성하세요</h4><ul class="cssrows"><li><code class="sel">.footer</code><span class="ins">border-top: 1px solid #e5e5e5; padding: 24px 0; color: #999999; font-size: 14px;</span></li><li><code class="sel">.footer-inner</code><span class="ins">display: flex; justify-content: space-between;</span></li><li><code class="sel">@media (max-width: 720px)</code><span class="ins">{ .hero-inner { grid-template-columns: 1fr; } .projects { grid-template-columns: 1fr; } .nav ul { display: none; } }</span></li></ul></div>
+  </div>
+  
+</section>
+  </main>
+</div>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(b){
+  b.addEventListener('click',function(){
+    var c=b.closest('.codeblock').querySelector('code').textContent;
+    try{navigator.clipboard.writeText(c).then(function(){b.textContent='복사됨';b.classList.add('done');setTimeout(function(){b.textContent='복사';b.classList.remove('done')},1400)},
+    function(){b.textContent='직접 선택';setTimeout(function(){b.textContent='복사'},1400)})}catch(e){b.textContent='직접 선택';setTimeout(function(){b.textContent='복사'},1400)}
+  });
+});
+</script>
+</body>
+</html>

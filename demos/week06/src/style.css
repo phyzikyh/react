@@ -1,0 +1,17 @@
+:root { font-family: Inter, Pretendard, system-ui, sans-serif; color: #172033; background: #edf6f3; }
+:root[data-theme="dark"] { color: #e8eef5; background: #101a22; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+.shell { width: min(920px, calc(100% - 32px)); margin: 32px auto; display: grid; gap: 18px; }
+header, .toolbar, .card { padding: clamp(22px, 4vw, 40px); background: white; border: 1px solid #cfe0da; border-radius: 22px; box-shadow: 0 14px 38px rgb(15 118 110 / 8%); }
+:root[data-theme="dark"] header, :root[data-theme="dark"] .toolbar, :root[data-theme="dark"] .card { background: #172630; border-color: #34515f; }
+header { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; background: linear-gradient(135deg, #064e3b, #0f766e); color: white; }
+.eyebrow { margin: 0 0 9px; color: #99f6e4; font-size: .76rem; font-weight: 800; letter-spacing: .12em; }
+h1, h2 { margin: 0 0 12px; line-height: 1.15; }
+time { padding: 8px 12px; background: rgb(255 255 255 / 15%); border-radius: 999px; white-space: nowrap; }
+.toolbar { display: grid; gap: 10px; }
+.toolbar > div { display: flex; gap: 8px; }
+label { font-weight: 800; }
+input { flex: 1; min-width: 0; padding: 12px; border: 1px solid #5eead4; border-radius: 10px; font: inherit; }
+button { padding: 11px 15px; color: white; background: #0f766e; border: 0; border-radius: 10px; font-weight: 750; cursor: pointer; }
+@media (max-width: 620px) { header { flex-direction: column; } .toolbar > div { flex-direction: column; } }

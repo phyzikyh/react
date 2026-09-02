@@ -1,0 +1,12 @@
+# Quarto
+/_book/
+/.quarto/
+/_freeze/
+*_files/
+
+# OS/편집기
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/

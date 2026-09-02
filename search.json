@@ -20,16 +20,6 @@
     ]
   },
   {
-    "objectID": "week01.html",
-    "href": "week01.html",
-    "title": "2  1주차: HTML 기초",
-    "section": "",
-    "text": "3 참고문헌 및 자료",
-    "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>1주차: HTML 기초</span>"
-    ]
-  },
-  {
     "objectID": "week01.html#html-개요",
     "href": "week01.html#html-개요",
     "title": "2  1주차: HTML 기초",
@@ -255,26 +245,6 @@
     "title": "2  1주차: HTML 기초",
     "section": "2.23 실습 문제 3개",
     "text": "2.23 실습 문제 3개\n\n문제 1. 자기소개 영역 만들기\n다음 조건을 만족하는 자기소개 영역을 직접 작성하세요.\n\nsection의 id는 about으로 지정합니다.\nh2 제목, 프로필 이미지, 두 개의 자기소개 문단을 넣습니다.\n이미지에는 내용을 설명하는 alt를 작성합니다.\n중요한 목표 하나를 strong으로 표시합니다.\n취미 세 가지를 ul로 작성합니다.\n\n&lt;section id=\"about\"&gt;\n  &lt;!-- 제목, 이미지, 소개 문단과 취미 목록을 작성하세요. --&gt;\n&lt;/section&gt;\n\n\n문제 2. 이동 가능한 개인 페이지 구조 만들기\n다음 조건을 만족하는 페이지 구조를 직접 작성하세요.\n\nheader, nav, main, footer를 모두 사용합니다.\nnav에 소개, 기술, 프로젝트 링크를 만듭니다.\nmain 안에 id가 about, skills, projects인 section을 만듭니다.\n각 링크를 누르면 연결된 section으로 이동해야 합니다.\n프로젝트 section 안에는 하나 이상의 article을 작성합니다.\n\n&lt;body&gt;\n  &lt;header&gt;\n    &lt;!-- 페이지 제목과 nav를 작성하세요. --&gt;\n  &lt;/header&gt;\n  &lt;main&gt;\n    &lt;!-- about, skills, projects section을 작성하세요. --&gt;\n  &lt;/main&gt;\n  &lt;footer&gt;\n    &lt;!-- 이메일 링크를 작성하세요. --&gt;\n  &lt;/footer&gt;\n&lt;/body&gt;\n\n\n문제 3. 연락 양식 만들기\n다음 조건을 만족하는 연락 양식을 직접 작성하세요.\n\n이름, 이메일, 문의 종류, 메시지를 입력받습니다.\n모든 입력 요소에 연결된 label을 작성합니다.\n이름과 이메일은 필수 입력으로 설정합니다.\n문의 종류는 select로 만듭니다.\n메시지는 textarea로 만듭니다.\n전송 버튼과 초기화 버튼을 작성합니다.\n\n&lt;section id=\"contact\"&gt;\n  &lt;h2&gt;연락하기&lt;/h2&gt;\n  &lt;form action=\"#\" method=\"post\"&gt;\n    &lt;!-- 입력 요소와 버튼을 작성하세요. --&gt;\n  &lt;/form&gt;\n&lt;/section&gt;",
-    "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>1주차: HTML 기초</span>"
-    ]
-  },
-  {
-    "objectID": "week01.html#공식-문서와-표준",
-    "href": "week01.html#공식-문서와-표준",
-    "title": "2  1주차: HTML 기초",
-    "section": "3.1 공식 문서와 표준",
-    "text": "3.1 공식 문서와 표준\n\nMDN Web Docs. HTML: HyperText Markup Language. https://developer.mozilla.org/en-US/docs/Web/HTML\nMDN Web Docs. Structuring content with HTML. https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content\nMDN Web Docs. Web forms. https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms\nWHATWG. HTML Living Standard. https://html.spec.whatwg.org/\nWorld Wide Web Consortium. Web Content Accessibility Guidelines (WCAG) 2.2. https://www.w3.org/TR/WCAG22/\nWorld Wide Web Consortium. Web Accessibility Tutorials: Images. https://www.w3.org/WAI/tutorials/images/\nWorld Wide Web Consortium. Nu HTML Checker. https://validator.w3.org/nu/",
-    "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>1주차: HTML 기초</span>"
-    ]
-  },
-  {
-    "objectID": "week01.html#교육-자료-설계에-참고한-연구",
-    "href": "week01.html#교육-자료-설계에-참고한-연구",
-    "title": "2  1주차: HTML 기초",
-    "section": "3.2 교육 자료 설계에 참고한 연구",
-    "text": "3.2 교육 자료 설계에 참고한 연구\n\nFreeman, S., Eddy, S. L., McDonough, M., Smith, M. K., Okoroafor, N., Jordt, H., & Wenderoth, M. P. (2014). Active learning increases student performance in science, engineering, and mathematics. Proceedings of the National Academy of Sciences, 111(23), 8410–8415. https://doi.org/10.1073/pnas.1319030111\nVieira, C., Yan, J., & Magana, A. J. (2015). Exploring design characteristics of worked examples to support programming and algorithm design. Journal of Computational Science Education, 6(1), 2–15. https://doi.org/10.22369/issn.2153-4136/6/1/1",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>1주차: HTML 기초</span>"
     ]

@@ -1309,20 +1309,3 @@ CSS에서는 `#introduction`, 페이지 링크에서는 `href="#introduction"`, 
 </section>
 ```
 :::
-
-# 참고문헌 및 자료
-
-## 공식 문서와 표준
-
-1. MDN Web Docs. *HTML: HyperText Markup Language*. <https://developer.mozilla.org/en-US/docs/Web/HTML>
-2. MDN Web Docs. *Structuring content with HTML*. <https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content>
-3. MDN Web Docs. *Web forms*. <https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms>
-4. WHATWG. *HTML Living Standard*. <https://html.spec.whatwg.org/>
-5. World Wide Web Consortium. *Web Content Accessibility Guidelines (WCAG) 2.2*. <https://www.w3.org/TR/WCAG22/>
-6. World Wide Web Consortium. *Web Accessibility Tutorials: Images*. <https://www.w3.org/WAI/tutorials/images/>
-7. World Wide Web Consortium. *Nu HTML Checker*. <https://validator.w3.org/nu/>
-
-## 교육 자료 설계에 참고한 연구
-
-1. Freeman, S., Eddy, S. L., McDonough, M., Smith, M. K., Okoroafor, N., Jordt, H., & Wenderoth, M. P. (2014). Active learning increases student performance in science, engineering, and mathematics. *Proceedings of the National Academy of Sciences, 111*(23), 8410–8415. <https://doi.org/10.1073/pnas.1319030111>
-2. Vieira, C., Yan, J., & Magana, A. J. (2015). Exploring design characteristics of worked examples to support programming and algorithm design. *Journal of Computational Science Education, 6*(1), 2–15. <https://doi.org/10.22369/issn.2153-4136/6/1/1>

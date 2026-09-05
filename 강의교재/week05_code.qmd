@@ -1,0 +1,75 @@
+---
+title: "5주차 코딩 실습"
+---
+
+# 종합 예제: 상호작용하는 포트폴리오
+
+다음 예제는 자기소개 토글, 프로젝트 좋아요와 문의 입력을 한 화면에 결합합니다. 각 State는 필요한 가장 가까운 컴포넌트에 둡니다.
+
+```jsx
+import { useState } from "react";
+
+function ProjectCard({ title, description }) {
+  const [likes, setLikes] = useState(0);
+
+  return (
+    <article>
+      <h2>{title}</h2>
+      <p>{description}</p>
+      <button onClick={() => setLikes((count) => count + 1)}>
+        좋아요 {likes}
+      </button>
+    </article>
+  );
+}
+
+export default function Portfolio() {
+  const [isBioOpen, setIsBioOpen] = useState(false);
+  const [email, setEmail] = useState("");
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    alert(`${email} 주소로 연락 요청을 저장했습니다.`);
+  }
+
+  return (
+    <main>
+      <section>
+        <h1>홍길동의 포트폴리오</h1>
+        <button
+          aria-expanded={isBioOpen}
+          onClick={() => setIsBioOpen((open) => !open)}
+        >
+          {isBioOpen ? "소개 닫기" : "소개 더 보기"}
+        </button>
+        {isBioOpen && <p>사용자 중심의 웹 인터페이스를 만듭니다.</p>}
+      </section>
+
+      <ProjectCard
+        title="학습 기록 서비스"
+        description="매일 학습한 내용과 진행 상황을 기록합니다."
+      />
+
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="email">이메일</label>
+        <input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+        />
+        <button type="submit">연락 요청</button>
+      </form>
+    </main>
+  );
+}
+```
+
+
+# 실행 결과: State와 이벤트가 연결된 포트폴리오
+
+아래 화면에서 소개 버튼, 좋아요 버튼과 이메일 입력을 직접 조작합니다. 각 행동은 이벤트 처리기를 실행하고, setter가 State 업데이트를 요청하며, React가 변경된 부분을 다시 렌더링합니다.
+
+<iframe class="demo-frame demo-frame--tall" src="examples/week05/index.html" title="5주차 State와 이벤트 처리 실행 결과" loading="lazy"></iframe>
+
+<p class="demo-caption"><a href="examples/week05/index.html" target="_blank">실행 결과를 새 창에서 보기</a></p>

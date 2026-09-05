@@ -1,0 +1,15 @@
+---
+title: "4주차 코딩 실습"
+subtitle: "웹사이트를 독립적인 UI 단위로 나누고 데이터를 전달하기"
+date: "2026-09-14"
+---
+
+# 실행 결과: 컴포넌트와 Props로 만든 프로젝트 카드
+
+다음 화면의 세 카드는 하나의 `ProjectCard` 컴포넌트를 반복 사용한 결과입니다. 컴포넌트 구조는 같지만 부모가 전달하는 `title`, `description`, `status`, `tags` Props가 달라 서로 다른 프로젝트로 렌더링됩니다.
+
+<iframe class="demo-frame demo-frame--tall" src="examples/week04/index.html" title="4주차 컴포넌트와 Props 실행 결과" loading="lazy"></iframe>
+
+<p class="demo-caption"><a href="examples/week04/index.html" target="_blank">실행 결과를 새 창에서 보기</a></p>
+
+이 방식은 포트폴리오의 프로젝트 카드뿐 아니라 기술 배지, 경력 항목, 후기, 상품 카드처럼 모양은 같고 데이터만 달라지는 영역에 적용할 수 있습니다. 부모 컴포넌트는 페이지의 데이터와 배열을 관리하고, 자식 컴포넌트는 전달받은 Props를 일관된 UI로 표현합니다.

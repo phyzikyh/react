@@ -1,0 +1,63 @@
+---
+title: "6주차 코딩 실습"
+---
+
+# 종합 예제: Hook으로 포트폴리오와 브라우저 연결하기
+
+```jsx
+import { useEffect, useRef, useState } from "react";
+
+function useDocumentTitle(title) {
+  useEffect(() => {
+    const previousTitle = document.title;
+    document.title = title;
+    return () => { document.title = previousTitle; };
+  }, [title]);
+}
+
+function Clock() {
+  const [now, setNow] = useState(() => new Date());
+
+  useEffect(() => {
+    const timerId = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timerId);
+  }, []);
+
+  return <time dateTime={now.toISOString()}>{now.toLocaleTimeString("ko-KR")}</time>;
+}
+
+export default function PortfolioTools() {
+  const [query, setQuery] = useState("");
+  const searchRef = useRef(null);
+  useDocumentTitle(query ? `${query} 검색 · 포트폴리오` : "포트폴리오");
+
+  return (
+    <main>
+      <header><h1>홍길동 포트폴리오</h1><Clock /></header>
+      <section>
+        <label htmlFor="search">프로젝트 검색</label>
+        <input
+          ref={searchRef}
+          id="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+        />
+        <button type="button" onClick={() => searchRef.current?.focus()}>
+          검색창 포커스
+        </button>
+      </section>
+    </main>
+  );
+}
+```
+
+이 예제에서 State는 검색어와 시간을 화면에 표현하고, Effect는 문서 제목과 타이머라는 외부 시스템을 동기화하며, Ref는 DOM 입력 요소를 가리킵니다. 각 Hook의 역할이 겹치지 않도록 구분하는 것이 핵심입니다.
+
+
+# 실행 결과: Hook으로 확장한 포트폴리오
+
+검색어를 입력하면 브라우저 탭 제목이 바뀌고, 포커스 버튼은 검색창으로 키보드 포커스를 이동합니다. 시계는 Effect로 생성한 타이머에 따라 갱신되며 테마 버튼은 React State와 문서 속성의 동기화를 보여줍니다.
+
+<iframe class="demo-frame demo-frame--tall" src="examples/week06/index.html" title="6주차 React Hook 실행 결과" loading="lazy"></iframe>
+
+<p class="demo-caption"><a href="examples/week06/index.html" target="_blank">실행 결과를 새 창에서 보기</a></p>

@@ -1,0 +1,121 @@
+---
+title: "3주차 코딩 실습"
+subtitle: "JavaScript 안에서 UI를 표현하고 브라우저 DOM에 반영하기"
+date: "2026-09-07"
+---
+
+# 종합 예제
+
+다음 예제는 JSX 문법, 표현식, Fragment, 컴포넌트와 초기 렌더링을 한 번에 확인할 수 있는 최소 애플리케이션입니다.
+
+```jsx
+// src/App.jsx
+const developer = {
+  name: "홍길동",
+  role: "프론트엔드 개발자",
+  introduction: "웹 표준과 React를 공부하며 프로젝트를 기록합니다.",
+  imageUrl: "/images/profile.jpg",
+};
+
+const semesterProject = {
+  title: "2026 React 프로젝트",
+  status: "기획 중",
+  description: "15주 동안 React의 핵심 개념을 적용해 완성합니다.",
+};
+
+function Profile() {
+  return (
+    <section className="profile" aria-labelledby="profile-title">
+      <img
+        className="profile__image"
+        src={developer.imageUrl}
+        alt={`${developer.name}의 프로필`}
+        width={240}
+        height={240}
+      />
+      <div>
+        <p>{developer.role}</p>
+        <h1 id="profile-title">{developer.name}</h1>
+        <p>{developer.introduction}</p>
+      </div>
+    </section>
+  );
+}
+
+function ProjectPreview() {
+  return (
+    <section aria-labelledby="project-title">
+      <h2 id="project-title">프로젝트</h2>
+      <article className="project-card">
+        <p>{semesterProject.status}</p>
+        <h3>{semesterProject.title}</h3>
+        <p>{semesterProject.description}</p>
+      </article>
+    </section>
+  );
+}
+
+function Footer() {
+  const currentYear = 2026;
+
+  return (
+    <footer>
+      <small>&copy; {currentYear} {developer.name}</small>
+    </footer>
+  );
+}
+
+export default function App() {
+  return (
+    <>
+      <main>
+        <Profile />
+        <ProjectPreview />
+      </main>
+      <Footer />
+    </>
+  );
+}
+```
+
+```jsx
+// src/main.jsx
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
+
+const domNode = document.getElementById("root");
+
+if (!domNode) {
+  throw new Error("#root 요소가 필요합니다.");
+}
+
+createRoot(domNode).render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+);
+```
+
+이 예제에서 확인할 수 있는 내용은 다음과 같습니다.
+
+- 컴포넌트 이름은 대문자로 시작합니다.
+- 컴포넌트는 JSX를 반환합니다.
+- class 대신 className을 사용합니다.
+- 빈 요소는 `/>`로 닫습니다.
+- 중괄호로 문자열, 숫자, 객체 속성과 템플릿 리터럴을 사용합니다.
+- Fragment로 여러 최상위 요소를 그룹화합니다.
+- `createRoot`와 `root.render`가 초기 렌더링을 시작합니다.
+- 시맨틱 HTML과 접근성 속성을 JSX에서도 유지합니다.
+
+
+# 실행 결과: JSX로 렌더링한 포트폴리오
+
+다음 화면은 정적인 HTML 파일을 그대로 삽입한 것이 아니라 React가 JSX를 평가하여 `#root`에 렌더링한 결과입니다. 이름, 역할, 기술 목록과 프로젝트 정보는 JavaScript 값이며 JSX의 중괄호를 통해 화면에 표시됩니다.
+
+<iframe class="demo-frame demo-frame--tall" src="examples/week03/index.html" title="3주차 JSX와 엘리먼트 렌더링 실행 결과" loading="lazy"></iframe>
+
+<p class="demo-caption"><a href="examples/week03/index.html" target="_blank">실행 결과를 새 창에서 보기</a></p>
+
+JSX로 Header, Hero, 기술 목록, 프로젝트 미리보기와 Footer를 React 엘리먼트로 기술할 수 있습니다. 화면에 보이는 결과는 HTML과 비슷하지만, 표시할 값을 JavaScript에서 계산하고 React가 DOM에 반영한다는 점이 다릅니다.

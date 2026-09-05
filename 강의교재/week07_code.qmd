@@ -1,0 +1,72 @@
+---
+title: "7주차 코딩 실습"
+---
+
+# 종합 예제: 검색하고 필터링하는 프로젝트 목록
+
+```jsx
+import { useState } from "react";
+
+const projects = [
+  { id: "learning-log", title: "학습 기록", status: "complete", technologies: ["React", "CSS"], featured: true },
+  { id: "portfolio", title: "개발자 포트폴리오", status: "progress", technologies: ["React", "HTML"], featured: true },
+  { id: "weather", title: "날씨 대시보드", status: "progress", technologies: ["JavaScript", "CSS"], featured: false },
+];
+
+function ProjectCard({ project }) {
+  return (
+    <article>
+      {project.featured && <strong>추천</strong>}
+      <span>{project.status === "complete" ? "완료" : "진행 중"}</span>
+      <h2>{project.title}</h2>
+      <ul>
+        {project.technologies.map((technology) => (
+          <li key={technology}>{technology}</li>
+        ))}
+      </ul>
+    </article>
+  );
+}
+
+export default function PortfolioProjects() {
+  const [query, setQuery] = useState("");
+  const [completeOnly, setCompleteOnly] = useState(false);
+
+  const visibleProjects = projects.filter((project) => {
+    const matchesQuery = project.title.toLowerCase().includes(query.toLowerCase());
+    const matchesStatus = !completeOnly || project.status === "complete";
+    return matchesQuery && matchesStatus;
+  });
+
+  return (
+    <main>
+      <h1>프로젝트</h1>
+      <input value={query} onChange={(e) => setQuery(e.target.value)} aria-label="프로젝트 검색" />
+      <label>
+        <input type="checkbox" checked={completeOnly} onChange={(e) => setCompleteOnly(e.target.checked)} />
+        완료 프로젝트만
+      </label>
+      <p role="status">검색 결과 {visibleProjects.length}개</p>
+
+      {visibleProjects.length > 0 ? (
+        <section>
+          {visibleProjects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
+        </section>
+      ) : (
+        <p>조건에 맞는 프로젝트가 없습니다.</p>
+      )}
+    </main>
+  );
+}
+```
+
+
+# 실행 결과: 검색과 필터가 적용된 프로젝트 목록
+
+검색어, 기술 선택과 완료 프로젝트 필터를 변경합니다. `filter()`가 표시할 프로젝트를 계산하고 `map()`이 카드 목록을 생성합니다. 추천 배지와 상태 문구는 조건부로 렌더링되며 결과가 없으면 빈 목록 안내로 전환됩니다.
+
+<iframe class="demo-frame demo-frame--tall" src="examples/week07/index.html" title="7주차 조건부 렌더링과 리스트 실행 결과" loading="lazy"></iframe>
+
+<p class="demo-caption"><a href="examples/week07/index.html" target="_blank">실행 결과를 새 창에서 보기</a></p>

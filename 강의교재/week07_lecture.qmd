@@ -46,6 +46,7 @@ function ProjectCard({ project }) {
 
 카드의 제목과 설명은 공통이고 배지만 달라집니다. 변수 이름이 화면 역할을 설명하므로 복잡한 조건식을 JSX 안에 길게 넣는 것보다 읽기 쉽습니다.
 
+
 # 삼항 연산자
 
 조건에 따라 두 값 또는 두 JSX 중 하나를 선택할 때 `condition ? A : B`를 사용합니다.
@@ -78,6 +79,7 @@ function BioToggle() {
 ```
 
 삼항 연산자가 여러 단계로 중첩되면 조건의 의미를 파악하기 어렵습니다. 별도 컴포넌트, `if` 문 또는 상태별 정보를 담은 객체로 분리합니다.
+
 
 # 논리 AND 연산자로 선택적으로 표시하기
 
@@ -122,6 +124,7 @@ function ProjectCount({ projects }) {
 }
 ```
 
+
 # null로 아무것도 렌더링하지 않기
 
 컴포넌트가 특정 조건에서 아무것도 표시하지 않도록 `null`을 반환할 수 있습니다.
@@ -137,6 +140,7 @@ function AdminEditButton({ isAdmin }) {
 ```
 
 화면에서 숨기는 것과 권한을 보호하는 것은 다릅니다. 관리 버튼을 숨기더라도 서버는 실제 편집 요청에서 사용자의 권한을 다시 확인해야 합니다.
+
 
 # 배열을 JSX 리스트로 변환하기
 
@@ -188,6 +192,7 @@ function ProjectList() {
 
 이 패턴은 프로젝트 카드뿐 아니라 기술 배지, 경력, 게시글, 상품, 알림과 표의 행처럼 같은 구조가 반복되는 모든 영역에 적용됩니다.
 
+
 # key로 항목의 정체성 표현하기
 
 `map()`이 반환하는 직접적인 JSX 항목에는 형제 사이에서 고유한 `key`가 필요합니다. React는 key를 이용해 이전 목록과 다음 목록의 항목을 대응시킵니다. 삽입, 삭제와 정렬이 발생해도 어떤 컴포넌트가 같은 항목인지 판단할 수 있습니다.
@@ -236,6 +241,7 @@ React가 내부 대응에 사용하는 특별한 값이므로 자식 컴포넌�
 />
 ```
 
+
 # Fragment 목록에 key 지정하기
 
 하나의 데이터 항목이 여러 형제 요소를 반환하지만 불필요한 DOM 컨테이너를 만들고 싶지 않다면 명시적인 `Fragment`를 사용합니다. 짧은 `<>...</>` 문법에는 key를 전달할 수 없습니다.
@@ -256,6 +262,7 @@ function ProjectDetails({ projects }) {
   );
 }
 ```
+
 
 # filter와 map 결합하기
 
@@ -322,6 +329,7 @@ function ProjectGallery({ projects }) {
 
 필터 결과는 기존 State에서 계산할 수 있으므로 별도 State나 Effect로 저장하지 않습니다. 렌더링할 때 `projects`, `query`, `technology`로 계산하면 값이 어긋나지 않습니다.
 
+
 # 빈 목록과 결과 상태 처리하기
 
 검색 결과가 없는데 빈 영역만 보여주면 사용자는 로딩 중인지 오류인지 알기 어렵습니다. 목록 길이에 따라 결과 또는 안내 화면을 렌더링합니다.
@@ -353,6 +361,7 @@ function ProjectResults({ projects }) {
 <p role="status">검색 결과 {visibleProjects.length}개</p>
 ```
 
+
 # 중첩 목록 렌더링
 
 각 프로젝트의 기술 배열도 `map()`으로 렌더링할 수 있습니다. key는 각 형제 배열 안에서만 고유하면 됩니다.
@@ -373,6 +382,7 @@ function ProjectCard({ project }) {
 ```
 
 하나의 프로젝트 안에서 기술명이 중복되지 않는다면 문자열 자체를 key로 사용할 수 있습니다. 데이터가 중복될 수 있다면 기술 ID를 별도로 둡니다.
+
 
 # key로 State 초기화하기
 
@@ -396,73 +406,6 @@ function EditForm({ project }) {
 
 `selectedProject.id`가 바뀌면 React는 이전 EditForm을 제거하고 새 State로 다시 만듭니다. key를 무분별하게 바꾸면 State가 예상치 않게 사라지므로 “다른 개체로 전환되어 초기화가 필요한가”라는 의도가 있을 때만 사용합니다.
 
-# 종합 예제: 검색하고 필터링하는 프로젝트 목록
-
-```jsx
-import { useState } from "react";
-
-const projects = [
-  { id: "learning-log", title: "학습 기록", status: "complete", technologies: ["React", "CSS"], featured: true },
-  { id: "portfolio", title: "개발자 포트폴리오", status: "progress", technologies: ["React", "HTML"], featured: true },
-  { id: "weather", title: "날씨 대시보드", status: "progress", technologies: ["JavaScript", "CSS"], featured: false },
-];
-
-function ProjectCard({ project }) {
-  return (
-    <article>
-      {project.featured && <strong>추천</strong>}
-      <span>{project.status === "complete" ? "완료" : "진행 중"}</span>
-      <h2>{project.title}</h2>
-      <ul>
-        {project.technologies.map((technology) => (
-          <li key={technology}>{technology}</li>
-        ))}
-      </ul>
-    </article>
-  );
-}
-
-export default function PortfolioProjects() {
-  const [query, setQuery] = useState("");
-  const [completeOnly, setCompleteOnly] = useState(false);
-
-  const visibleProjects = projects.filter((project) => {
-    const matchesQuery = project.title.toLowerCase().includes(query.toLowerCase());
-    const matchesStatus = !completeOnly || project.status === "complete";
-    return matchesQuery && matchesStatus;
-  });
-
-  return (
-    <main>
-      <h1>프로젝트</h1>
-      <input value={query} onChange={(e) => setQuery(e.target.value)} aria-label="프로젝트 검색" />
-      <label>
-        <input type="checkbox" checked={completeOnly} onChange={(e) => setCompleteOnly(e.target.checked)} />
-        완료 프로젝트만
-      </label>
-      <p role="status">검색 결과 {visibleProjects.length}개</p>
-
-      {visibleProjects.length > 0 ? (
-        <section>
-          {visibleProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </section>
-      ) : (
-        <p>조건에 맞는 프로젝트가 없습니다.</p>
-      )}
-    </main>
-  );
-}
-```
-
-# 실행 결과: 검색과 필터가 적용된 프로젝트 목록
-
-검색어, 기술 선택과 완료 프로젝트 필터를 변경합니다. `filter()`가 표시할 프로젝트를 계산하고 `map()`이 카드 목록을 생성합니다. 추천 배지와 상태 문구는 조건부로 렌더링되며 결과가 없으면 빈 목록 안내로 전환됩니다.
-
-<iframe class="demo-frame demo-frame--tall" src="examples/week07/index.html" title="7주차 조건부 렌더링과 리스트 실행 결과" loading="lazy"></iframe>
-
-<p class="demo-caption"><a href="examples/week07/index.html" target="_blank">실행 결과를 새 창에서 보기</a></p>
 
 # 자주 발생하는 오류
 
@@ -497,6 +440,7 @@ JSX 안에 여러 삼항 연산자를 중첩하지 않습니다. 의미 있는 �
 ## 필터 결과를 별도 State로 저장
 
 원본 데이터와 필터 조건에서 계산 가능한 값은 렌더링 중 계산합니다. 중복 State는 값 불일치와 불필요한 Effect를 만듭니다.
+
 
 # 참고문헌 및 자료
 

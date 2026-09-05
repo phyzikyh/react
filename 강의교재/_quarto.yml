@@ -14,13 +14,20 @@ book:
     right: "© 2026 신기홍"
   chapters:
     - index.qmd
-    - week01.qmd
-    - week02.qmd
-    - week03.qmd
-    - week04.qmd
-    - week05.qmd
-    - week06.qmd
-    - week07.qmd
+    - part: "1주차 · HTML 기초"
+      chapters: [week01_lecture.qmd, week01_quiz.qmd, week01_code.qmd]
+    - part: "2주차 · CSS 기초와 반응형 웹"
+      chapters: [week02_lecture.qmd, week02_quiz.qmd, week02_code.qmd]
+    - part: "3주차 · JSX와 엘리먼트 렌더링"
+      chapters: [week03_lecture.qmd, week03_quiz.qmd, week03_code.qmd]
+    - part: "4주차 · 컴포넌트와 Props"
+      chapters: [week04_lecture.qmd, week04_quiz.qmd, week04_code.qmd]
+    - part: "5주차 · State와 이벤트 처리"
+      chapters: [week05_lecture.qmd, week05_code.qmd]
+    - part: "6주차 · React Hook 기초"
+      chapters: [week06_lecture.qmd, week06_code.qmd]
+    - part: "7주차 · 조건부 렌더링과 리스트"
+      chapters: [week07_lecture.qmd, week07_code.qmd]
 
 crossref:
   fig-title: "그림"

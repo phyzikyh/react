@@ -1,0 +1,12 @@
+---
+title: "2주차 코딩 실습"
+subtitle: "HTML 문서의 표현과 배치를 설계하는 스타일시트 언어"
+date: "2026-08-31"
+---
+
+# 코딩 실습
+
+1. 버전 1 (Basic) : [실습파일 열기](examples/portfolio_v1.html){target="_blank"}
+2. 버전 2 (Advanced) : [실습파일 열기](examples/portfolio_v2.html){target="_blank"}
+
+:::

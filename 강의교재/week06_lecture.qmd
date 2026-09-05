@@ -23,6 +23,7 @@ function LikeButton() {
 
 Hook은 일반 함수처럼 보이지만 React가 호출 순서를 이용해 각 Hook의 State와 Effect를 구분합니다. 따라서 호출 위치에 규칙이 있습니다.
 
+
 # Hook 호출 규칙
 
 Hook은 다음 두 위치에서만 호출합니다.
@@ -66,6 +67,7 @@ function Profile({ canEdit }) {
 }
 ```
 
+
 # 렌더링, 이벤트와 Effect 구분
 
 컴포넌트 안의 코드는 역할에 따라 세 종류로 나눌 수 있습니다.
@@ -85,6 +87,7 @@ function Profile({ firstName, lastName }) {
   return <h1>{fullName}</h1>;
 }
 ```
+
 
 # useEffect로 외부 시스템과 동기화하기
 
@@ -141,6 +144,7 @@ function VisitMessage() {
 
 의존성 경고를 없애려고 값을 임의로 빼거나 린터를 비활성화하면 오래된 값을 읽는 버그가 발생합니다. Effect가 너무 자주 실행된다면 의존성을 숨기기보다 Effect의 책임을 줄이고 렌더링 또는 이벤트 처리기로 옮길 로직이 없는지 확인합니다.
 
+
 # 정리 함수와 Effect 생명주기
 
 Effect는 동기화를 시작하고 필요할 때 중단합니다. setup 함수가 cleanup 함수를 반환하면 React는 다음 Effect를 실행하기 전과 컴포넌트가 화면에서 제거될 때 cleanup을 호출합니다.
@@ -188,6 +192,7 @@ function WindowWidth() {
 
 반응형 레이아웃 자체는 2주차에서 배운 CSS 미디어 쿼리를 우선합니다. JavaScript에서 실제 너비 값이 필요한 차트, 캔버스 또는 복잡한 위젯에만 이 패턴을 사용합니다.
 
+
 # 개발 환경에서 Effect가 두 번 실행되는 이유
 
 Strict Mode를 사용하는 개발 환경에서는 React가 컴포넌트를 마운트하고 정리한 뒤 다시 마운트하여 Effect 구현을 점검할 수 있습니다. 이는 제품 환경의 동작이 아니라 정리 함수 누락을 발견하기 위한 검사입니다. “두 번 실행을 막는 플래그”를 추가하기보다 setup과 cleanup이 대칭인지 확인합니다.
@@ -200,6 +205,7 @@ useEffect(() => {
 ```
 
 연결했다면 연결을 해제하고, 타이머를 만들었다면 제거하며, 외부 위젯을 시작했다면 종료합니다. 이렇게 작성하면 setup → cleanup → setup 순서에서도 사용자에게는 한 번 연결된 것과 같은 결과가 보입니다.
+
 
 # Effect가 필요하지 않은 경우
 
@@ -237,6 +243,7 @@ function ContactForm() {
   return <form onSubmit={handleSubmit}><button>문의 저장</button></form>;
 }
 ```
+
 
 # useRef: 렌더링과 무관한 값 기억하기
 
@@ -281,6 +288,7 @@ function RenderCountExample() {
 - Props와 State에서 바로 계산할 수 있는가? → 지역 변수
 
 렌더링 중 `ref.current`를 읽거나 쓰는 코드는 예측하기 어렵습니다. DOM 접근은 이벤트 처리기 또는 필요한 Effect에서 수행합니다.
+
 
 # 사용자 정의 Hook
 
@@ -334,64 +342,6 @@ function Portfolio() {
 
 두 호출은 같은 구현을 사용하지만 서로 다른 State를 가집니다. 실제 값을 공유하려면 공통 부모 State나 이후 학습할 Context 같은 데이터 공유 구조가 필요합니다.
 
-# 종합 예제: Hook으로 포트폴리오와 브라우저 연결하기
-
-```jsx
-import { useEffect, useRef, useState } from "react";
-
-function useDocumentTitle(title) {
-  useEffect(() => {
-    const previousTitle = document.title;
-    document.title = title;
-    return () => { document.title = previousTitle; };
-  }, [title]);
-}
-
-function Clock() {
-  const [now, setNow] = useState(() => new Date());
-
-  useEffect(() => {
-    const timerId = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(timerId);
-  }, []);
-
-  return <time dateTime={now.toISOString()}>{now.toLocaleTimeString("ko-KR")}</time>;
-}
-
-export default function PortfolioTools() {
-  const [query, setQuery] = useState("");
-  const searchRef = useRef(null);
-  useDocumentTitle(query ? `${query} 검색 · 포트폴리오` : "포트폴리오");
-
-  return (
-    <main>
-      <header><h1>홍길동 포트폴리오</h1><Clock /></header>
-      <section>
-        <label htmlFor="search">프로젝트 검색</label>
-        <input
-          ref={searchRef}
-          id="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-        />
-        <button type="button" onClick={() => searchRef.current?.focus()}>
-          검색창 포커스
-        </button>
-      </section>
-    </main>
-  );
-}
-```
-
-이 예제에서 State는 검색어와 시간을 화면에 표현하고, Effect는 문서 제목과 타이머라는 외부 시스템을 동기화하며, Ref는 DOM 입력 요소를 가리킵니다. 각 Hook의 역할이 겹치지 않도록 구분하는 것이 핵심입니다.
-
-# 실행 결과: Hook으로 확장한 포트폴리오
-
-검색어를 입력하면 브라우저 탭 제목이 바뀌고, 포커스 버튼은 검색창으로 키보드 포커스를 이동합니다. 시계는 Effect로 생성한 타이머에 따라 갱신되며 테마 버튼은 React State와 문서 속성의 동기화를 보여줍니다.
-
-<iframe class="demo-frame demo-frame--tall" src="examples/week06/index.html" title="6주차 React Hook 실행 결과" loading="lazy"></iframe>
-
-<p class="demo-caption"><a href="examples/week06/index.html" target="_blank">실행 결과를 새 창에서 보기</a></p>
 
 # 자주 발생하는 오류
 
@@ -418,6 +368,7 @@ Ref 변경은 재렌더링을 요청하지 않습니다. 사용자에게 보여�
 ## 사용자 정의 Hook을 단순 함수처럼 호출
 
 사용자 정의 Hook도 Hook 규칙을 따릅니다. 이벤트 처리기나 조건문에서 호출하지 않으며 이름을 `use`로 시작해 린터와 개발자가 Hook임을 알 수 있게 합니다.
+
 
 # 참고문헌 및 자료
 

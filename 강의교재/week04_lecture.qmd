@@ -25,6 +25,7 @@ React 공식 문서는 React 애플리케이션의 모든 UI 조각을 컴포넌
 컴포넌트는 JSX를 짧게 자르는 기술이 아닙니다. 하나의 명확한 역할을 가진 UI 단위에 이름을 붙이고, 입력 데이터에 따라 화면을 계산하도록 만드는 설계 단위입니다.
 :::
 
+
 # 컴포넌트로 만들 수 있는 웹사이트 영역
 
 | 웹사이트 종류 | 컴포넌트로 분리할 수 있는 영역 |
@@ -46,6 +47,7 @@ React 공식 문서는 React 애플리케이션의 모든 UI 조각을 컴포넌
 - 별도의 접근성 역할이나 스타일 책임이 있는가?
 
 너무 큰 컴포넌트는 여러 책임이 섞이고, 지나치게 작은 컴포넌트는 파일과 이름만 늘려 흐름을 찾기 어렵게 합니다. 처음에는 Header, Hero, 프로젝트 영역, Contact, Footer처럼 시각적·의미적으로 분명한 영역부터 나눕니다.
+
 
 # 컴포넌트 선언과 사용
 
@@ -138,6 +140,7 @@ function App() {
 
 컴포넌트를 내부에 선언하면 부모가 렌더링될 때마다 다른 컴포넌트 타입으로 취급될 수 있어 상태 초기화와 성능 문제를 만들 수 있습니다. 부모 데이터가 필요하면 컴포넌트 정의를 중첩하지 말고 Props로 전달합니다.
 
+
 # 컴포넌트 파일 분리
 
 모든 컴포넌트를 `App.jsx`에 작성하면 프로젝트가 커질수록 찾고 수정하기 어려워집니다. 의미 있는 단위로 파일을 분리합니다.
@@ -204,6 +207,7 @@ import { GitHubIcon, ExternalLinkIcon } from "./components/Icons.jsx";
 
 default와 named 방식 중 하나만 정답은 아닙니다. 한 파일에 대표 컴포넌트 하나를 두는 수업 프로젝트에서는 default export가 단순합니다. 유틸리티나 관련된 작은 아이콘처럼 여러 값을 한 모듈에서 제공할 때는 named export가 명시적입니다. export 방식과 import 문법이 일치해야 합니다. [React 공식 문서: Importing and Exporting Components](https://react.dev/learn/importing-and-exporting-components)
 
+
 # Props 개요
 
 Props는 부모 컴포넌트가 자식 컴포넌트에 전달하는 입력 데이터입니다. HTML 요소에 `src`, `alt`, `className` 같은 속성을 전달하는 것처럼 사용자 컴포넌트에도 원하는 이름의 Props를 전달할 수 있습니다.
@@ -235,6 +239,7 @@ function Profile(props) {
 ```
 
 Props는 일반 함수의 인자와 비슷합니다. 컴포넌트라는 UI 공식을 만들고 Props로 입력값을 바꾸면 같은 구조에서 다른 결과를 얻습니다. [React 공식 문서: Passing Props to a Component](https://react.dev/learn/passing-props-to-a-component)
+
 
 # Props 구조 분해 할당
 
@@ -282,6 +287,7 @@ function Profile({ name }) {
   return <h2>{name}</h2>;
 }
 ```
+
 
 # 다양한 Props 값 전달
 
@@ -358,6 +364,7 @@ const project = {
 
 함수도 prop으로 전달할 수 있습니다. 자식에서 발생한 사용자 행동을 부모가 처리하도록 연결할 때 사용합니다. 이벤트 처리와 State는 5주차에서 구체적으로 다룹니다.
 
+
 # 기본값을 가진 Props
 
 구조 분해 할당에서 기본값을 지정할 수 있습니다.
@@ -389,6 +396,7 @@ size를 생략하면 120을 사용합니다.
 
 0은 유효한 입력값으로 그대로 전달됩니다.
 
+
 # Props는 읽기 전용이다
 
 컴포넌트는 받은 Props를 직접 변경하면 안 됩니다.
@@ -412,6 +420,7 @@ function ProjectCard({ project }) {
 ```
 
 입력값을 이용해 새로운 지역 값을 계산하는 것은 안전합니다. React 공식 규칙은 Props와 State를 직접 변경하지 않는 불변값으로 다룰 것을 요구합니다. [React 공식 규칙: Components and Hooks must be pure](https://react.dev/reference/rules/components-and-hooks-must-be-pure)
+
 
 # 부모에서 자식으로 흐르는 데이터
 
@@ -447,6 +456,7 @@ function Hero({ developer }) {
 ```
 
 Hero는 developer 데이터가 어디서 왔는지, 나중에 어떻게 바뀌는지 알 필요가 없습니다. 전달된 값을 기준으로 UI를 계산합니다. 부모는 어떤 데이터를 줄지 결정하고 자식은 어떻게 표시할지 결정합니다. 이 분리는 컴포넌트를 독립적으로 이해하고 재사용하기 쉽게 합니다.
+
 
 # children으로 JSX 전달
 
@@ -514,6 +524,7 @@ function App() {
 
 Section은 id와 제목이라는 정형 데이터는 Props로 받고, 자유롭게 바뀌는 본문은 children으로 받습니다.
 
+
 # Props 펼치기
 
 JSX spread 문법으로 객체의 여러 속성을 한 번에 전달할 수 있습니다.
@@ -551,6 +562,7 @@ function FeaturedProject(props) {
 ```
 
 spread는 간결하지만 어떤 값이 전달되는지 숨길 수 있습니다. 모든 컴포넌트에서 습관적으로 사용하지 않습니다. 컴포넌트의 공개 입력을 명확히 보여주는 것이 중요한 경우에는 Props를 직접 작성합니다.
+
 
 # 웹사이트 영역별 컴포넌트 설계
 
@@ -745,6 +757,7 @@ function SiteFooter({ owner, year = 2026 }) {
 <SiteFooter owner="홍길동" year={2026} />
 ```
 
+
 # 포트폴리오 전체 조립
 
 App은 페이지 전체 데이터와 큰 구조를 관리합니다. 세부 마크업은 각 컴포넌트에 위임합니다.
@@ -785,15 +798,6 @@ export default function App() {
 
 App 코드만 읽어도 사이트가 Header, Hero, Projects, Contact, Footer 순서로 구성된다는 사실을 파악할 수 있습니다. 각 컴포넌트 파일에서는 해당 영역의 세부 구조를 확인합니다.
 
-# 실행 결과: 컴포넌트와 Props로 만든 프로젝트 카드
-
-다음 화면의 세 카드는 하나의 `ProjectCard` 컴포넌트를 반복 사용한 결과입니다. 컴포넌트 구조는 같지만 부모가 전달하는 `title`, `description`, `status`, `tags` Props가 달라 서로 다른 프로젝트로 렌더링됩니다.
-
-<iframe class="demo-frame demo-frame--tall" src="examples/week04/index.html" title="4주차 컴포넌트와 Props 실행 결과" loading="lazy"></iframe>
-
-<p class="demo-caption"><a href="examples/week04/index.html" target="_blank">실행 결과를 새 창에서 보기</a></p>
-
-이 방식은 포트폴리오의 프로젝트 카드뿐 아니라 기술 배지, 경력 항목, 후기, 상품 카드처럼 모양은 같고 데이터만 달라지는 영역에 적용할 수 있습니다. 부모 컴포넌트는 페이지의 데이터와 배열을 관리하고, 자식 컴포넌트는 전달받은 Props를 일관된 UI로 표현합니다.
 
 # 컴포넌트 API 설계
 
@@ -833,6 +837,7 @@ Props는 컴포넌트의 공개 API다. 이름과 구조를 신중하게 설계�
 
 `status="완료"`는 사용자에게 보여줄 데이터이고 `tone="success"`는 시각적 역할입니다. 하나의 문자열에 두 책임을 섞지 않으면 다국어와 디자인 변경에 대응하기 쉽습니다.
 
+
 # 컴포넌트 합성과 재사용의 균형
 
 재사용 가능성을 높이겠다고 모든 요소를 범용 컴포넌트로 만들 필요는 없습니다.
@@ -854,6 +859,7 @@ Props는 컴포넌트의 공개 API다. 이름과 구조를 신중하게 설계�
 ```
 
 여러 화면에서 같은 패턴이 실제로 반복되고 변경 이유가 같을 때 공통 컴포넌트로 추출합니다. “언젠가 재사용할 것 같다”는 이유만으로 너무 일찍 추상화하지 않습니다.
+
 
 # 자주 발생하는 오류
 
@@ -962,22 +968,6 @@ function Card({ children }) {
 
 DOM 요소에 사용자 컴포넌트 전용 prop을 그대로 펼치면 브라우저 경고나 의도하지 않은 속성이 생길 수 있습니다. 필요한 DOM props만 선별합니다.
 
-# 컴포넌트와 Props 점검
-
-1. 컴포넌트 이름이 대문자로 시작하는가?
-2. 하나의 명확한 UI 역할을 담당하는가?
-3. 다른 컴포넌트 함수 안에 정의하지 않았는가?
-4. export와 import 방식이 일치하는가?
-5. 부모와 자식의 prop 이름이 일치하는가?
-6. 문자열 이외의 값에 중괄호를 사용했는가?
-7. Props를 구조 분해할 때 `{}`를 사용했는가?
-8. Props를 직접 변경하지 않는가?
-9. 기본값이 `undefined`에만 적용됨을 고려했는가?
-10. children을 전달했다면 자식 컴포넌트가 렌더링하는가?
-11. spread 사용이 실제로 필요한가?
-12. 컴포넌트 이름과 Props 이름만으로 역할을 이해할 수 있는가?
-13. 시맨틱 HTML과 접근성을 컴포넌트 내부에서도 유지하는가?
-14. App을 읽었을 때 웹사이트의 큰 구조가 보이는가?
 
 # 참고문헌 및 자료
 

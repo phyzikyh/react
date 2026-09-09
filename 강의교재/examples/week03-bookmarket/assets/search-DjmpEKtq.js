@@ -1,0 +1,1 @@
+import{n as e,r as t,t as n}from"./src-CvI2sUr3.js";t();var r=e(),i=n();function a(){return(0,i.jsxs)(`div`,{className:`search`,children:[(0,i.jsx)(`label`,{htmlFor:`keyword`,children:`도서 검색`}),(0,i.jsx)(`input`,{id:`keyword`,type:`search`,placeholder:`도서명을 입력하세요`})]})}(0,r.createRoot)(document.getElementById(`root`)).render((0,i.jsx)(a,{}));

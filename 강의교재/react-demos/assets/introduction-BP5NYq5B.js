@@ -1,0 +1,1 @@
+import{n as e,r as t,t as n}from"./quarto-demos-AZEwOa6n.js";var r=t(),i=e(),a=n();function o(){return(0,a.jsxs)(`section`,{children:[(0,a.jsxs)(`h1`,{children:[`홍길동`,`의 포트폴리오`]}),(0,a.jsx)(`p`,{children:`React로 웹 인터페이스를 공부합니다.`})]})}(0,i.createRoot)(document.getElementById(`root`)).render((0,a.jsx)(r.StrictMode,{children:(0,a.jsx)(o,{})}));

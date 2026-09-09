@@ -1,0 +1,1 @@
+import{n as e,r as t,t as n}from"./jsx-runtime-BEumusn6.js";var r=t(),i=e(),a=n();function o(){return(0,a.jsxs)(`main`,{className:`sheet`,children:[(0,a.jsx)(`h1`,{children:`여행 일정표`}),(0,a.jsx)(`p`,{children:`제공된 데이터를 이용해 나만의 여행 일정표를 작성하세요.`})]})}(0,i.createRoot)(document.getElementById(`root`)).render((0,a.jsx)(r.StrictMode,{children:(0,a.jsx)(o,{})}));

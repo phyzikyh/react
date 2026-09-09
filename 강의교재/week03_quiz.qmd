@@ -4,17 +4,324 @@ subtitle: "JavaScript 안에서 UI를 표현하고 브라우저 DOM에 반영하
 date: "2026-09-07"
 ---
 
-# JSX와 렌더링 점검
+# 연습문제
 
-코드가 예상대로 동작하지 않을 때 다음 순서로 확인합니다.
+::: {.quiz-item}
+**1.** DOM(Document Object Model)에 대한 설명으로 가장 알맞은 것은?
 
-1. 브라우저 Console의 첫 번째 오류와 파일·줄 번호를 읽습니다.
-2. JSX가 하나의 루트 요소 또는 Fragment로 감싸졌는지 확인합니다.
-3. 모든 태그가 닫혔고 올바르게 중첩되었는지 확인합니다.
-4. `className`, `htmlFor`, camelCase 속성을 사용했는지 확인합니다.
-5. 고정 문자열은 따옴표, JavaScript 표현식은 중괄호인지 확인합니다.
-6. 객체 전체가 아니라 렌더링할 속성을 선택했는지 확인합니다.
-7. 컴포넌트 이름이 대문자로 시작하는지 확인합니다.
-8. index.html에 root DOM 요소가 있는지 확인합니다.
-9. `createRoot`가 올바른 DOM 요소를 받는지 확인합니다.
-10. 렌더링 중 외부 값을 변경하는 코드가 없는지 확인합니다.
+① 개발자가 작성한 HTML 텍스트 문서 그 자체이다.
+
+② 화면에 표시되는 CSS 스타일 규칙의 모음이다.
+
+[③ 브라우저가 HTML을 읽어 만든 객체 트리로, 실제 조작 대상이다.]{.quiz-answer}
+
+④ JavaScript를 실행하기 위해 설치하는 외부 라이브러리이다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. 브라우저는 HTML 텍스트의 각 태그를 객체(node)로 바꾸고 부모·자식 관계로 연결한 트리를 메모리에 만드는데, 이것이 DOM입니다. HTML은 설계도인 텍스트 문서이고, 화면을 바꾸려면 이 DOM을 조작해야 합니다.
+:::
+:::
+
+::: {.quiz-item}
+**2.** "React가 UI를 DOM에 연결한다"는 표현의 의미로 옳은 것은?
+
+[① React가 계산한 결과를 브라우저의 DOM 트리에 반영한다.]{.quiz-answer}
+
+② 개발자가 작성한 HTML 파일을 직접 수정해 저장한다.
+
+③ CSS 파일을 불러와 화면의 색상을 지정한다.
+
+④ 서버에 데이터를 요청해 응답을 받아 온다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. 개발자가 JSX로 "이런 화면이 필요하다"고 적으면 React가 그에 맞는 DOM을 만들어 브라우저에 반영합니다. 즉 "UI를 DOM에 연결한다"는 것은 React가 계산한 결과를 실제 DOM 트리에 반영한다는 뜻입니다.
+:::
+:::
+
+::: {.quiz-item}
+**3.** JSX에 대한 설명으로 가장 알맞은 것은?
+
+① 브라우저가 그대로 실행하는 표준 HTML 문서 형식이다.
+
+② 화면의 색상과 배치를 지정하는 CSS의 확장이다.
+
+③ 데이터를 저장하고 전송하기 위한 파일 형식이다.
+
+[④ JavaScript 안에서 마크업을 작성하게 하는 JavaScript 문법 확장이다.]{.quiz-answer}
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ④. JSX는 JavaScript 파일 안에서 HTML과 비슷한 마크업을 작성할 수 있게 하는 JavaScript 문법 확장입니다. 그 자체는 HTML 문서가 아니며 브라우저가 그대로 실행하지 않고, 개발 도구가 JavaScript로 변환한 뒤 React가 화면 구조를 계산합니다.
+:::
+:::
+
+::: {.quiz-item}
+**4.** JSX와 React의 관계로 옳은 것은?
+
+① JSX가 화면을 직접 그리고 React는 스타일만 담당한다.
+
+[② JSX는 React에 전달할 UI 구조를 표현하고, React가 그것을 DOM에 반영한다.]{.quiz-answer}
+
+③ React를 사용하려면 반드시 JSX만 써야 한다.
+
+④ JSX와 React는 서로 관련이 없는 별개의 언어이다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. React는 UI를 구성하고 변경 사항을 DOM에 반영하는 라이브러리이고, JSX는 React에 전달할 UI 구조를 사람이 읽기 쉽게 표현하는 방법입니다. JSX 없이도 React를 쓸 수 있지만 일반적으로 JSX를 사용합니다.
+:::
+:::
+
+::: {.quiz-item}
+**5.** HTML과 JSX의 차이를 옳게 설명한 것은?
+
+① JSX에서는 HTML의 className을 class로 바꿔 쓴다.
+
+② HTML과 JSX 모두 여러 최상위 요소를 그대로 반환할 수 있다.
+
+[③ JSX에서는 HTML의 class를 className으로 바꿔 쓴다.]{.quiz-answer}
+
+④ JSX에서는 HTML처럼 닫는 태그를 생략할 수 있다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. JSX에서는 HTML의 `class` 대신 `className`을 사용합니다. 또한 JSX는 모든 태그를 닫아야 하고, 컴포넌트는 하나의 루트로 묶어 반환해야 한다는 점에서 HTML과 다릅니다.
+:::
+:::
+
+::: {.quiz-item}
+**6.** 똑같은 `<main>...</main>` 코드가 HTML이 아니라 JSX로 판단되는 근거는?
+
+[① .jsx 파일의 함수 반환값으로 쓰여 React에 전달되기 때문이다.]{.quiz-answer}
+
+② 태그 이름이 main, h1, p로 되어 있기 때문이다.
+
+③ 화면에 실제로 표시되는 내용이기 때문이다.
+
+④ 태그를 소문자로 작성했기 때문이다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. 문법의 종류는 태그 모양이 아니라 코드가 놓인 위치와 사용 방법으로 결정됩니다. 같은 태그라도 .html에 마크업으로 적으면 HTML이고, .jsx의 함수 반환값으로 적어 React에 전달하면 JSX입니다.
+:::
+:::
+
+::: {.quiz-item}
+**7.** JSX로 작성한 `<h1 className="title">안녕하세요</h1>`와 개념적으로 같은 것은?
+
+① 문자열 "안녕하세요"를 그대로 화면에 출력하는 코드
+
+[② `createElement("h1", { className: "title" }, "안녕하세요")`]{.quiz-answer}
+
+③ `document.write("<h1>안녕하세요</h1>")`
+
+④ HTML 파일에 저장되어 있는 h1 태그 그 자체
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. JSX는 개발 도구가 `createElement` 호출로 변환합니다. 즉 위 JSX는 `createElement("h1", { className: "title" }, "안녕하세요")`와 같은 React 엘리먼트를 만듭니다. JSX를 쓰면 같은 구조를 태그의 중첩으로 더 읽기 쉽게 작성할 수 있습니다.
+:::
+:::
+
+::: {.quiz-item}
+**8.** 컴포넌트가 여러 요소를 반환할 때 Fragment(`<>...</>`)를 사용하는 이유는?
+
+① 요소마다 자동으로 스타일을 적용하기 위해서이다.
+
+② 여러 개의 루트 요소를 그대로 반환하기 위해서이다.
+
+③ 반환값을 하나의 문자열로 바꾸기 위해서이다.
+
+[④ 실제 DOM에 불필요한 요소를 더하지 않고 하나로 묶기 위해서이다.]{.quiz-answer}
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ④. 컴포넌트는 반환값을 하나의 루트로 묶어야 합니다. Fragment는 여러 요소를 하나로 묶되 div 같은 실제 DOM 요소를 추가하지 않으므로, 불필요한 래퍼 없이 여러 요소를 반환할 때 사용합니다.
+:::
+:::
+
+::: {.quiz-item}
+**9.** 태그 중첩이 올바르게 작성된 것은?
+
+[① `<strong><em>중요</em></strong>`]{.quiz-answer}
+
+② `<strong><em>중요</strong></em>`
+
+③ `<strong><em>중요</strong>`
+
+④ `<strong>중요</em></strong>`
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. JSX에서는 나중에 연 태그를 먼저 닫아야 합니다. `<strong>` 안에서 연 `<em>`은 `</em>`으로 먼저 닫고 그다음 `</strong>`을 닫아야 올바른 중첩이 됩니다.
+:::
+:::
+
+::: {.quiz-item}
+**10.** JSX에서 자식 요소가 없는 태그를 올바르게 작성한 것은?
+
+① `<img src="a.jpg">`
+
+② `<input type="text">`
+
+[③ `<br />`]{.quiz-answer}
+
+④ `<hr>`
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. JSX에서는 모든 태그를 닫아야 합니다. 자식 요소가 없는 태그는 `<img />`, `<input />`, `<br />`처럼 `/>`로 스스로 닫습니다. HTML에서 생략하던 닫기를 JSX에서는 생략할 수 없습니다.
+:::
+:::
+
+::: {.quiz-item}
+**11.** JSX에서 label과 input을 연결하는 방법으로 옳은 것은?
+
+① `<label for="email">`처럼 for를 그대로 쓴다.
+
+[② `<label htmlFor="email">`을 쓰고 input의 id를 email로 맞춘다.]{.quiz-answer}
+
+③ label과 input의 className을 서로 같게 맞춘다.
+
+④ label 안에 input의 값을 문자열로 직접 적는다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. JSX에서는 HTML의 `for` 대신 `htmlFor`를 사용하며, 연결하려면 `htmlFor` 값과 대상 input의 `id` 값이 같아야 합니다.
+:::
+:::
+
+::: {.quiz-item}
+**12.** JSX 속성 작성에 대한 설명으로 옳은 것은?
+
+① 모든 속성값은 반드시 따옴표로 감싼다.
+
+② 변수의 값을 넣을 때도 따옴표를 사용한다.
+
+③ 숫자 값은 항상 문자열로만 전달된다.
+
+[④ 고정 문자열은 따옴표로, JavaScript 값은 중괄호로 작성한다.]{.quiz-answer}
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ④. 고정된 문자열 속성은 따옴표로(`alt="프로필"`), 변수·숫자 같은 JavaScript 값은 중괄호로(`src={imageUrl}`, `width={300}`) 작성합니다. 따옴표는 문자열을 그대로, 중괄호는 표현식을 평가한 결과를 전달합니다.
+:::
+:::
+
+::: {.quiz-item}
+**13.** JSX의 중괄호 `{ }` 안에 넣을 수 있는 것은?
+
+① `if (x > 0) { ... }` 같은 조건문
+
+② `let name = "홍길동";` 같은 변수 선언문
+
+[③ `price * quantity` 같은 표현식]{.quiz-answer}
+
+④ `for (let i = 0; ...) { ... }` 같은 반복문
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. 중괄호 안에는 값으로 평가되는 표현식(변수, 산술식, 함수 호출, 삼항 연산자 등)을 넣습니다. if, for, 변수 선언문처럼 그 자체가 값이 되지 않는 문장은 중괄호 안에 직접 쓸 수 없습니다.
+:::
+:::
+
+::: {.quiz-item}
+**14.** 여러 줄 JSX를 반환할 때 `return` 다음에 바로 여는 괄호를 두는 이유는?
+
+[① 줄을 바꾸면 자동 세미콜론 삽입으로 반환값이 사라질 수 있어서이다.]{.quiz-answer}
+
+② 괄호가 있어야 JSX가 HTML 파일로 저장되기 때문이다.
+
+③ 괄호 안에서만 className 속성을 쓸 수 있기 때문이다.
+
+④ 괄호가 없으면 루트 요소가 여러 개가 되기 때문이다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. `return` 뒤에서 줄을 바꾼 다음 괄호를 쓰면 JavaScript의 자동 세미콜론 삽입 때문에 `return;`으로 해석되어 아무것도 반환되지 않을 수 있습니다. 그래서 `return (` 처럼 여는 괄호를 같은 줄에 둡니다.
+:::
+:::
+
+::: {.quiz-item}
+**15.** `const element = <h1>React 수업</h1>;`이 실행된 직후에 대한 설명으로 옳은 것은?
+
+① 이 순간 실제 h1 DOM 요소가 화면에 만들어진다.
+
+② element에 HTML 문서 텍스트가 문자열로 저장된다.
+
+③ 브라우저가 element를 곧바로 실행한다.
+
+[④ element에 화면에 무엇을 표시할지 설명하는 값이 저장된다.]{.quiz-answer}
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ④. React 엘리먼트는 화면에 무엇을 표시할지 설명하는 가벼운 JavaScript 값입니다. 이 문장만으로 실제 DOM 요소가 만들어지지는 않으며, React가 이 설명을 바탕으로 이후 필요한 DOM을 생성·갱신합니다.
+:::
+:::
+
+::: {.quiz-item}
+**16.** 다음 용어와 의미를 옳게 짝지은 것은?
+
+① React 엘리먼트는 브라우저 메모리에 생성된 실제 문서 객체이다.
+
+[② DOM 요소는 브라우저 메모리에 생성된 실제 문서 객체이다.]{.quiz-answer}
+
+③ HTML 요소는 React가 표시할 UI를 설명하는 값이다.
+
+④ React 엘리먼트와 DOM 요소는 완전히 같은 것이다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. DOM 요소는 브라우저 메모리에 생성된 실제 문서 객체(예: `document.querySelector("h1")`의 결과)입니다. HTML 요소는 문서에 작성한 마크업, React 엘리먼트는 표시할 UI를 설명하는 값으로, 세 용어는 서로 구분됩니다.
+:::
+:::
+
+::: {.quiz-item}
+**17.** React에서 "렌더링"의 의미로 가장 알맞은 것은?
+
+[① 컴포넌트를 호출해 화면에 필요한 UI 구조를 계산하는 과정]{.quiz-answer}
+
+② 개발자가 CSS로 색과 배치를 지정하는 과정
+
+③ 브라우저가 서버에서 HTML 파일을 내려받는 과정
+
+④ 패키지를 설치해 프로젝트를 준비하는 과정
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. 렌더링은 React가 컴포넌트를 호출하여 화면에 필요한 UI 구조를 계산하는 과정입니다. 계산된 결과는 이후 커밋 단계에서 실제 DOM에 반영되고 브라우저가 화면에 그립니다.
+:::
+:::
+
+::: {.quiz-item}
+**18.** `createRoot(document.getElementById("root"))`가 하는 일은?
+
+① App 컴포넌트가 반환할 JSX를 작성한다.
+
+② 화면에 표시할 React 노드를 전달한다.
+
+[③ 지정한 DOM 요소를 React가 관리하는 root로 만든다.]{.quiz-answer}
+
+④ index.html에 새로운 #root 요소를 추가한다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. `createRoot()`는 찾은 DOM 요소를 React가 관리할 수 있는 root로 만듭니다. 이때부터 React가 그 안의 화면을 생성·갱신할 수 있습니다. 표시할 내용을 전달하는 것은 `render()`의 역할입니다.
+:::
+:::
+
+::: {.quiz-item}
+**19.** root에 App 컴포넌트를 표시하는 올바른 코드는?
+
+① `root.render(App)`
+
+② `root.render("App")`
+
+③ `root.render(app)`
+
+[④ `root.render(<App />)`]{.quiz-answer}
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ④. 컴포넌트는 `<App />`처럼 JSX 형태로 전달해야 합니다. `root.render(App)`처럼 함수 자체를 전달하면 화면이 표시되지 않습니다.
+:::
+:::
+
+::: {.quiz-item}
+**20.** `const completed = 3; const total = 7;`일 때 `<p>남은 과제: {total - completed}개</p>`가 표시하는 내용은?
+
+① 남은 과제: {total - completed}개
+
+[② 남은 과제: 4개]{.quiz-answer}
+
+③ 남은 과제: 7 - 3개
+
+④ 남은 과제: 3개
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. 중괄호 안의 `total - completed`는 표현식이므로 `7 - 3`을 계산한 결과 `4`가 화면에 표시됩니다. 중괄호를 쓰면 코드 자체가 아니라 표현식을 평가한 결과가 나타납니다.
+:::
+:::

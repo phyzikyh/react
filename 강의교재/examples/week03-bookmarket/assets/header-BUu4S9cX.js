@@ -1,0 +1,1 @@
+import{n as e,r as t,t as n}from"./src-CvI2sUr3.js";t();var r=e(),i=n();function a(){return(0,i.jsxs)(`header`,{className:`site-header`,children:[(0,i.jsx)(`h1`,{children:`BOOKMARKET`}),(0,i.jsx)(`p`,{children:`오늘 읽을 한 권을 만나보세요.`})]})}(0,r.createRoot)(document.getElementById(`root`)).render((0,i.jsx)(a,{}));

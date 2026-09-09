@@ -1,0 +1,1 @@
+import{n as e,r as t,t as n}from"./src-CvI2sUr3.js";t();var r=e(),i=n();function a(){return(0,i.jsxs)(`section`,{children:[(0,i.jsx)(`h2`,{children:`도서 가격`}),(0,i.jsxs)(`p`,{children:[`정가: `,15e3,`원`]}),(0,i.jsxs)(`p`,{children:[`할인 금액: `,1500,`원`]}),(0,i.jsxs)(`p`,{children:[`판매가: `,13500,`원`]})]})}(0,r.createRoot)(document.getElementById(`root`)).render((0,i.jsx)(a,{}));

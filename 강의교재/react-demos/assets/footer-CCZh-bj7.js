@@ -1,0 +1,1 @@
+import{n as e,r as t,t as n}from"./quarto-demos-AZEwOa6n.js";var r=t(),i=e(),a=n();function o(){return(0,a.jsx)(`footer`,{children:(0,a.jsx)(`p`,{children:`© 2026 홍길동`})})}(0,i.createRoot)(document.getElementById(`root`)).render((0,a.jsx)(r.StrictMode,{children:(0,a.jsx)(o,{})}));

@@ -101,6 +101,15 @@ code { font-size: 0.9em; }
   line-height: 2.0;
 }
 
+// 연습문제 문항 컨테이너 — 문항 간 구분선과 간격
+.quiz-item {
+  border-bottom: 1px solid #e5e8ec;
+  padding: 1rem 0 1.4rem;
+  margin-bottom: 1.1rem;
+}
+.quiz-item > p { margin: 0.45rem 0; }
+.quiz-item > p:first-child { margin-top: 0; margin-bottom: 1rem; }
+
 // 연습문제 정답 선택지 — 학생용: 정답 강조를 숨김(채점 전 정답 노출 방지).
 .quiz-answer {
   color: inherit;
@@ -297,3 +306,76 @@ h1.title, .quarto-title h1 { font-weight: 800; }
 
 // 섹션 사이 여백(주차 구분감)
 .sidebar-navigation > ul > li.sidebar-item-section { margin-top: 0.5rem; }
+
+// 좌측 메뉴는 주차별로 1. 이론 / 2. 연습문제 / 3. 코딩실습을 표시하므로
+// Quarto가 책 전체에 붙이는 연속 장 번호는 사이드바에서만 숨깁니다.
+.sidebar-navigation .chapter-number { display: none; }
+
+// 주차별 문서 제목 앞에 붙는 책 전체의 연속 장 번호도 숨깁니다.
+.quarto-title .chapter-number { display: none; }
+
+// JSX 결과는 교재 CSS와 격리된 iframe에서 브라우저 기본 스타일로 표시합니다.
+.jsx-output-frame {
+  display: block;
+  width: 100%;
+  height: 88px;
+  margin: 0.6rem 0 1.6rem;
+  border: 1px solid #d7dde5;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.jsx-output-frame-tall {
+  height: 145px;
+}
+
+.jsx-output-frame-image {
+  height: 520px;
+}
+
+// 완성 사이트처럼 스크롤이 필요한 전체 화면 데모용 iframe입니다.
+.site-demo-frame {
+  display: block;
+  width: 100%;
+  height: 640px;
+  margin: 0.6rem 0 0.4rem;
+  border: 1px solid #d7dde5;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.demo-caption {
+  font-size: 0.9rem;
+  color: #5b6570;
+  margin: 0 0 1.6rem;
+}
+
+// Quarto Book의 장 번호는 책 전체에서 연속되지만, 이 교재는 주차별 학습 단위입니다.
+// 각 페이지에서 제목 번호를 다시 시작하여 첫 내용이 항상 1번이 되게 표시합니다.
+main.content {
+  counter-reset: weekly-level-1;
+}
+
+main.content section.level1 {
+  counter-increment: weekly-level-1;
+  counter-reset: weekly-level-2;
+}
+
+main.content section.level2 {
+  counter-increment: weekly-level-2;
+}
+
+main.content section.level1 > h1 .header-section-number,
+main.content section.level2 > h2 .header-section-number {
+  font-size: 0;
+}
+
+main.content section.level1 > h1 .header-section-number::after {
+  content: counter(weekly-level-1);
+  font-size: 1.5rem;
+}
+
+main.content section.level2 > h2 .header-section-number::after {
+  content: counter(weekly-level-1) "." counter(weekly-level-2);
+  font-size: 1.2rem;
+}

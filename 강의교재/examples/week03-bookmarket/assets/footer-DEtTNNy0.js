@@ -1,0 +1,1 @@
+import{n as e,r as t,t as n}from"./src-CvI2sUr3.js";t();var r=e(),i=n();function a(){return(0,i.jsxs)(i.Fragment,{children:[(0,i.jsx)(`hr`,{}),(0,i.jsxs)(`footer`,{className:`site-footer`,children:[(0,i.jsx)(`p`,{children:`BOOKMARKET`}),(0,i.jsx)(`p`,{children:`책과 함께하는 일상`})]})]})}(0,r.createRoot)(document.getElementById(`root`)).render((0,i.jsx)(a,{}));

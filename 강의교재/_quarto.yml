@@ -3,6 +3,7 @@ project:
   output-dir: _book
   resources:
     - examples/**
+    - react-demos/**
 
 book:
   title: "고급웹프로그래밍:React"
@@ -14,20 +15,62 @@ book:
     right: "© 2026 신기홍"
   chapters:
     - index.qmd
-    - part: "1주차 · HTML 기초"
-      chapters: [week01_lecture.qmd, week01_quiz.qmd, week01_code.qmd]
-    - part: "2주차 · CSS 기초와 반응형 웹"
-      chapters: [week02_lecture.qmd, week02_quiz.qmd, week02_code.qmd]
-    - part: "3주차 · JSX와 엘리먼트 렌더링"
-      chapters: [week03_lecture.qmd, week03_quiz.qmd, week03_code.qmd]
-    - part: "4주차 · 컴포넌트와 Props"
-      chapters: [week04_lecture.qmd, week04_quiz.qmd, week04_code.qmd]
-    - part: "5주차 · State와 이벤트 처리"
-      chapters: [week05_lecture.qmd, week05_code.qmd]
-    - part: "6주차 · React Hook 기초"
-      chapters: [week06_lecture.qmd, week06_code.qmd]
-    - part: "7주차 · 조건부 렌더링과 리스트"
-      chapters: [week07_lecture.qmd, week07_code.qmd]
+    - part: "1주차 : HTML 기초"
+      chapters:
+        - text: "1. 이론"
+          href: week01_lecture.qmd
+        - text: "2. 연습문제"
+          href: week01_quiz.qmd
+        - text: "3. 코딩실습"
+          href: week01_code.qmd
+    - part: "2주차 : CSS 기초와 반응형 웹"
+      chapters:
+        - text: "1. 이론"
+          href: week02_lecture.qmd
+        - text: "2. 연습문제"
+          href: week02_quiz.qmd
+        - text: "3. 코딩실습"
+          href: week02_code.qmd
+    - part: "3주차 : JSX와 엘리먼트 렌더링"
+      chapters:
+        - text: "1. 이론"
+          href: week03_lecture.qmd
+        - text: "2. 연습문제"
+          href: week03_quiz.qmd
+        - text: "3. 코딩실습"
+          href: week03_code.qmd
+    - part: "4주차 : 컴포넌트와 Props"
+      chapters:
+        - text: "1. 이론"
+          href: week04_lecture.qmd
+        - text: "2. 연습문제"
+          href: week04_quiz.qmd
+        - text: "3. 코딩실습"
+          href: week04_code.qmd
+    - part: "5주차 : State와 이벤트 처리"
+      chapters:
+        - text: "1. 이론"
+          href: week05_lecture.qmd
+        - text: "2. 연습문제"
+          href: week05_quiz.qmd
+        - text: "3. 코딩실습"
+          href: week05_code.qmd
+    - part: "6주차 : React Hook 기초"
+      chapters:
+        - text: "1. 이론"
+          href: week06_lecture.qmd
+        - text: "2. 연습문제"
+          href: week06_quiz.qmd
+        - text: "3. 코딩실습"
+          href: week06_code.qmd
+    - part: "7주차 : 조건부 렌더링과 리스트"
+      chapters:
+        - text: "1. 이론"
+          href: week07_lecture.qmd
+        - text: "2. 연습문제"
+          href: week07_quiz.qmd
+        - text: "3. 코딩실습"
+          href: week07_code.qmd
 
 crossref:
   fig-title: "그림"

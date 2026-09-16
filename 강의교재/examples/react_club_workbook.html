@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React 동아리 사이트 워크북</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#f5f6fb;--surface:#ffffff;--surface2:#eef1f8;--code-bg:#f7f8fc;
+  --ink:#1e293b;--muted:#56607a;--faint:#8890a6;--line:#e2e8f0;
+  --accent:#4f46e5;--accent-soft:#eef2ff;--link:#4338ca;
+  --shadow:0 1px 2px rgb(20 30 50 / 4%),0 8px 24px rgb(20 30 50 / 5%);
+  --disp:'Bricolage Grotesque','Segoe UI',sans-serif;
+  --sans:'IBM Plex Sans','Malgun Gothic','Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d1117;--surface:#161b22;--surface2:#1c222b;--code-bg:#12171e;
+  --ink:#e6edf3;--muted:#9aa4b0;--faint:#6e7781;--line:#2a313a;
+  --accent:#8b8cf9;--accent-soft:#1e2140;--link:#a5a6fb;
+  --shadow:0 1px 2px rgb(0 0 0 / 30%),0 10px 30px rgb(0 0 0 / 35%);
+}}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+code,pre{font-family:var(--mono)}
+a{color:inherit;text-decoration:none}
+.top{border-bottom:1px solid var(--line);background:radial-gradient(720px 240px at 12% -10%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 70%)}
+.top-inner{max-width:1200px;margin:0 auto;padding:52px 28px 42px}
+.kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+h1.title{font-family:var(--disp);font-weight:800;font-size:clamp(30px,5vw,50px);line-height:1.05;letter-spacing:-.02em;text-wrap:balance;max-width:20ch}
+.subtitle{color:var(--muted);font-size:17px;margin-top:15px;max-width:64ch}
+.layout{max-width:1200px;margin:0 auto;padding:40px 28px 80px;display:grid;grid-template-columns:210px 1fr;gap:44px;align-items:start}
+.toc{position:sticky;top:22px}
+.toc h3{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+.toc ol{list-style:none;display:flex;flex-direction:column;gap:2px}
+.toc a{display:flex;gap:11px;padding:7px 10px;border-radius:8px;color:var(--muted);font-size:14px;transition:.15s}
+.toc a:hover{background:var(--surface2);color:var(--ink)}
+.toc .tnum{font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600;min-width:20px}
+.main{min-width:0;display:flex;flex-direction:column;gap:20px}
+.intro{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 26px;box-shadow:var(--shadow)}
+.intro h2{font-family:var(--disp);font-size:19px;margin-bottom:12px;font-weight:600}
+.intro .note{color:var(--muted);font-size:14.5px;margin-top:6px}
+.intro .flow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;font-family:var(--mono);font-size:12.5px}
+.intro .flow span{background:var(--surface2);padding:6px 12px;border-radius:7px}
+.part{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px 28px 24px;box-shadow:var(--shadow);scroll-margin-top:18px}
+.parthead{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.pnum{font-family:var(--mono);font-size:13px;letter-spacing:.08em;color:var(--faint)}
+.pnum b{color:var(--accent);font-weight:600}
+h2.ptitle{font-family:var(--disp);font-weight:600;font-size:25px;letter-spacing:-.01em;margin:11px 0 13px}
+.learnrow{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
+.tag{font-family:var(--mono);font-size:12px;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:6px}
+.goal{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--code-bg);margin-bottom:18px}
+.glabel{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);padding:9px 14px;border-bottom:1px solid var(--line);background:var(--surface2)}
+iframe.pv{width:100%;border:0;display:block;background:#ffffff}
+.mission{background:var(--surface2);border-radius:12px;padding:18px 20px;margin-bottom:16px}
+.mission h4{font-size:14px;margin-bottom:8px;font-family:var(--sans);font-weight:700}
+.mission>p{font-size:15px;color:var(--ink);margin-bottom:14px}
+.mission code{background:var(--code-bg);border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:12.5px}
+.reqs h4{font-size:13px;margin-bottom:9px;font-weight:700;color:var(--muted);letter-spacing:.02em}
+.reqs ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+.reqs li{position:relative;padding-left:26px;font-size:14.5px;color:var(--ink)}
+.reqs li::before{content:"";position:absolute;left:4px;top:7px;width:9px;height:9px;border:2px solid var(--accent);border-radius:3px}
+.answer-open{margin-top:4px}
+.aohead{font-family:var(--mono);font-size:13px;color:var(--muted);margin-bottom:10px}
+.codeblock{border:1px solid var(--line);border-radius:11px;overflow:hidden;margin-bottom:12px;background:var(--code-bg)}
+.cbhead{display:flex;align-items:center;gap:12px;padding:9px 12px;background:var(--surface2);border-bottom:1px solid var(--line)}
+.fname{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;gap:7px}
+.fdot{width:9px;height:9px;border-radius:2px;display:inline-block}
+.fdot.jsxf{background:#4f46e5}
+.fdot.cssf{background:#0ea5e9}
+.fdot.cmdf{background:#16a34a}
+.cbnote{font-size:12px;color:var(--muted);font-family:var(--mono)}
+.copy{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:5px 11px;cursor:pointer}
+.copy:hover{border-color:var(--accent);color:var(--accent)}
+.copy.done{color:var(--accent);border-color:var(--accent)}
+pre.cbcode{margin:0;padding:15px 18px;overflow-x:auto;font-size:13px;line-height:1.7}
+pre.cbcode code{color:var(--ink);white-space:pre}
+.done{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:var(--shadow)}
+.done h2{font-family:var(--disp);font-size:21px;font-weight:600;margin-bottom:12px}
+.done p{color:var(--muted);font-size:15px}
+.done .steps{list-style:none;display:flex;flex-direction:column;gap:9px;margin-top:14px}
+.done .steps li{display:flex;gap:11px;font-size:15px;color:var(--ink)}
+.done .steps .n{font-family:var(--mono);color:var(--accent);font-weight:600}
+@media (max-width:860px){.layout{grid-template-columns:1fr;gap:24px}.toc{position:static;order:-1;border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--surface)}.toc ol{display:grid;grid-template-columns:1fr 1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-inner"><div class="kicker">React · JSX &amp; 엘리먼트 렌더링</div><h1 class="title">React 동아리 사이트 워크북</h1><p class="subtitle">3주차에 배운 JSX만으로 개발 동아리 소개 사이트를 만듭니다. 구역마다 <b>목표 화면</b>을 보고, 옆의 <b>App.jsx 코드</b>를 따라 작성하면 완성됩니다.</p></div></header>
+<div class="layout">
+<nav class="toc"><h3>미션 목록</h3><ol><li><a href="#part00"><span class="tnum">00</span><span class="ttitle">프로젝트 준비</span></a></li><li><a href="#part01"><span class="tnum">01</span><span class="ttitle">머리말과 메뉴</span></a></li><li><a href="#part02"><span class="tnum">02</span><span class="ttitle">소개 배너</span></a></li><li><a href="#part03"><span class="tnum">03</span><span class="ttitle">소개와 숫자</span></a></li><li><a href="#part04"><span class="tnum">04</span><span class="ttitle">활동 카드</span></a></li><li><a href="#part05"><span class="tnum">05</span><span class="ttitle">모집 안내</span></a></li><li><a href="#part06"><span class="tnum">06</span><span class="ttitle">문의 양식</span></a></li><li><a href="#part07"><span class="tnum">07</span><span class="ttitle">바닥글</span></a></li><li><a href="#part08"><span class="tnum">08</span><span class="ttitle">전체 화면 조립</span></a></li></ol></nav>
+<main class="main">
+<section class="intro"><h2>이렇게 진행합니다</h2><div class="flow"><span>Vite 프로젝트 준비</span><span>App.jsx 영역별 작성</span><span>App 에서 조립</span><span>브라우저에서 확인</span></div><p class="note">각 PART의 코드는 <code>src/App.jsx</code> 에 순서대로 추가합니다. 새 개념 없이 3주차 도구(컴포넌트·JSX·중괄호·Fragment)만 사용합니다.</p></section>
+<section class="part" id="part00"><div class="parthead"><div class="pnum">PART <b>00</b></div></div><h2 class="ptitle">프로젝트 준비</h2><div class="learnrow"><span class="tag">Vite</span><span class="tag">index.css</span><span class="tag">App.jsx</span></div><div class="mission"><h4>미션</h4><p>React 프로젝트를 만들고, 화면이 뜨는 것을 확인합니다. 스타일은 완성본을 그대로 사용하므로 <code>src/index.css</code>를 비우고 아래 완성 CSS를 붙여 넣습니다.</p><div class="reqs"><h4>요구사항</h4><ul><li>터미널에서 아래 명령으로 프로젝트 생성·실행</li><li>src/index.css 내용을 지우고 완성 CSS 붙여넣기</li><li>src/App.jsx 를 아래 시작 코드로 교체</li></ul></div></div><div class="answer-open"><div class="aohead">터미널 명령</div><div class="codeblock"><div class="cbhead"><span class="fname"><span class="fdot cmdf"></span>terminal</span><span class="cbnote">프로젝트 생성·실행</span><button class="copy" type="button">복사</button></div><pre class="cbcode"><code>npm create vite@latest codemate-club -- --template react
+cd codemate-club
+npm install
+npm run dev</code></pre></div><div class="aohead">시작 App.jsx (그대로 작성)</div><div class="codeblock"><div class="cbhead"><span class="fname"><span class="fdot jsxf"></span>src/App.jsx</span><span class="cbnote">이대로 시작</span><button class="copy" type="button">복사</button></div><pre class="cbcode"><code>// src/App.jsx
+export default function App() {
+  return (
+    &lt;main&gt;
+      &lt;h1&gt;CodeMate&lt;/h1&gt;
+      &lt;p&gt;동아리 소개 사이트를 만들어 봅니다.&lt;/p&gt;
+    &lt;/main&gt;
+  );
+}</code></pre></div><div class="aohead">완성 스타일 (src/index.css 에 붙여넣기)</div><div class="codeblock"><div class="cbhead"><span class="fname"><span class="fdot cssf"></span>src/index.css</span><span class="cbnote">내용을 지우고 붙여넣기</span><button class="copy" type="button">복사</button></div><pre class="cbcode"><code>/* ===== 기본 설정 ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: &quot;Pretendard&quot;,&quot;Segoe UI&quot;,&quot;Malgun Gothic&quot;,sans-serif; color:#1e293b; background-color:#ffffff; line-height:1.7; }
+a { color: inherit; text-decoration: none; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+/* 머리말 */
+.site-header { position: sticky; top:0; z-index:10; background-color: rgba(255,255,255,.9); backdrop-filter: blur(8px); border-bottom:1px solid #e2e8f0; }
+.header-inner { display:flex; justify-content:space-between; align-items:center; height:62px; }
+.brand { font-family:&quot;Consolas&quot;,monospace; font-weight:700; font-size:18px; color:#4f46e5; }
+.nav { display:flex; gap:24px; font-size:15px; color:#475569; }
+.nav a:hover { color:#4f46e5; }
+/* 히어로 */
+.hero { padding:88px 0; background:linear-gradient(135deg,#eef2ff,#faf5ff); border-bottom:1px solid #e2e8f0; }
+.eyebrow { font-family:&quot;Consolas&quot;,monospace; font-size:13px; letter-spacing:.14em; color:#6366f1; margin-bottom:14px; }
+.hero-title { font-size:42px; line-height:1.2; letter-spacing:-.01em; max-width:18ch; margin-bottom:18px; }
+.hero-desc { font-size:17px; color:#475569; max-width:54ch; margin-bottom:28px; }
+.hero-buttons { display:flex; gap:12px; }
+/* 버튼 */
+.btn { display:inline-block; padding:12px 22px; border-radius:8px; font-weight:600; border:1px solid transparent; cursor:pointer; font-size:15px; }
+.btn-fill { background-color:#4f46e5; color:#fff; }
+.btn-fill:hover { background-color:#4338ca; }
+.btn-line { background-color:#fff; color:#4f46e5; border-color:#c7d2fe; }
+.btn-line:hover { border-color:#4f46e5; }
+/* 섹션 공통 */
+.section { padding:72px 0; }
+.section-alt { background-color:#f8fafc; }
+.section-title { font-size:28px; margin-bottom:24px; }
+.lead { font-size:16px; color:#475569; max-width:60ch; margin-bottom:28px; }
+/* 통계 */
+.stats { display:flex; flex-wrap:wrap; gap:16px; list-style:none; }
+.stat { flex:1 1 160px; padding:24px; background-color:#fff; border:1px solid #e2e8f0; border-radius:14px; text-align:center; }
+.stat-num { display:block; font-size:32px; color:#4f46e5; }
+.stat-label { font-size:14px; color:#64748b; }
+/* 활동 카드 */
+.cards { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.card { padding:24px; background-color:#fff; border:1px solid #e2e8f0; border-radius:14px; }
+.card:hover { transform:translateY(-4px); box-shadow:0 14px 30px rgba(79,70,229,.12); }
+.card-tag { display:inline-block; padding:4px 10px; margin-bottom:12px; font-size:12px; color:#4f46e5; background-color:#eef2ff; border-radius:999px; }
+.card-title { font-size:18px; margin-bottom:8px; }
+.card-desc { font-size:14px; color:#64748b; }
+/* 모집 */
+.info { border-top:1px solid #e2e8f0; }
+.info-row { display:flex; gap:16px; padding:18px 4px; border-bottom:1px solid #e2e8f0; }
+.info dt { flex:0 0 120px; font-weight:700; color:#4f46e5; }
+.info dd { color:#334155; }
+/* 폼 */
+.form { display:flex; flex-direction:column; gap:16px; max-width:520px; }
+.field { display:flex; flex-direction:column; gap:6px; }
+.field label { font-size:14px; font-weight:600; color:#334155; }
+.field input,.field textarea { padding:12px 14px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px; font-family:inherit; }
+.field textarea { min-height:120px; resize:vertical; }
+.field input:focus,.field textarea:focus { outline:none; border-color:#4f46e5; }
+.form .btn { align-self:flex-start; }
+/* 바닥글 */
+.site-footer { border-top:1px solid #e2e8f0; padding:28px 0; color:#94a3b8; font-size:14px; }
+.footer-inner { display:flex; justify-content:space-between; }
+@media (max-width:720px){ .hero-title{font-size:32px;} .cards{grid-template-columns:1fr;} .nav{display:none;} }
+</code></pre></div></div></section>
+<section class="part" id="part01"><div class="parthead"><div class="pnum">PART <b>01</b></div></div><h2 class="ptitle">머리말과 메뉴 (Header)</h2><div class="learnrow"><span class="tag">함수 컴포넌트</span><span class="tag">className</span><span class="tag">nav</span></div><div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:96px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&#x27;ko&#x27;&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* ===== 기본 설정 ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: &quot;Pretendard&quot;,&quot;Segoe UI&quot;,&quot;Malgun Gothic&quot;,sans-serif; color:#1e293b; background-color:#ffffff; line-height:1.7; }
+a { color: inherit; text-decoration: none; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+/* 머리말 */
+.site-header { position: sticky; top:0; z-index:10; background-color: rgba(255,255,255,.9); backdrop-filter: blur(8px); border-bottom:1px solid #e2e8f0; }
+.header-inner { display:flex; justify-content:space-between; align-items:center; height:62px; }
+.brand { font-family:&quot;Consolas&quot;,monospace; font-weight:700; font-size:18px; color:#4f46e5; }
+.nav { display:flex; gap:24px; font-size:15px; color:#475569; }
+.nav a:hover { color:#4f46e5; }
+/* 히어로 */
+.hero { padding:88px 0; background:linear-gradient(135deg,#eef2ff,#faf5ff); border-bottom:1px solid #e2e8f0; }
+.eyebrow { font-family:&quot;Consolas&quot;,monospace; font-size:13px; letter-spacing:.14em; color:#6366f1; margin-bottom:14px; }
+.hero-title { font-size:42px; line-height:1.2; letter-spacing:-.01em; max-width:18ch; margin-bottom:18px; }
+.hero-desc { font-size:17px; color:#475569; max-width:54ch; margin-bottom:28px; }
+.hero-buttons { display:flex; gap:12px; }
+/* 버튼 */
+.btn { display:inline-block; padding:12px 22px; border-radius:8px; font-weight:600; border:1px solid transparent; cursor:pointer; font-size:15px; }
+.btn-fill { background-color:#4f46e5; color:#fff; }
+.btn-fill:hover { background-color:#4338ca; }
+.btn-line { background-color:#fff; color:#4f46e5; border-color:#c7d2fe; }
+.btn-line:hover { border-color:#4f46e5; }
+/* 섹션 공통 */
+.section { padding:72px 0; }
+.section-alt { background-color:#f8fafc; }
+.section-title { font-size:28px; margin-bottom:24px; }
+.lead { font-size:16px; color:#475569; max-width:60ch; margin-bottom:28px; }
+/* 통계 */
+.stats { display:flex; flex-wrap:wrap; gap:16px; list-style:none; }
+.stat { flex:1 1 160px; padding:24px; background-color:#fff; border:1px solid #e2e8f0; border-radius:14px; text-align:center; }
+.stat-num { display:block; font-size:32px; color:#4f46e5; }
+.stat-label { font-size:14px; color:#64748b; }
+/* 활동 카드 */
+.cards { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.card { padding:24px; background-color:#fff; border:1px solid #e2e8f0; border-radius:14px; }
+.card:hover { transform:translateY(-4px); box-shadow:0 14px 30px rgba(79,70,229,.12); }
+.card-tag { display:inline-block; padding:4px 10px; margin-bottom:12px; font-size:12px; color:#4f46e5; background-color:#eef2ff; border-radius:999px; }
+.card-title { font-size:18px; margin-bottom:8px; }
+.card-desc { font-size:14px; color:#64748b; }
+/* 모집 */
+.info { border-top:1px solid #e2e8f0; }
+.info-row { display:flex; gap:16px; padding:18px 4px; border-bottom:1px solid #e2e8f0; }
+.info dt { flex:0 0 120px; font-weight:700; color:#4f46e5; }
+.info dd { color:#334155; }
+/* 폼 */
+.form { display:flex; flex-direction:column; gap:16px; max-width:520px; }
+.field { display:flex; flex-direction:column; gap:6px; }
+.field label { font-size:14px; font-weight:600; color:#334155; }
+.field input,.field textarea { padding:12px 14px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px; font-family:inherit; }
+.field textarea { min-height:120px; resize:vertical; }
+.field input:focus,.field textarea:focus { outline:none; border-color:#4f46e5; }
+.form .btn { align-self:flex-start; }
+/* 바닥글 */
+.site-footer { border-top:1px solid #e2e8f0; padding:28px 0; color:#94a3b8; font-size:14px; }
+.footer-inner { display:flex; justify-content:space-between; }
+@media (max-width:720px){ .hero-title{font-size:32px;} .cards{grid-template-columns:1fr;} .nav{display:none;} }
+
+html,body{background:#ffffff}
+body{padding:16px;overflow:hidden}
+.site-header{position:static}
+.hero{padding:28px 0}
+.section{padding:22px 0}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;header class=&quot;site-header&quot;&gt;&lt;div class=&quot;wrap header-inner&quot;&gt;
+  &lt;a class=&quot;brand&quot; href=&quot;#home&quot;&gt;&amp;lt;CodeMate/&amp;gt;&lt;/a&gt;
+  &lt;nav class=&quot;nav&quot; aria-label=&quot;주요 메뉴&quot;&gt;
+    &lt;a href=&quot;#about&quot;&gt;소개&lt;/a&gt;&lt;a href=&quot;#activities&quot;&gt;활동&lt;/a&gt;&lt;a href=&quot;#recruit&quot;&gt;모집&lt;/a&gt;&lt;a href=&quot;#contact&quot;&gt;문의&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/div&gt;&lt;/header&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div><div class="mission"><h4>미션</h4><p>화면 맨 위에 로고와 메뉴 바를 만듭니다. JSX에서는 <code>class</code> 대신 <code>className</code>을 씁니다.</p><div class="reqs"><h4>요구사항</h4><ul><li>왼쪽 로고 &lt;CodeMate/&gt; (꺾쇠는 &amp;lt; &amp;gt;)</li><li>오른쪽 메뉴 4개 (소개·활동·모집·문의)</li><li>스크롤해도 위에 고정</li></ul></div></div><div class="answer-open"><div class="aohead">먼저: 화면에 쓸 값 준비 (App.jsx 위쪽)</div><div class="codeblock"><div class="cbhead"><span class="fname"><span class="fdot jsxf"></span>src/App.jsx</span><span class="cbnote">값 준비</span><button class="copy" type="button">복사</button></div><pre class="cbcode"><code>// App.jsx 위쪽에 화면에 표시할 값을 준비합니다.
+const club = {
+  name: &quot;CodeMate&quot;,
+  slogan: &quot;함께 만들고 함께 성장하는 대학 개발 동아리&quot;,
+  intro:
+    &quot;CodeMate는 웹과 앱을 직접 만들어 보며 실력을 키우는 동아리입니다. 매주 스터디로 기초를 다지고, 학기마다 팀을 이루어 실제 서비스를 완성합니다.&quot;,
+  foundedYear: 2019,
+  memberCount: 48,
+  projectCount: 27,
+};
+
+const study = { title: &quot;주간 스터디&quot;, desc: &quot;매주 한 가지 주제를 함께 학습하고 코드 리뷰를 진행합니다.&quot;, tag: &quot;매주 화요일&quot; };
+const project = { title: &quot;팀 프로젝트&quot;, desc: &quot;학기마다 3~4인 팀을 구성해 기획부터 배포까지 경험합니다.&quot;, tag: &quot;학기 단위&quot; };
+const hackathon = { title: &quot;해커톤&quot;, desc: &quot;방학마다 무박 2일 해커톤으로 아이디어를 서비스로 만듭니다.&quot;, tag: &quot;방학 특별활동&quot; };
+
+const thisYear = 2026;</code></pre></div><div class="aohead">Header 컴포넌트 — App.jsx 에 추가</div><div class="codeblock"><div class="cbhead"><span class="fname"><span class="fdot jsxf"></span>src/App.jsx</span><span class="cbnote">그대로 작성</span><button class="copy" type="button">복사</button></div><pre class="cbcode"><code>function Header() {
+  return (
+    &lt;header className=&quot;site-header&quot;&gt;
+      &lt;div className=&quot;wrap header-inner&quot;&gt;
+        &lt;a className=&quot;brand&quot; href=&quot;#home&quot;&gt;&amp;lt;{club.name}/&amp;gt;&lt;/a&gt;
+        &lt;nav className=&quot;nav&quot; aria-label=&quot;주요 메뉴&quot;&gt;
+          &lt;a href=&quot;#about&quot;&gt;소개&lt;/a&gt;
+          &lt;a href=&quot;#activities&quot;&gt;활동&lt;/a&gt;
+          &lt;a href=&quot;#recruit&quot;&gt;모집&lt;/a&gt;
+          &lt;a href=&quot;#contact&quot;&gt;문의&lt;/a&gt;
+        &lt;/nav&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+  );
+}</code></pre></div></div></section>
+<section class="part" id="part02"><div class="parthead"><div class="pnum">PART <b>02</b></div></div><h2 class="ptitle">소개 배너 (Hero)</h2><div class="learnrow"><span class="tag">중괄호 {}</span><span class="tag">객체 값</span><span class="tag">버튼</span></div><div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:320px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&#x27;ko&#x27;&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* ===== 기본 설정 ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: &quot;Pretendard&quot;,&quot;Segoe UI&quot;,&quot;Malgun Gothic&quot;,sans-serif; color:#1e293b; background-color:#ffffff; line-height:1.7; }
+a { color: inherit; text-decoration: none; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+/* 머리말 */
+.site-header { position: sticky; top:0; z-index:10; background-color: rgba(255,255,255,.9); backdrop-filter: blur(8px); border-bottom:1px solid #e2e8f0; }
+.header-inner { display:flex; justify-content:space-between; align-items:center; height:62px; }
+.brand { font-family:&quot;Consolas&quot;,monospace; font-weight:700; font-size:18px; color:#4f46e5; }
+.nav { display:flex; gap:24px; font-size:15px; color:#475569; }
+.nav a:hover { color:#4f46e5; }
+/* 히어로 */
+.hero { padding:88px 0; background:linear-gradient(135deg,#eef2ff,#faf5ff); border-bottom:1px solid #e2e8f0; }
+.eyebrow { font-family:&quot;Consolas&quot;,monospace; font-size:13px; letter-spacing:.14em; color:#6366f1; margin-bottom:14px; }
+.hero-title { font-size:42px; line-height:1.2; letter-spacing:-.01em; max-width:18ch; margin-bottom:18px; }
+.hero-desc { font-size:17px; color:#475569; max-width:54ch; margin-bottom:28px; }
+.hero-buttons { display:flex; gap:12px; }
+/* 버튼 */
+.btn { display:inline-block; padding:12px 22px; border-radius:8px; font-weight:600; border:1px solid transparent; cursor:pointer; font-size:15px; }
+.btn-fill { background-color:#4f46e5; color:#fff; }
+.btn-fill:hover { background-color:#4338ca; }
+.btn-line { background-color:#fff; color:#4f46e5; border-color:#c7d2fe; }
+.btn-line:hover { border-color:#4f46e5; }
+/* 섹션 공통 */
+.section { padding:72px 0; }
+.section-alt { background-color:#f8fafc; }
+.section-title { font-size:28px; margin-bottom:24px; }
+.lead { font-size:16px; color:#475569; max-width:60ch; margin-bottom:28px; }
+/* 통계 */
+.stats { display:flex; flex-wrap:wrap; gap:16px; list-style:none; }
+.stat { flex:1 1 160px; padding:24px; background-color:#fff; border:1px solid #e2e8f0; border-radius:14px; text-align:center; }
+.stat-num { display:block; font-size:32px; color:#4f46e5; }
+.stat-label { font-size:14px; color:#64748b; }
+/* 활동 카드 */
+.cards { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.card { padding:24px; background-color:#fff; border:1px solid #e2e8f0; border-radius:14px; }
+.card:hover { transform:translateY(-4px); box-shadow:0 14px 30px rgba(79,70,229,.12); }
+.card-tag { display:inline-block; padding:4px 10px; margin-bottom:12px; font-size:12px; color:#4f46e5; background-color:#eef2ff; border-radius:999px; }
+.card-title { font-size:18px; margin-bottom:8px; }
+.card-desc { font-size:14px; color:#64748b; }
+/* 모집 */
+.info { border-top:1px solid #e2e8f0; }
+.info-row { display:flex; gap:16px; padding:18px 4px; border-bottom:1px solid #e2e8f0; }
+.info dt { flex:0 0 120px; font-weight:700; color:#4f46e5; }
+.info dd { color:#334155; }
+/* 폼 */
+.form { display:flex; flex-direction:column; gap:16px; max-width:520px; }
+.field { display:flex; flex-direction:column; gap:6px; }
+.field label { font-size:14px; font-weight:600; color:#334155; }
+.field input,.field textarea { padding:12px 14px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px; font-family:inherit; }
+.field textarea { min-height:120px; resize:vertical; }
+.field input:focus,.field textarea:focus { outline:none; border-color:#4f46e5; }
+.form .btn { align-self:flex-start; }
+/* 바닥글 */
+.site-footer { border-top:1px solid #e2e8f0; padding:28px 0; color:#94a3b8; font-size:14px; }
+.footer-inner { display:flex; justify-content:space-between; }
+@media (max-width:720px){ .hero-title{font-size:32px;} .cards{grid-template-columns:1fr;} .nav{display:none;} }
+
+html,body{background:#ffffff}
+body{padding:16px;overflow:hidden}
+.site-header{position:static}
+.hero{padding:28px 0}
+.section{padding:22px 0}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;section class=&quot;hero&quot; id=&quot;home&quot;&gt;&lt;div class=&quot;wrap&quot;&gt;
+  &lt;p class=&quot;eyebrow&quot;&gt;SINCE 2019&lt;/p&gt;
+  &lt;h1 class=&quot;hero-title&quot;&gt;함께 만들고 함께 성장하는 대학 개발 동아리&lt;/h1&gt;
+  &lt;p class=&quot;hero-desc&quot;&gt;CodeMate는 웹과 앱을 직접 만들어 보며 실력을 키우는 동아리입니다. 매주 스터디로 기초를 다지고, 학기마다 팀을 이루어 실제 서비스를 완성합니다.&lt;/p&gt;
+  &lt;div class=&quot;hero-buttons&quot;&gt;&lt;a class=&quot;btn btn-fill&quot; href=&quot;#recruit&quot;&gt;지원하기&lt;/a&gt;&lt;a class=&quot;btn btn-line&quot; href=&quot;#activities&quot;&gt;활동 살펴보기&lt;/a&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div><div class="mission"><h4>미션</h4><p>첫 화면에 동아리 한 줄 소개와 버튼을 배치합니다. 제목·설명은 <code>club</code> 객체에서 값을 꺼내 표시합니다.</p><div class="reqs"><h4>요구사항</h4><ul><li>SINCE 연도, 큰 슬로건, 소개 문단</li><li>버튼 2개 (채운 것·테두리 것)</li><li>모든 텍스트는 club 값에서 {} 로 표시</li></ul></div></div><div class="answer-open"><div class="aohead">Hero 컴포넌트 — App.jsx 에 추가</div><div class="codeblock"><div class="cbhead"><span class="fname"><span class="fdot jsxf"></span>src/App.jsx</span><span class="cbnote">그대로 작성</span><button class="copy" type="button">복사</button></div><pre class="cbcode"><code>function Hero() {
+  return (
+    &lt;section className=&quot;hero&quot; id=&quot;home&quot;&gt;
+      &lt;div className=&quot;wrap&quot;&gt;
+        &lt;p className=&quot;eyebrow&quot;&gt;SINCE {club.foundedYear}&lt;/p&gt;
+        &lt;h1 className=&quot;hero-title&quot;&gt;{club.slogan}&lt;/h1&gt;
+        &lt;p className=&quot;hero-desc&quot;&gt;{club.intro}&lt;/p&gt;
+        &lt;div className=&quot;hero-buttons&quot;&gt;
+          &lt;a className=&quot;btn btn-fill&quot; href=&quot;#recruit&quot;&gt;지원하기&lt;/a&gt;
+          &lt;a className=&quot;btn btn-line&quot; href=&quot;#activities&quot;&gt;활동 살펴보기&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}</code></pre></div></div></section>
+<section class="part" id="part03"><div class="parthead"><div class="pnum">PART <b>03</b></div></div><h2 class="ptitle">소개와 숫자 (About)</h2><div class="learnrow"><span class="tag">산술식 {}</span><span class="tag">통계</span></div><div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:300px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&#x27;ko&#x27;&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* ===== 기본 설정 ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: &quot;Pretendard&quot;,&quot;Segoe UI&quot;,&quot;Malgun Gothic&quot;,sans-serif; color:#1e293b; background-color:#ffffff; line-height:1.7; }
+a { color: inherit; text-decoration: none; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+/* 머리말 */
+.site-header { position: sticky; top:0; z-index:10; background-color: rgba(255,255,255,.9); backdrop-filter: blur(8px); border-bottom:1px solid #e2e8f0; }
+.header-inner { display:flex; justify-content:space-between; align-items:center; height:62px; }
+.brand { font-family:&quot;Consolas&quot;,monospace; font-weight:700; font-size:18px; color:#4f46e5; }
+.nav { display:flex; gap:24px; font-size:15px; color:#475569; }
+.nav a:hover { color:#4f46e5; }
+/* 히어로 */
+.hero { padding:88px 0; background:linear-gradient(135deg,#eef2ff,#faf5ff); border-bottom:1px solid #e2e8f0; }
+.eyebrow { font-family:&quot;Consolas&quot;,monospace; font-size:13px; letter-spacing:.14em; color:#6366f1; margin-bottom:14px; }
+.hero-title { font-size:42px; line-height:1.2; letter-spacing:-.01em; max-width:18ch; margin-bottom:18px; }
+.hero-desc { font-size:17px; color:#475569; max-width:54ch; margin-bottom:28px; }
+.hero-buttons { display:flex; gap:12px; }
+/* 버튼 */
+.btn { display:inline-block; padding:12px 22px; border-radius:8px; font-weight:600; border:1px solid transparent; cursor:pointer; font-size:15px; }
+.btn-fill { background-color:#4f46e5; color:#fff; }
+.btn-fill:hover { background-color:#4338ca; }
+.btn-line { background-color:#fff; color:#4f46e5; border-color:#c7d2fe; }
+.btn-line:hover { border-color:#4f46e5; }
+/* 섹션 공통 */
+.section { padding:72px 0; }
+.section-alt { background-color:#f8fafc; }
+.section-title { font-size:28px; margin-bottom:24px; }
+.lead { font-size:16px; color:#475569; max-width:60ch; margin-bottom:28px; }
+/* 통계 */
+.stats { display:flex; flex-wrap:wrap; gap:16px; list-style:none; }
+.stat { flex:1 1 160px; padding:24px; background-color:#fff; border:1px solid #e2e8f0; border-radius:14px; text-align:center; }
+.stat-num { display:block; font-size:32px; color:#4f46e5; }
+.stat-label { font-size:14px; color:#64748b; }
+/* 활동 카드 */
+.cards { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.card { padding:24px; background-color:#fff; border:1px solid #e2e8f0; border-radius:14px; }
+.card:hover { transform:translateY(-4px); box-shadow:0 14px 30px rgba(79,70,229,.12); }
+.card-tag { display:inline-block; padding:4px 10px; margin-bottom:12px; font-size:12px; color:#4f46e5; background-color:#eef2ff; border-radius:999px; }
+.card-title { font-size:18px; margin-bottom:8px; }
+.card-desc { font-size:14px; color:#64748b; }
+/* 모집 */
+.info { border-top:1px solid #e2e8f0; }
+.info-row { display:flex; gap:16px; padding:18px 4px; border-bottom:1px solid #e2e8f0; }
+.info dt { flex:0 0 120px; font-weight:700; color:#4f46e5; }
+.info dd { color:#334155; }
+/* 폼 */
+.form { display:flex; flex-direction:column; gap:16px; max-width:520px; }
+.field { display:flex; flex-direction:column; gap:6px; }
+.field label { font-size:14px; font-weight:600; color:#334155; }
+.field input,.field textarea { padding:12px 14px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px; font-family:inherit; }
+.field textarea { min-height:120px; resize:vertical; }
+.field input:focus,.field textarea:focus { outline:none; border-color:#4f46e5; }
+.form .btn { align-self:flex-start; }
+/* 바닥글 */
+.site-footer { border-top:1px solid #e2e8f0; padding:28px 0; color:#94a3b8; font-size:14px; }
+.footer-inner { display:flex; justify-content:space-between; }
+@media (max-width:720px){ .hero-title{font-size:32px;} .cards{grid-template-columns:1fr;} .nav{display:none;} }
+
+html,body{background:#ffffff}
+body{padding:16px;overflow:hidden}
+.site-header{position:static}
+.hero{padding:28px 0}
+.section{padding:22px 0}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;section class=&quot;section&quot; id=&quot;about&quot;&gt;&lt;div class=&quot;wrap&quot;&gt;
+  &lt;h2 class=&quot;section-title&quot;&gt;소개&lt;/h2&gt;
+  &lt;p class=&quot;lead&quot;&gt;CodeMate는 웹과 앱을 직접 만들어 보며 실력을 키우는 동아리입니다. 매주 스터디로 기초를 다지고, 학기마다 팀을 이루어 실제 서비스를 완성합니다.&lt;/p&gt;
+  &lt;ul class=&quot;stats&quot;&gt;
+    &lt;li class=&quot;stat&quot;&gt;&lt;strong class=&quot;stat-num&quot;&gt;7년&lt;/strong&gt;&lt;span class=&quot;stat-label&quot;&gt;활동 연차&lt;/span&gt;&lt;/li&gt;
+    &lt;li class=&quot;stat&quot;&gt;&lt;strong class=&quot;stat-num&quot;&gt;48명&lt;/strong&gt;&lt;span class=&quot;stat-label&quot;&gt;함께하는 회원&lt;/span&gt;&lt;/li&gt;
+    &lt;li class=&quot;stat&quot;&gt;&lt;strong class=&quot;stat-num&quot;&gt;27개&lt;/strong&gt;&lt;span class=&quot;stat-label&quot;&gt;완성한 프로젝트&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div><div class="mission"><h4>미션</h4><p>소개 문단과 숫자 통계를 만듭니다. 활동 연차는 값을 직접 적지 않고 <code>올해 - 창립연도</code>로 계산합니다.</p><div class="reqs"><h4>요구사항</h4><ul><li>섹션 제목 + 소개 문단</li><li>통계 3칸 (연차·회원·프로젝트)</li><li>연차는 {thisYear - club.foundedYear} 로 계산</li></ul></div></div><div class="answer-open"><div class="aohead">About 컴포넌트 — App.jsx 에 추가</div><div class="codeblock"><div class="cbhead"><span class="fname"><span class="fdot jsxf"></span>src/App.jsx</span><span class="cbnote">그대로 작성</span><button class="copy" type="button">복사</button></div><pre class="cbcode"><code>function About() {
+  return (
+    &lt;section className=&quot;section&quot; id=&quot;about&quot; aria-labelledby=&quot;about-title&quot;&gt;
+      &lt;div className=&quot;wrap&quot;&gt;
+        &lt;h2 className=&quot;section-title&quot; id=&quot;about-title&quot;&gt;소개&lt;/h2&gt;
+        &lt;p className=&quot;lead&quot;&gt;{club.intro}&lt;/p&gt;
+        &lt;ul className=&quot;stats&quot;&gt;
+          &lt;li className=&quot;stat&quot;&gt;
+            &lt;strong className=&quot;stat-num&quot;&gt;{thisYear - club.foundedYear}년&lt;/strong&gt;
+            &lt;span className=&quot;stat-label&quot;&gt;활동 연차&lt;/span&gt;
+          &lt;/li&gt;
+          &lt;li className=&quot;stat&quot;&gt;
+            &lt;strong className=&quot;stat-num&quot;&gt;{club.memberCount}명&lt;/strong&gt;
+            &lt;span className=&quot;stat-label&quot;&gt;함께하는 회원&lt;/span&gt;
+          &lt;/li&gt;
+          &lt;li className=&quot;stat&quot;&gt;
+            &lt;strong className=&quot;stat-num&quot;&gt;{club.projectCount}개&lt;/strong&gt;
+            &lt;span className=&quot;stat-label&quot;&gt;완성한 프로젝트&lt;/span&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}</code></pre></div></div></section>
+<section class="part" id="part04"><div class="parthead"><div class="pnum">PART <b>04</b></div></div><h2 class="ptitle">활동 카드 (Activities)</h2><div class="learnrow"><span class="tag">article</span><span class="tag">카드</span><span class="tag">객체 값</span></div><div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:280px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&#x27;ko&#x27;&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* ===== 기본 설정 ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: &quot;Pretendard&quot;,&quot;Segoe UI&quot;,&quot;Malgun Gothic&quot;,sans-serif; color:#1e293b; background-color:#ffffff; line-height:1.7; }
+a { color: inherit; text-decoration: none; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+/* 머리말 */
+.site-header { position: sticky; top:0; z-index:10; background-color: rgba(255,255,255,.9); backdrop-filter: blur(8px); border-bottom:1px solid #e2e8f0; }
+.header-inner { display:flex; justify-content:space-between; align-items:center; height:62px; }
+.brand { font-family:&quot;Consolas&quot;,monospace; font-weight:700; font-size:18px; color:#4f46e5; }
+.nav { display:flex; gap:24px; font-size:15px; color:#475569; }
+.nav a:hover { color:#4f46e5; }
+/* 히어로 */
+.hero { padding:88px 0; background:linear-gradient(135deg,#eef2ff,#faf5ff); border-bottom:1px solid #e2e8f0; }
+.eyebrow { font-family:&quot;Consolas&quot;,monospace; font-size:13px; letter-spacing:.14em; color:#6366f1; margin-bottom:14px; }
+.hero-title { font-size:42px; line-height:1.2; letter-spacing:-.01em; max-width:18ch; margin-bottom:18px; }
+.hero-desc { font-size:17px; color:#475569; max-width:54ch; margin-bottom:28px; }
+.hero-buttons { display:flex; gap:12px; }
+/* 버튼 */
+.btn { display:inline-block; padding:12px 22px; border-radius:8px; font-weight:600; border:1px solid transparent; cursor:pointer; font-size:15px; }
+.btn-fill { background-color:#4f46e5; color:#fff; }
+.btn-fill:hover { background-color:#4338ca; }
+.btn-line { background-color:#fff; color:#4f46e5; border-color:#c7d2fe; }
+.btn-line:hover { border-color:#4f46e5; }
+/* 섹션 공통 */
+.section { padding:72px 0; }
+.section-alt { background-color:#f8fafc; }
+.section-title { font-size:28px; margin-bottom:24px; }
+.lead { font-size:16px; color:#475569; max-width:60ch; margin-bottom:28px; }
+/* 통계 */
+.stats { display:flex; flex-wrap:wrap; gap:16px; list-style:none; }
+.stat { flex:1 1 160px; padding:24px; background-color:#fff; border:1px solid #e2e8f0; border-radius:14px; text-align:center; }
+.stat-num { display:block; font-size:32px; color:#4f46e5; }
+.stat-label { font-size:14px; color:#64748b; }
+/* 활동 카드 */
+.cards { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.card { padding:24px; background-color:#fff; border:1px solid #e2e8f0; border-radius:14px; }
+.card:hover { transform:translateY(-4px); box-shadow:0 14px 30px rgba(79,70,229,.12); }
+.card-tag { display:inline-block; padding:4px 10px; margin-bottom:12px; font-size:12px; color:#4f46e5; background-color:#eef2ff; border-radius:999px; }
+.card-title { font-size:18px; margin-bottom:8px; }
+.card-desc { font-size:14px; color:#64748b; }
+/* 모집 */
+.info { border-top:1px solid #e2e8f0; }
+.info-row { display:flex; gap:16px; padding:18px 4px; border-bottom:1px solid #e2e8f0; }
+.info dt { flex:0 0 120px; font-weight:700; color:#4f46e5; }
+.info dd { color:#334155; }
+/* 폼 */
+.form { display:flex; flex-direction:column; gap:16px; max-width:520px; }
+.field { display:flex; flex-direction:column; gap:6px; }
+.field label { font-size:14px; font-weight:600; color:#334155; }
+.field input,.field textarea { padding:12px 14px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px; font-family:inherit; }
+.field textarea { min-height:120px; resize:vertical; }
+.field input:focus,.field textarea:focus { outline:none; border-color:#4f46e5; }
+.form .btn { align-self:flex-start; }
+/* 바닥글 */
+.site-footer { border-top:1px solid #e2e8f0; padding:28px 0; color:#94a3b8; font-size:14px; }
+.footer-inner { display:flex; justify-content:space-between; }
+@media (max-width:720px){ .hero-title{font-size:32px;} .cards{grid-template-columns:1fr;} .nav{display:none;} }
+
+html,body{background:#ffffff}
+body{padding:16px;overflow:hidden}
+.site-header{position:static}
+.hero{padding:28px 0}
+.section{padding:22px 0}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;section class=&quot;section section-alt&quot; id=&quot;activities&quot;&gt;&lt;div class=&quot;wrap&quot;&gt;
+  &lt;h2 class=&quot;section-title&quot;&gt;활동&lt;/h2&gt;
+  &lt;div class=&quot;cards&quot;&gt;
+    &lt;article class=&quot;card&quot;&gt;&lt;span class=&quot;card-tag&quot;&gt;매주 화요일&lt;/span&gt;&lt;h3 class=&quot;card-title&quot;&gt;주간 스터디&lt;/h3&gt;&lt;p class=&quot;card-desc&quot;&gt;매주 한 가지 주제를 함께 학습하고 코드 리뷰를 진행합니다.&lt;/p&gt;&lt;/article&gt;
+    &lt;article class=&quot;card&quot;&gt;&lt;span class=&quot;card-tag&quot;&gt;학기 단위&lt;/span&gt;&lt;h3 class=&quot;card-title&quot;&gt;팀 프로젝트&lt;/h3&gt;&lt;p class=&quot;card-desc&quot;&gt;학기마다 3~4인 팀을 구성해 기획부터 배포까지 경험합니다.&lt;/p&gt;&lt;/article&gt;
+    &lt;article class=&quot;card&quot;&gt;&lt;span class=&quot;card-tag&quot;&gt;방학 특별활동&lt;/span&gt;&lt;h3 class=&quot;card-title&quot;&gt;해커톤&lt;/h3&gt;&lt;p class=&quot;card-desc&quot;&gt;방학마다 무박 2일 해커톤으로 아이디어를 서비스로 만듭니다.&lt;/p&gt;&lt;/article&gt;
+  &lt;/div&gt;
+&lt;/div&gt;&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div><div class="mission"><h4>미션</h4><p>활동 3개를 카드로 나열합니다. 카드 문구는 study·project·hackathon 객체에서 가져옵니다.</p><div class="reqs"><h4>요구사항</h4><ul><li>카드 3개 (주간 스터디·팀 프로젝트·해커톤)</li><li>각 카드: 태그 + 제목 + 설명</li><li>값은 각 객체에서 {} 로 표시</li></ul></div></div><div class="answer-open"><div class="aohead">Activities 컴포넌트 — App.jsx 에 추가</div><div class="codeblock"><div class="cbhead"><span class="fname"><span class="fdot jsxf"></span>src/App.jsx</span><span class="cbnote">그대로 작성</span><button class="copy" type="button">복사</button></div><pre class="cbcode"><code>function Activities() {
+  return (
+    &lt;section className=&quot;section section-alt&quot; id=&quot;activities&quot; aria-labelledby=&quot;act-title&quot;&gt;
+      &lt;div className=&quot;wrap&quot;&gt;
+        &lt;h2 className=&quot;section-title&quot; id=&quot;act-title&quot;&gt;활동&lt;/h2&gt;
+        &lt;div className=&quot;cards&quot;&gt;
+          &lt;article className=&quot;card&quot;&gt;
+            &lt;span className=&quot;card-tag&quot;&gt;{study.tag}&lt;/span&gt;
+            &lt;h3 className=&quot;card-title&quot;&gt;{study.title}&lt;/h3&gt;
+            &lt;p className=&quot;card-desc&quot;&gt;{study.desc}&lt;/p&gt;
+          &lt;/article&gt;
+          &lt;article className=&quot;card&quot;&gt;
+            &lt;span className=&quot;card-tag&quot;&gt;{project.tag}&lt;/span&gt;
+            &lt;h3 className=&quot;card-title&quot;&gt;{project.title}&lt;/h3&gt;
+            &lt;p className=&quot;card-desc&quot;&gt;{project.desc}&lt;/p&gt;
+          &lt;/article&gt;
+          &lt;article className=&quot;card&quot;&gt;
+            &lt;span className=&quot;card-tag&quot;&gt;{hackathon.tag}&lt;/span&gt;
+            &lt;h3 className=&quot;card-title&quot;&gt;{hackathon.title}&lt;/h3&gt;
+            &lt;p className=&quot;card-desc&quot;&gt;{hackathon.desc}&lt;/p&gt;
+          &lt;/article&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}</code></pre></div></div></section>
+<section class="part" id="part05"><div class="parthead"><div class="pnum">PART <b>05</b></div></div><h2 class="ptitle">모집 안내 (Recruit)</h2><div class="learnrow"><span class="tag">dl 목록</span><span class="tag">연도 값</span></div><div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:260px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&#x27;ko&#x27;&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* ===== 기본 설정 ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: &quot;Pretendard&quot;,&quot;Segoe UI&quot;,&quot;Malgun Gothic&quot;,sans-serif; color:#1e293b; background-color:#ffffff; line-height:1.7; }
+a { color: inherit; text-decoration: none; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+/* 머리말 */
+.site-header { position: sticky; top:0; z-index:10; background-color: rgba(255,255,255,.9); backdrop-filter: blur(8px); border-bottom:1px solid #e2e8f0; }
+.header-inner { display:flex; justify-content:space-between; align-items:center; height:62px; }
+.brand { font-family:&quot;Consolas&quot;,monospace; font-weight:700; font-size:18px; color:#4f46e5; }
+.nav { display:flex; gap:24px; font-size:15px; color:#475569; }
+.nav a:hover { color:#4f46e5; }
+/* 히어로 */
+.hero { padding:88px 0; background:linear-gradient(135deg,#eef2ff,#faf5ff); border-bottom:1px solid #e2e8f0; }
+.eyebrow { font-family:&quot;Consolas&quot;,monospace; font-size:13px; letter-spacing:.14em; color:#6366f1; margin-bottom:14px; }
+.hero-title { font-size:42px; line-height:1.2; letter-spacing:-.01em; max-width:18ch; margin-bottom:18px; }
+.hero-desc { font-size:17px; color:#475569; max-width:54ch; margin-bottom:28px; }
+.hero-buttons { display:flex; gap:12px; }
+/* 버튼 */
+.btn { display:inline-block; padding:12px 22px; border-radius:8px; font-weight:600; border:1px solid transparent; cursor:pointer; font-size:15px; }
+.btn-fill { background-color:#4f46e5; color:#fff; }
+.btn-fill:hover { background-color:#4338ca; }
+.btn-line { background-color:#fff; color:#4f46e5; border-color:#c7d2fe; }
+.btn-line:hover { border-color:#4f46e5; }
+/* 섹션 공통 */
+.section { padding:72px 0; }
+.section-alt { background-color:#f8fafc; }
+.section-title { font-size:28px; margin-bottom:24px; }
+.lead { font-size:16px; color:#475569; max-width:60ch; margin-bottom:28px; }
+/* 통계 */
+.stats { display:flex; flex-wrap:wrap; gap:16px; list-style:none; }
+.stat { flex:1 1 160px; padding:24px; background-color:#fff; border:1px solid #e2e8f0; border-radius:14px; text-align:center; }
+.stat-num { display:block; font-size:32px; color:#4f46e5; }
+.stat-label { font-size:14px; color:#64748b; }
+/* 활동 카드 */
+.cards { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.card { padding:24px; background-color:#fff; border:1px solid #e2e8f0; border-radius:14px; }
+.card:hover { transform:translateY(-4px); box-shadow:0 14px 30px rgba(79,70,229,.12); }
+.card-tag { display:inline-block; padding:4px 10px; margin-bottom:12px; font-size:12px; color:#4f46e5; background-color:#eef2ff; border-radius:999px; }
+.card-title { font-size:18px; margin-bottom:8px; }
+.card-desc { font-size:14px; color:#64748b; }
+/* 모집 */
+.info { border-top:1px solid #e2e8f0; }
+.info-row { display:flex; gap:16px; padding:18px 4px; border-bottom:1px solid #e2e8f0; }
+.info dt { flex:0 0 120px; font-weight:700; color:#4f46e5; }
+.info dd { color:#334155; }
+/* 폼 */
+.form { display:flex; flex-direction:column; gap:16px; max-width:520px; }
+.field { display:flex; flex-direction:column; gap:6px; }
+.field label { font-size:14px; font-weight:600; color:#334155; }
+.field input,.field textarea { padding:12px 14px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px; font-family:inherit; }
+.field textarea { min-height:120px; resize:vertical; }
+.field input:focus,.field textarea:focus { outline:none; border-color:#4f46e5; }
+.form .btn { align-self:flex-start; }
+/* 바닥글 */
+.site-footer { border-top:1px solid #e2e8f0; padding:28px 0; color:#94a3b8; font-size:14px; }
+.footer-inner { display:flex; justify-content:space-between; }
+@media (max-width:720px){ .hero-title{font-size:32px;} .cards{grid-template-columns:1fr;} .nav{display:none;} }
+
+html,body{background:#ffffff}
+body{padding:16px;overflow:hidden}
+.site-header{position:static}
+.hero{padding:28px 0}
+.section{padding:22px 0}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;section class=&quot;section&quot; id=&quot;recruit&quot;&gt;&lt;div class=&quot;wrap&quot;&gt;
+  &lt;h2 class=&quot;section-title&quot;&gt;2026년 신입 회원 모집&lt;/h2&gt;
+  &lt;dl class=&quot;info&quot;&gt;
+    &lt;div class=&quot;info-row&quot;&gt;&lt;dt&gt;모집 대상&lt;/dt&gt;&lt;dd&gt;프로그래밍에 관심 있는 모든 재학생 (전공 무관)&lt;/dd&gt;&lt;/div&gt;
+    &lt;div class=&quot;info-row&quot;&gt;&lt;dt&gt;모집 기간&lt;/dt&gt;&lt;dd&gt;3월 2일 ~ 3월 15일&lt;/dd&gt;&lt;/div&gt;
+    &lt;div class=&quot;info-row&quot;&gt;&lt;dt&gt;지원 방법&lt;/dt&gt;&lt;dd&gt;아래 문의 양식으로 이름과 이메일을 남겨 주세요.&lt;/dd&gt;&lt;/div&gt;
+  &lt;/dl&gt;
+&lt;/div&gt;&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div><div class="mission"><h4>미션</h4><p>설명 목록(dl)으로 모집 정보를 정리합니다. 제목의 연도는 {thisYear} 값으로 표시합니다.</p><div class="reqs"><h4>요구사항</h4><ul><li>제목에 {thisYear}년 표시</li><li>대상·기간·방법 3행</li><li>각 행은 dt(항목) + dd(내용)</li></ul></div></div><div class="answer-open"><div class="aohead">Recruit 컴포넌트 — App.jsx 에 추가</div><div class="codeblock"><div class="cbhead"><span class="fname"><span class="fdot jsxf"></span>src/App.jsx</span><span class="cbnote">그대로 작성</span><button class="copy" type="button">복사</button></div><pre class="cbcode"><code>function Recruit() {
+  return (
+    &lt;section className=&quot;section&quot; id=&quot;recruit&quot; aria-labelledby=&quot;recruit-title&quot;&gt;
+      &lt;div className=&quot;wrap&quot;&gt;
+        &lt;h2 className=&quot;section-title&quot; id=&quot;recruit-title&quot;&gt;{thisYear}년 신입 회원 모집&lt;/h2&gt;
+        &lt;dl className=&quot;info&quot;&gt;
+          &lt;div className=&quot;info-row&quot;&gt;&lt;dt&gt;모집 대상&lt;/dt&gt;&lt;dd&gt;프로그래밍에 관심 있는 모든 재학생 (전공 무관)&lt;/dd&gt;&lt;/div&gt;
+          &lt;div className=&quot;info-row&quot;&gt;&lt;dt&gt;모집 기간&lt;/dt&gt;&lt;dd&gt;3월 2일 ~ 3월 15일&lt;/dd&gt;&lt;/div&gt;
+          &lt;div className=&quot;info-row&quot;&gt;&lt;dt&gt;지원 방법&lt;/dt&gt;&lt;dd&gt;아래 문의 양식으로 이름과 이메일을 남겨 주세요.&lt;/dd&gt;&lt;/div&gt;
+        &lt;/dl&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}</code></pre></div></div></section>
+<section class="part" id="part06"><div class="parthead"><div class="pnum">PART <b>06</b></div></div><h2 class="ptitle">문의 양식 (Contact)</h2><div class="learnrow"><span class="tag">form</span><span class="tag">htmlFor/id</span><span class="tag">닫는 태그</span></div><div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:400px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&#x27;ko&#x27;&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* ===== 기본 설정 ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: &quot;Pretendard&quot;,&quot;Segoe UI&quot;,&quot;Malgun Gothic&quot;,sans-serif; color:#1e293b; background-color:#ffffff; line-height:1.7; }
+a { color: inherit; text-decoration: none; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+/* 머리말 */
+.site-header { position: sticky; top:0; z-index:10; background-color: rgba(255,255,255,.9); backdrop-filter: blur(8px); border-bottom:1px solid #e2e8f0; }
+.header-inner { display:flex; justify-content:space-between; align-items:center; height:62px; }
+.brand { font-family:&quot;Consolas&quot;,monospace; font-weight:700; font-size:18px; color:#4f46e5; }
+.nav { display:flex; gap:24px; font-size:15px; color:#475569; }
+.nav a:hover { color:#4f46e5; }
+/* 히어로 */
+.hero { padding:88px 0; background:linear-gradient(135deg,#eef2ff,#faf5ff); border-bottom:1px solid #e2e8f0; }
+.eyebrow { font-family:&quot;Consolas&quot;,monospace; font-size:13px; letter-spacing:.14em; color:#6366f1; margin-bottom:14px; }
+.hero-title { font-size:42px; line-height:1.2; letter-spacing:-.01em; max-width:18ch; margin-bottom:18px; }
+.hero-desc { font-size:17px; color:#475569; max-width:54ch; margin-bottom:28px; }
+.hero-buttons { display:flex; gap:12px; }
+/* 버튼 */
+.btn { display:inline-block; padding:12px 22px; border-radius:8px; font-weight:600; border:1px solid transparent; cursor:pointer; font-size:15px; }
+.btn-fill { background-color:#4f46e5; color:#fff; }
+.btn-fill:hover { background-color:#4338ca; }
+.btn-line { background-color:#fff; color:#4f46e5; border-color:#c7d2fe; }
+.btn-line:hover { border-color:#4f46e5; }
+/* 섹션 공통 */
+.section { padding:72px 0; }
+.section-alt { background-color:#f8fafc; }
+.section-title { font-size:28px; margin-bottom:24px; }
+.lead { font-size:16px; color:#475569; max-width:60ch; margin-bottom:28px; }
+/* 통계 */
+.stats { display:flex; flex-wrap:wrap; gap:16px; list-style:none; }
+.stat { flex:1 1 160px; padding:24px; background-color:#fff; border:1px solid #e2e8f0; border-radius:14px; text-align:center; }
+.stat-num { display:block; font-size:32px; color:#4f46e5; }
+.stat-label { font-size:14px; color:#64748b; }
+/* 활동 카드 */
+.cards { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.card { padding:24px; background-color:#fff; border:1px solid #e2e8f0; border-radius:14px; }
+.card:hover { transform:translateY(-4px); box-shadow:0 14px 30px rgba(79,70,229,.12); }
+.card-tag { display:inline-block; padding:4px 10px; margin-bottom:12px; font-size:12px; color:#4f46e5; background-color:#eef2ff; border-radius:999px; }
+.card-title { font-size:18px; margin-bottom:8px; }
+.card-desc { font-size:14px; color:#64748b; }
+/* 모집 */
+.info { border-top:1px solid #e2e8f0; }
+.info-row { display:flex; gap:16px; padding:18px 4px; border-bottom:1px solid #e2e8f0; }
+.info dt { flex:0 0 120px; font-weight:700; color:#4f46e5; }
+.info dd { color:#334155; }
+/* 폼 */
+.form { display:flex; flex-direction:column; gap:16px; max-width:520px; }
+.field { display:flex; flex-direction:column; gap:6px; }
+.field label { font-size:14px; font-weight:600; color:#334155; }
+.field input,.field textarea { padding:12px 14px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px; font-family:inherit; }
+.field textarea { min-height:120px; resize:vertical; }
+.field input:focus,.field textarea:focus { outline:none; border-color:#4f46e5; }
+.form .btn { align-self:flex-start; }
+/* 바닥글 */
+.site-footer { border-top:1px solid #e2e8f0; padding:28px 0; color:#94a3b8; font-size:14px; }
+.footer-inner { display:flex; justify-content:space-between; }
+@media (max-width:720px){ .hero-title{font-size:32px;} .cards{grid-template-columns:1fr;} .nav{display:none;} }
+
+html,body{background:#ffffff}
+body{padding:16px;overflow:hidden}
+.site-header{position:static}
+.hero{padding:28px 0}
+.section{padding:22px 0}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;section class=&quot;section section-alt&quot; id=&quot;contact&quot;&gt;&lt;div class=&quot;wrap&quot;&gt;
+  &lt;h2 class=&quot;section-title&quot;&gt;문의하기&lt;/h2&gt;
+  &lt;p class=&quot;lead&quot;&gt;궁금한 점이나 지원 의사를 편하게 남겨 주세요.&lt;/p&gt;
+  &lt;form class=&quot;form&quot;&gt;
+    &lt;div class=&quot;field&quot;&gt;&lt;label for=&quot;name&quot;&gt;이름&lt;/label&gt;&lt;input id=&quot;name&quot; type=&quot;text&quot; placeholder=&quot;홍길동&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;field&quot;&gt;&lt;label for=&quot;email&quot;&gt;이메일&lt;/label&gt;&lt;input id=&quot;email&quot; type=&quot;email&quot; placeholder=&quot;you@example.com&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;field&quot;&gt;&lt;label for=&quot;message&quot;&gt;메시지&lt;/label&gt;&lt;textarea id=&quot;message&quot; placeholder=&quot;하고 싶은 말을 적어 주세요.&quot;&gt;&lt;/textarea&gt;&lt;/div&gt;
+    &lt;button class=&quot;btn btn-fill&quot; type=&quot;button&quot;&gt;보내기&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/div&gt;&lt;/section&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div><div class="mission"><h4>미션</h4><p>입력 양식을 만듭니다. label은 <code>for</code> 대신 <code>htmlFor</code>를 쓰고, 그 값과 input의 id가 같아야 합니다.</p><div class="reqs"><h4>요구사항</h4><ul><li>입력 3개 (이름·이메일·메시지) + 각 라벨</li><li>htmlFor 값과 input id 일치</li><li>빈 요소 input 은 /> 로 닫기</li></ul></div></div><div class="answer-open"><div class="aohead">Contact 컴포넌트 — App.jsx 에 추가</div><div class="codeblock"><div class="cbhead"><span class="fname"><span class="fdot jsxf"></span>src/App.jsx</span><span class="cbnote">그대로 작성</span><button class="copy" type="button">복사</button></div><pre class="cbcode"><code>function Contact() {
+  return (
+    &lt;section className=&quot;section section-alt&quot; id=&quot;contact&quot; aria-labelledby=&quot;contact-title&quot;&gt;
+      &lt;div className=&quot;wrap&quot;&gt;
+        &lt;h2 className=&quot;section-title&quot; id=&quot;contact-title&quot;&gt;문의하기&lt;/h2&gt;
+        &lt;p className=&quot;lead&quot;&gt;궁금한 점이나 지원 의사를 편하게 남겨 주세요.&lt;/p&gt;
+        &lt;form className=&quot;form&quot;&gt;
+          &lt;div className=&quot;field&quot;&gt;
+            &lt;label htmlFor=&quot;name&quot;&gt;이름&lt;/label&gt;
+            &lt;input id=&quot;name&quot; type=&quot;text&quot; placeholder=&quot;홍길동&quot; /&gt;
+          &lt;/div&gt;
+          &lt;div className=&quot;field&quot;&gt;
+            &lt;label htmlFor=&quot;email&quot;&gt;이메일&lt;/label&gt;
+            &lt;input id=&quot;email&quot; type=&quot;email&quot; placeholder=&quot;you@example.com&quot; /&gt;
+          &lt;/div&gt;
+          &lt;div className=&quot;field&quot;&gt;
+            &lt;label htmlFor=&quot;message&quot;&gt;메시지&lt;/label&gt;
+            &lt;textarea id=&quot;message&quot; placeholder=&quot;하고 싶은 말을 적어 주세요.&quot; /&gt;
+          &lt;/div&gt;
+          &lt;button className=&quot;btn btn-fill&quot; type=&quot;button&quot;&gt;보내기&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}</code></pre></div></div></section>
+<section class="part" id="part07"><div class="parthead"><div class="pnum">PART <b>07</b></div></div><h2 class="ptitle">바닥글 (Footer)</h2><div class="learnrow"><span class="tag">footer</span><span class="tag">연도 값</span></div><div class="goal"><span class="glabel">목표 화면 — 이렇게 보이도록 만드세요</span><iframe class="pv" scrolling="no" style="height:92px" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&#x27;ko&#x27;&gt;&lt;head&gt;&lt;meta charset=&#x27;utf-8&#x27;&gt;&lt;style&gt;/* ===== 기본 설정 ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: &quot;Pretendard&quot;,&quot;Segoe UI&quot;,&quot;Malgun Gothic&quot;,sans-serif; color:#1e293b; background-color:#ffffff; line-height:1.7; }
+a { color: inherit; text-decoration: none; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+/* 머리말 */
+.site-header { position: sticky; top:0; z-index:10; background-color: rgba(255,255,255,.9); backdrop-filter: blur(8px); border-bottom:1px solid #e2e8f0; }
+.header-inner { display:flex; justify-content:space-between; align-items:center; height:62px; }
+.brand { font-family:&quot;Consolas&quot;,monospace; font-weight:700; font-size:18px; color:#4f46e5; }
+.nav { display:flex; gap:24px; font-size:15px; color:#475569; }
+.nav a:hover { color:#4f46e5; }
+/* 히어로 */
+.hero { padding:88px 0; background:linear-gradient(135deg,#eef2ff,#faf5ff); border-bottom:1px solid #e2e8f0; }
+.eyebrow { font-family:&quot;Consolas&quot;,monospace; font-size:13px; letter-spacing:.14em; color:#6366f1; margin-bottom:14px; }
+.hero-title { font-size:42px; line-height:1.2; letter-spacing:-.01em; max-width:18ch; margin-bottom:18px; }
+.hero-desc { font-size:17px; color:#475569; max-width:54ch; margin-bottom:28px; }
+.hero-buttons { display:flex; gap:12px; }
+/* 버튼 */
+.btn { display:inline-block; padding:12px 22px; border-radius:8px; font-weight:600; border:1px solid transparent; cursor:pointer; font-size:15px; }
+.btn-fill { background-color:#4f46e5; color:#fff; }
+.btn-fill:hover { background-color:#4338ca; }
+.btn-line { background-color:#fff; color:#4f46e5; border-color:#c7d2fe; }
+.btn-line:hover { border-color:#4f46e5; }
+/* 섹션 공통 */
+.section { padding:72px 0; }
+.section-alt { background-color:#f8fafc; }
+.section-title { font-size:28px; margin-bottom:24px; }
+.lead { font-size:16px; color:#475569; max-width:60ch; margin-bottom:28px; }
+/* 통계 */
+.stats { display:flex; flex-wrap:wrap; gap:16px; list-style:none; }
+.stat { flex:1 1 160px; padding:24px; background-color:#fff; border:1px solid #e2e8f0; border-radius:14px; text-align:center; }
+.stat-num { display:block; font-size:32px; color:#4f46e5; }
+.stat-label { font-size:14px; color:#64748b; }
+/* 활동 카드 */
+.cards { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.card { padding:24px; background-color:#fff; border:1px solid #e2e8f0; border-radius:14px; }
+.card:hover { transform:translateY(-4px); box-shadow:0 14px 30px rgba(79,70,229,.12); }
+.card-tag { display:inline-block; padding:4px 10px; margin-bottom:12px; font-size:12px; color:#4f46e5; background-color:#eef2ff; border-radius:999px; }
+.card-title { font-size:18px; margin-bottom:8px; }
+.card-desc { font-size:14px; color:#64748b; }
+/* 모집 */
+.info { border-top:1px solid #e2e8f0; }
+.info-row { display:flex; gap:16px; padding:18px 4px; border-bottom:1px solid #e2e8f0; }
+.info dt { flex:0 0 120px; font-weight:700; color:#4f46e5; }
+.info dd { color:#334155; }
+/* 폼 */
+.form { display:flex; flex-direction:column; gap:16px; max-width:520px; }
+.field { display:flex; flex-direction:column; gap:6px; }
+.field label { font-size:14px; font-weight:600; color:#334155; }
+.field input,.field textarea { padding:12px 14px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px; font-family:inherit; }
+.field textarea { min-height:120px; resize:vertical; }
+.field input:focus,.field textarea:focus { outline:none; border-color:#4f46e5; }
+.form .btn { align-self:flex-start; }
+/* 바닥글 */
+.site-footer { border-top:1px solid #e2e8f0; padding:28px 0; color:#94a3b8; font-size:14px; }
+.footer-inner { display:flex; justify-content:space-between; }
+@media (max-width:720px){ .hero-title{font-size:32px;} .cards{grid-template-columns:1fr;} .nav{display:none;} }
+
+html,body{background:#ffffff}
+body{padding:16px;overflow:hidden}
+.site-header{position:static}
+.hero{padding:28px 0}
+.section{padding:22px 0}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;footer class=&quot;site-footer&quot;&gt;&lt;div class=&quot;wrap footer-inner&quot;&gt;&lt;small&gt;© 2026 CodeMate&lt;/small&gt;&lt;small&gt;GitHub · Instagram · Notion&lt;/small&gt;&lt;/div&gt;&lt;/footer&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div><div class="mission"><h4>미션</h4><p>페이지 맨 아래 저작권 정보를 넣습니다. 연도는 값으로 표시해 자동으로 맞춰지게 합니다.</p><div class="reqs"><h4>요구사항</h4><ul><li>왼쪽 © {thisYear} {club.name}</li><li>오른쪽 링크 텍스트</li><li>flex 양끝 배치</li></ul></div></div><div class="answer-open"><div class="aohead">Footer 컴포넌트 — App.jsx 에 추가</div><div class="codeblock"><div class="cbhead"><span class="fname"><span class="fdot jsxf"></span>src/App.jsx</span><span class="cbnote">그대로 작성</span><button class="copy" type="button">복사</button></div><pre class="cbcode"><code>function Footer() {
+  return (
+    &lt;footer className=&quot;site-footer&quot;&gt;
+      &lt;div className=&quot;wrap footer-inner&quot;&gt;
+        &lt;small&gt;© {thisYear} {club.name}&lt;/small&gt;
+        &lt;small&gt;GitHub · Instagram · Notion&lt;/small&gt;
+      &lt;/div&gt;
+    &lt;/footer&gt;
+  );
+}</code></pre></div></div></section>
+<section class="part" id="part08"><div class="parthead"><div class="pnum">PART <b>08</b></div></div><h2 class="ptitle">전체 화면 조립 (App)</h2><div class="learnrow"><span class="tag">Fragment</span><span class="tag">하나의 루트</span><span class="tag">조립</span></div><div class="goal"><span class="glabel">목표 화면 — 완성된 전체 사이트</span><iframe class="pv" style="height:600px" src="../react-demos/club.html" title="완성 사이트"></iframe></div><div class="mission"><h4>미션</h4><p>만든 영역을 App에서 하나로 조립합니다. 여러 요소를 반환하므로 Fragment <code>&lt;&gt;...&lt;/&gt;</code> 로 묶습니다.</p><div class="reqs"><h4>요구사항</h4><ul><li>Header · main(Hero~Contact) · Footer 순서</li><li>하나의 루트로 묶기 (Fragment)</li><li>main.jsx 가 App 을 #root 에 연결</li></ul></div></div><div class="answer-open"><div class="aohead">App 컴포넌트 — App.jsx 에 추가</div><div class="codeblock"><div class="cbhead"><span class="fname"><span class="fdot jsxf"></span>src/App.jsx</span><span class="cbnote">App 조립 + main.jsx 연결</span><button class="copy" type="button">복사</button></div><pre class="cbcode"><code>export default function App() {
+  return (
+    &lt;&gt;
+      &lt;Header /&gt;
+      &lt;main&gt;
+        &lt;Hero /&gt;
+        &lt;About /&gt;
+        &lt;Activities /&gt;
+        &lt;Recruit /&gt;
+        &lt;Contact /&gt;
+      &lt;/main&gt;
+      &lt;Footer /&gt;
+    &lt;/&gt;
+  );
+}</code></pre></div><div class="aohead">main.jsx (Vite 기본 코드 확인)</div><div class="codeblock"><div class="cbhead"><span class="fname"><span class="fdot jsxf"></span>src/main.jsx</span><span class="cbnote">#root 에 연결</span><button class="copy" type="button">복사</button></div><pre class="cbcode"><code>import { StrictMode } from &quot;react&quot;;
+import { createRoot } from &quot;react-dom/client&quot;;
+import App from &quot;./App.jsx&quot;;
+import &quot;./index.css&quot;;
+
+createRoot(document.getElementById(&quot;root&quot;)).render(
+  &lt;StrictMode&gt;
+    &lt;App /&gt;
+  &lt;/StrictMode&gt;
+);</code></pre></div></div></section>
+<section class="done"><h2>완성했습니다</h2><p>축하합니다! 3주차 JSX 도구만으로 실제 동아리 소개 사이트를 만들었습니다. 이어서 다음을 시도해 보세요.</p><ul class="steps"><li><span class="n">1</span>활동 카드 "오픈 세미나" 하나 더 추가하기</li><li><span class="n">2</span>소개 통계에 "누적 스터디 횟수" 칸 추가하기</li><li><span class="n">3</span>Hero 설명 아래에 계산식으로 문장 한 줄 넣기</li></ul></section>
+</main>
+</div>
+<script>
+document.querySelectorAll('.copy').forEach(function(b){
+  b.addEventListener('click',function(){
+    var c=b.closest('.codeblock').querySelector('code').textContent;
+    try{navigator.clipboard.writeText(c).then(function(){b.textContent='복사됨';b.classList.add('done');setTimeout(function(){b.textContent='복사';b.classList.remove('done')},1400)},
+    function(){b.textContent='직접 선택';setTimeout(function(){b.textContent='복사'},1400)})}catch(e){b.textContent='직접 선택';setTimeout(function(){b.textContent='복사'},1400)}
+  });
+});
+</script>
+</body>
+</html>

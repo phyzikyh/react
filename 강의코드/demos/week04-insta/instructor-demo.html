@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>4주차 수업 예제 · 인스타그램 피드</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #fafafa;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
+    color: #262626;
+  }
+  .feed { max-width: 470px; margin: 0 auto; padding: 12px 0 48px; }
+
+  /* 헤더 */
+  .feed-header {
+    position: sticky; top: 0; z-index: 5;
+    display: flex; align-items: center; justify-content: space-between;
+    background: #fff; border-bottom: 1px solid #dbdbdb;
+    padding: 12px 16px; margin-bottom: 12px;
+  }
+  .feed-logo { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+  .feed-header__icons { display: flex; gap: 16px; }
+  .icon { width: 24px; height: 24px; stroke: #262626; fill: none; stroke-width: 2; }
+
+  /* 스토리 */
+  .stories {
+    display: flex; gap: 14px; overflow-x: auto;
+    background: #fff; border: 1px solid #dbdbdb; border-radius: 10px;
+    padding: 14px 12px; margin-bottom: 16px;
+  }
+  .story { flex: 0 0 auto; text-align: center; width: 64px; }
+  .story__ring {
+    width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 6px;
+    padding: 2px; background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+  }
+  .story__avatar {
+    width: 100%; height: 100%; border-radius: 50%;
+    border: 2px solid #fff; object-fit: cover; display: block;
+  }
+  .story__name { font-size: 12px; color: #262626; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* 게시물 */
+  .post { background: #fff; border: 1px solid #dbdbdb; border-radius: 10px; margin-bottom: 16px; }
+  .post__head { display: flex; align-items: center; gap: 10px; padding: 10px 12px; }
+  .post__avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
+  .post__user { font-weight: 600; font-size: 14px; }
+  .post__loc { font-size: 12px; color: #737373; }
+  .post__more { margin-left: auto; font-weight: 700; color: #262626; letter-spacing: 1px; }
+  .post__image { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border-top: 1px solid #efefef; border-bottom: 1px solid #efefef; }
+  .post__actions { display: flex; align-items: center; gap: 14px; padding: 10px 12px 4px; }
+  .post__actions .spacer { margin-left: auto; }
+  .post__likes { font-weight: 600; font-size: 14px; padding: 2px 12px; }
+  .post__caption { font-size: 14px; padding: 2px 12px; line-height: 1.4; }
+  .post__caption b { font-weight: 600; }
+  .post__comments { font-size: 14px; color: #737373; padding: 4px 12px; }
+  .post__time { font-size: 10px; color: #a8a8a8; text-transform: uppercase; letter-spacing: 0.3px; padding: 4px 12px 12px; }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+
+  <!--
+    아래 <script type="text/babel"> 안의 코드가 곧 Vite 프로젝트의 src/App.jsx 내용입니다.
+    (맨 위 <script> 세 줄은 Vite 없이 브라우저에서 바로 보기 위한 준비물일 뿐입니다.)
+    3·4주차 개념만 사용: 컴포넌트 + Props + 여러 개 수동 배치. State/이벤트/map 없음.
+  -->
+  <script type="text/babel">
+    // 하트/댓글/공유/북마크 아이콘 (모양만, 누르는 동작은 없음)
+    function Icon({ d }) {
+      return <svg className="icon" viewBox="0 0 24 24"><path d={d} /></svg>;
+    }
+    const HEART = "M12 21s-7.5-4.6-10-9.2C.6 8.9 2.1 6 5 6c1.9 0 3.2 1.1 4 2.3C9.8 7.1 11.1 6 13 6c2.9 0 4.4 2.9 3 5.8C19.5 16.4 12 21 12 21z";
+    const COMMENT = "M21 11.5a8.5 8.5 0 0 1-12.2 7.7L3 21l1.9-5.6A8.5 8.5 0 1 1 21 11.5z";
+    const SHARE = "M22 2 11 13 M22 2 15 22 11 13 2 9 22 2z";
+    const BOOKMARK = "M6 3h12v18l-6-4-6 4z";
+
+    // 스토리 한 칸: 사용자명과 사진을 Props로 받는다
+    function Story({ username, avatar }) {
+      return (
+        <div className="story">
+          <div className="story__ring">
+            <img className="story__avatar" src={avatar} alt={`${username}의 스토리`} />
+          </div>
+          <div className="story__name">{username}</div>
+        </div>
+      );
+    }
+
+    // 게시물 카드: 데이터를 Props로 받아 표시한다 (같은 부품, 다른 데이터)
+    function PostCard({ username, avatar, location, image, likes, caption, commentCount, time }) {
+      return (
+        <article className="post">
+          <div className="post__head">
+            <img className="post__avatar" src={avatar} alt={`${username} 프로필`} />
+            <div>
+              <div className="post__user">{username}</div>
+              <div className="post__loc">{location}</div>
+            </div>
+            <span className="post__more">···</span>
+          </div>
+
+          <img className="post__image" src={image} alt={`${username}의 게시물`} />
+
+          <div className="post__actions">
+            <Icon d={HEART} />
+            <Icon d={COMMENT} />
+            <Icon d={SHARE} />
+            <span className="spacer"></span>
+            <Icon d={BOOKMARK} />
+          </div>
+
+          <div className="post__likes">좋아요 {likes.toLocaleString()}개</div>
+          <div className="post__caption"><b>{username}</b> {caption}</div>
+          <div className="post__comments">댓글 {commentCount}개 모두 보기</div>
+          <div className="post__time">{time}</div>
+        </article>
+      );
+    }
+
+    // 로고 헤더
+    function FeedHeader() {
+      return (
+        <header className="feed-header">
+          <span className="feed-logo">Fastagram</span>
+          <div className="feed-header__icons">
+            <Icon d={HEART} />
+            <Icon d={COMMENT} />
+          </div>
+        </header>
+      );
+    }
+
+    // App: 데이터와 전체 구조를 관리하고, 부품을 조립한다
+    function App() {
+      return (
+        <div className="feed">
+          <FeedHeader />
+
+          <div className="stories">
+            <Story username="minji_dev" avatar="https://i.pravatar.cc/120?img=15" />
+            <Story username="react_fan" avatar="https://i.pravatar.cc/120?img=32" />
+            <Story username="coding_kim" avatar="https://i.pravatar.cc/120?img=11" />
+            <Story username="web_lee" avatar="https://i.pravatar.cc/120?img=45" />
+            <Story username="daily_dev" avatar="https://i.pravatar.cc/120?img=8" />
+          </div>
+
+          <PostCard
+            username="minji_dev"
+            avatar="https://i.pravatar.cc/120?img=15"
+            location="서울, 대한민국"
+            image="https://picsum.photos/seed/react1/470/470"
+            likes={1284}
+            caption="오늘 React 컴포넌트를 배웠다. 화면을 부품으로 나누니 훨씬 깔끔하다."
+            commentCount={42}
+            time="2시간 전"
+          />
+
+          <PostCard
+            username="coding_kim"
+            avatar="https://i.pravatar.cc/120?img=11"
+            location="부산, 대한민국"
+            image="https://picsum.photos/seed/react2/470/470"
+            likes={356}
+            caption="같은 카드에 Props만 바꿔서 게시물을 여러 개 만들었다."
+            commentCount={7}
+            time="5시간 전"
+          />
+
+          <PostCard
+            username="web_lee"
+            avatar="https://i.pravatar.cc/120?img=45"
+            location="제주, 대한민국"
+            image="https://picsum.photos/seed/react3/470/470"
+            likes={89}
+            caption="마크업을 한 번만 쓰고 재사용하는 게 컴포넌트의 힘."
+            commentCount={3}
+            time="1일 전"
+          />
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

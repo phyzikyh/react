@@ -43,10 +43,10 @@ book:
       chapters:
         - text: "1. 이론"
           href: week04_lecture.qmd
-        - text: "2. 연습문제"
-          href: week04_quiz.qmd
-        - text: "3. 코딩실습"
+        - text: "2. 코딩실습"
           href: week04_code.qmd
+        - text: "3. 연습문제"
+          href: week04_quiz.qmd
     - part: "5주차 : State와 이벤트 처리"
       chapters:
         - text: "1. 이론"

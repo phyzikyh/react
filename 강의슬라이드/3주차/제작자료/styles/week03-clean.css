@@ -1,0 +1,100 @@
+/* 3주차 슬라이드 스타일 — 데이터구축실습 강의덱(clean)의 톤을 그대로 계승 */
+/* 참고: 2_builddata 강의슬라이드 week01/02-clean.css */
+
+:root{--ink:#172033;--muted:#5d687a;--blue:#1769d2;--blue-soft:#f4f7fb;--line:#d8e0ec;--red:#b4233c;--red-soft:#fff7f8}
+.reveal{font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;color:var(--ink)}
+.reveal .slides{text-align:left}
+.reveal .slides section{padding:10px 16px;box-sizing:border-box}
+.reveal h1,.reveal h2,.reveal h3{color:var(--ink);letter-spacing:-.035em;font-weight:800}
+.reveal h2{font-size:1.45em;margin-bottom:.35em}
+.reveal h3{font-size:.86em;color:var(--blue)}
+.reveal p,.reveal li{font-size:.58em;line-height:1.5}
+.reveal code{color:#b4233c}
+.reveal strong{color:#0d57b5}
+.reveal div.sourceCode{border:0!important;background:#fff!important;box-shadow:none!important;overflow:visible!important}
+.reveal pre,.reveal pre.sourceCode{width:100%;margin:.35em 0;border:1px solid #d8e0ec!important;border-radius:8px;box-shadow:none!important;background:#fff!important;overflow:hidden!important;font-size:1em}
+.reveal pre code,.reveal pre.sourceCode code{max-height:460px;padding:15px 17px;font-size:.50em;line-height:1.38;white-space:pre-wrap!important;overflow-wrap:anywhere;background:#fff!important;border:0!important}
+.reveal table{width:100%;margin:.5em 0;font-size:.5em;border-collapse:collapse}
+.reveal th{color:#fff;background:var(--blue);padding:9px 12px}
+.reveal td{padding:9px 12px;border-bottom:1px solid var(--line)}
+.reveal tr:nth-child(even) td{background:#f7f9fc}
+.center{text-align:center}.muted{color:var(--muted)}
+.reveal .slide-number{font-size:15px;color:#68758a}
+.reveal .footer{color:#728096;font-size:.34em}
+.reveal .chalkboard-button{z-index:50}
+.reveal img{max-height:500px;object-fit:contain}
+.reveal .columns{align-items:flex-start}
+
+/* 표지 */
+.reveal #title-slide{position:relative;overflow:hidden;text-align:left;padding:82px 88px!important;border-radius:22px;background:#fff;box-shadow:none}
+.reveal #title-slide::before{content:"";position:absolute;left:88px;top:58px;width:76px;height:7px;border-radius:99px;background:#1769d2}
+.reveal #title-slide::after{content:"WEEK 03";position:absolute;right:74px;bottom:54px;color:#dfe7f2;font-size:1.05em;font-weight:850;letter-spacing:.12em}
+.reveal #title-slide h1{position:relative;z-index:1;max-width:940px;margin:0 0 24px;font-size:2em;line-height:1.14;letter-spacing:-.055em;color:#14213a;word-break:keep-all}
+.reveal #title-slide .subtitle{position:relative;z-index:1;display:block;margin:0 0 42px;padding:0;border:0;background:none;color:#1769d2;font-size:.68em;font-weight:750;letter-spacing:.04em}
+.reveal #title-slide .quarto-title-author-name{position:relative;z-index:1;color:#42516a;font-size:.58em;font-weight:650}
+.reveal #title-slide p{position:relative;z-index:1}
+
+/* ===== Expanded lecture: 모든 콘텐츠 슬라이드에 큰 본문 자동 적용 ===== */
+.reveal .slides>section:not(#title-slide){text-align:left}
+.reveal .slides>section:not(#title-slide){top:0!important;padding:8px 20px!important}
+.reveal .slides>section:not(#title-slide) h2{font-size:36px;line-height:1.25;letter-spacing:-.035em;margin:0 0 20px;word-break:keep-all;color:#173b6c;padding-bottom:13px;border-bottom:3px solid #1769d2}
+.reveal .slides>section:not(#title-slide) p,
+.reveal .slides>section:not(#title-slide) li{font-size:26px;line-height:1.6;word-break:keep-all;overflow-wrap:break-word;letter-spacing:-.025em;margin:0 0 17px}
+.reveal .slides>section:not(#title-slide) strong{color:#173b6c;font-weight:800}
+.reveal .slides>section:not(#title-slide) ul,
+.reveal .slides>section:not(#title-slide) ol{margin:0 0 18px 1.2em;display:block}
+.reveal .slides>section:not(#title-slide) li{margin-bottom:14px}
+.reveal .slides>section:not(#title-slide) table{font-size:23px;line-height:1.4;margin:10px 0 18px;width:100%;table-layout:auto}
+.reveal .slides>section:not(#title-slide) th,
+.reveal .slides>section:not(#title-slide) td{padding:10px 13px;word-break:keep-all;vertical-align:middle}
+.reveal .slides>section:not(#title-slide) th{font-size:22px}
+.reveal .slides>section:not(#title-slide) a{color:#1769d2;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+
+/* 코드 블록: 큰 본문에 맞춰 확대 */
+.reveal .slides>section:not(#title-slide) pre{font-size:22px!important;margin:10px 0 18px!important}
+.reveal .slides>section:not(#title-slide) pre code{font-size:22px!important;line-height:1.42;padding:15px 18px}
+.reveal .slides>section:not(#title-slide) p code,
+.reveal .slides>section:not(#title-slide) li code,
+.reveal .slides>section:not(#title-slide) td code{font-size:.92em;color:#b4233c}
+
+/* 콜아웃: 핵심 정리(.takeaway) / 출처(.source) */
+.reveal .takeaway{border-left:5px solid #1769d2;border-radius:0 8px 8px 0;background:#eef4fc;padding:14px 20px;margin-top:18px}
+.reveal .takeaway p{font-size:25px!important;line-height:1.5;margin:0;color:#173b6c;font-weight:650}
+.reveal .source{margin:12px 0 0;text-align:left}
+.reveal .source p{font-size:16px!important;line-height:1.4;margin:0;color:#62718a}
+
+/* 보조 강조 박스 */
+.reveal .note{border:1px solid #d8e0ec;border-radius:8px;background:#f7f9fc;padding:13px 18px;margin-top:16px}
+.reveal .note p{font-size:23px!important;margin:0;color:#3f4b5e;line-height:1.5}
+.reveal .bad{color:#b4233c;font-weight:800}
+.reveal .good{color:#0d7a4d;font-weight:800}
+
+/* 2단 코드 비교 시 폭이 좁으면 축소 */
+.reveal .columns pre code{font-size:19px!important;line-height:1.36}
+.reveal .columns h3{font-size:20px;color:#173b6c;margin:0 0 6px}
+
+/* ===== DOM 트리 다이어그램 (HTML 텍스트 → DOM 객체 트리) ===== */
+.reveal .domfig{display:flex;align-items:center;justify-content:center;gap:34px;margin:20px 0 8px;flex-wrap:nowrap}
+.reveal .htmlcard{font-family:"SFMono-Regular",Consolas,monospace;font-size:19px;line-height:1.55;background:#fff;border:1px solid #d8e0ec;border-radius:10px;padding:16px 20px;color:#172033;white-space:pre}
+.reveal .htmlcard .k{color:#3c6eb4;font-weight:700}
+.reveal .htmlcard .t{color:#b4233c}
+.reveal .htmlcard .cap{display:block;font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:15px;color:#5d687a;font-weight:700;margin-bottom:8px}
+.reveal .tarrow{display:flex;flex-direction:column;align-items:center;color:#3c6eb4;font-size:30px;font-weight:800;line-height:1}
+.reveal .tarrow span{font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:14px;font-weight:650;color:#5d687a;margin-top:6px;text-align:center;line-height:1.25}
+
+.reveal .domtree{position:relative;display:inline-flex;flex-direction:column;align-items:center;border:1px solid #d8e0ec;border-radius:12px;padding:16px 26px 20px;background:#fbfcfe}
+.reveal .domtree .dlabel{font-size:15px;color:#5d687a;font-weight:800;letter-spacing:.02em;margin-bottom:14px}
+.reveal .dnode{font-size:19px;font-weight:750;border-radius:8px;padding:6px 15px;text-align:center;box-sizing:border-box}
+.reveal .dnode.el{background:#eef4ff;border:2px solid #3c6eb4;color:#173b6c}
+.reveal .dnode.txt{background:#f4f7fb;border:1px dashed #9fb2cd;color:#5d687a;font-weight:600;font-size:17px}
+.reveal .droot{position:relative;margin-bottom:26px}
+.reveal .droot::after{content:"";position:absolute;left:50%;bottom:-26px;width:2px;height:26px;background:#c4d0e2;transform:translateX(-50%)}
+.reveal .drow{display:flex;gap:44px;position:relative}
+.reveal .drow::before{content:"";position:absolute;top:-13px;left:25%;right:25%;height:2px;background:#c4d0e2}
+.reveal .dcol{display:flex;flex-direction:column;align-items:center;gap:20px;position:relative}
+.reveal .dcol::before{content:"";position:absolute;top:-13px;left:50%;width:2px;height:13px;background:#c4d0e2;transform:translateX(-50%)}
+.reveal .dcol .txt{position:relative}
+.reveal .dcol .txt::before{content:"";position:absolute;top:-20px;left:50%;width:2px;height:20px;background:#c4d0e2;transform:translateX(-50%)}
+.reveal .domnote{font-size:15px;color:#5d687a;margin-top:14px;text-align:center}
+.reveal .domnote .el-b{display:inline-block;width:14px;height:11px;border:2px solid #3c6eb4;background:#eef4ff;border-radius:3px;vertical-align:middle;margin:0 4px}
+.reveal .domnote .txt-b{display:inline-block;width:14px;height:11px;border:1px dashed #9fb2cd;background:#f4f7fb;border-radius:3px;vertical-align:middle;margin:0 4px}

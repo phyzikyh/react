@@ -1,0 +1,29 @@
+## 필수 사용 요소
+
+영화 소개 페이지에는 다음 요소가 모두 포함되어야 합니다.
+
+```text
+header
+nav
+a
+section
+article
+img
+form
+label
+input
+button
+footer
+```
+
+또한 다음 JSX 문법을 사용해야 합니다.
+
+```text
+Fragment <> </>
+className
+htmlFor
+href="#id"
+id
+JavaScript 변수
+{ }를 이용한 변수 출력
+```

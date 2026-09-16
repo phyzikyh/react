@@ -1,0 +1,26 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: #f6f7f9; color: #253047; font-family: "Malgun Gothic", sans-serif; line-height: 1.7; }
+.site-header, .catalog, .site-footer { width: min(960px, calc(100% - 32px)); margin: 24px auto; }
+.site-header, .catalog { background: #fff; padding: 28px; border: 1px solid #dfe4ec; border-radius: 10px; }
+.brand { color: #2458a6; font-size: 28px; font-weight: 800; margin: 0; }
+.menu { display: flex; gap: 24px; margin: 20px 0; }
+a { color: #2458a6; text-underline-offset: 4px; }
+.search { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+input, textarea, button { font: inherit; padding: 9px 12px; border: 1px solid #adb9ca; border-radius: 5px; }
+button:disabled { color: #58677a; background: #edf0f5; }
+input:focus-visible, textarea:focus-visible, a:focus-visible { outline: 3px solid #4584cf; outline-offset: 3px; }
+.help, .muted, .list-description, .site-footer { color: #59677b; }
+.help { font-size: 13px; }
+h1 { font-size: 28px; }
+h2 { font-size: 20px; margin: 8px 0; overflow-wrap: anywhere; }
+.book { display: flex; align-items: flex-start; gap: 28px; padding: 28px 0; border-top: 1px solid #dfe4ec; }
+.book-cover { width: 140px; height: 196px; object-fit: cover; flex-shrink: 0; }
+.book-info { min-width: 0; }
+.book-info p { margin: 8px 0; }
+.category { color: #2458a6; font-weight: bold; }
+.price { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.price strong { font-size: 22px; }
+.discount { color: #b33027; }
+del { color: #59677b; }
+@media (max-width: 560px) { .site-header, .catalog { padding: 18px; } .book { flex-direction: column; gap: 12px; } }
+

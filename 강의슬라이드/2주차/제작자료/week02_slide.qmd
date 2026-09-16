@@ -1,0 +1,653 @@
+---
+title: "CSS 기초와 반응형 웹"
+subtitle: "고급웹프로그래밍: React · 2주차"
+author: "유한대학교 · 신기홍"
+lang: ko
+format:
+  revealjs:
+    theme: simple
+    css: styles/week02-clean.css
+    width: 1280
+    height: 720
+    margin: 0.05
+    slide-number: c/t
+    controls: true
+    progress: true
+    center: false
+    transition: none
+    incremental: false
+    code-overflow: wrap
+    highlight-style: github
+    embed-resources: true
+execute:
+  eval: false
+footer: "고급웹프로그래밍: React · Week 02"
+---
+
+## 01. CSS란 무엇인가
+
+CSS(Cascading Style Sheets)는 HTML 요소가 화면에 어떻게 표현될지를 정의하는 **스타일시트 언어**.
+
+| 언어 | 담당 |
+|---|---|
+| HTML | 제목·문단·내비게이션 등 콘텐츠의 **구조와 의미** |
+| CSS | 색상·글꼴·크기·여백·테두리·배치·반응형 등 **표현** |
+
+::: {.takeaway}
+HTML은 "무엇인가", CSS는 "어떻게 보이는가"를 담당.
+:::
+
+## 02. CSS를 분리하는 이유
+
+- 요소마다 `style` 속성을 반복하면 페이지가 늘수록 수정이 어려움.
+- CSS를 **별도 파일**로 관리하면 여러 문서에 같은 디자인을 재사용.
+- 색상·간격 체계를 **한곳에서 변경**하면 전체에 반영.
+
+::: {.note}
+구조(HTML)와 표현(CSS)의 분리가 유지보수의 출발점.
+:::
+
+## 03. CSS 규칙의 구성
+
+CSS 규칙은 **선택자(selector)**와 **선언 블록(declaration block)**으로 구성.
+
+```css
+선택자 {
+  속성: 값;   /* 하나의 선언, 끝에 세미콜론 */
+  속성: 값;
+}
+```
+
+```css
+p {
+  color: rebeccapurple;
+  text-align: center;
+}
+```
+
+- `p` → 스타일을 적용할 **선택자**
+- `color` → **속성**, `rebeccapurple` → **값**
+
+## 04. CSS 주석
+
+주석은 `/*`와 `*/` 사이에 작성. 여러 줄에도 사용.
+
+```css
+/* 프로젝트 카드의 기본 표현 */
+.project-card {
+  border: 1px solid #d0d7de;
+  padding: 8px;
+}
+```
+
+::: {.note}
+`//`는 일반 CSS의 주석 문법이 아님.
+:::
+
+## 05. CSS 적용 방법 세 가지
+
+| 방법 | 위치 | 특징 |
+|---|---|---|
+| 인라인 | 요소의 `style` 속성 | 빠른 확인, 재사용·유지보수 어려움 |
+| 내부 | `head`의 `<style>` | 한 문서 실험에 적합 |
+| 외부 | 별도 `.css` + `<link>` | **재사용·캐시 활용, 가장 권장** |
+
+## 06. 인라인 스타일
+
+요소의 `style` 속성에 직접 작성.
+
+```html
+<p style="color: red; background-color: #fff3cd;">
+  인라인 스타일
+</p>
+```
+
+- 우선순위가 높고 여러 요소에 반복됨.
+- 유지보수가 어려워 사용을 최소화.
+
+## 07. 내부 스타일시트
+
+문서의 `head` 안 `<style>`에 작성.
+
+```html
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    p {
+      color: navy;
+      background-color: lightyellow;
+    }
+  </style>
+</head>
+```
+
+한 문서 실험에는 편리하지만 여러 페이지가 공유하기에는 부적합.
+
+## 08. 외부 스타일시트 (권장)
+
+CSS를 별도 파일에 작성하고 `<link>`로 연결.
+
+```html
+<!-- index.html -->
+<link rel="stylesheet" href="css/style.css" />
+```
+
+```css
+/* css/style.css */
+p { color: darkgreen; background-color: honeydew; }
+```
+
+::: {.takeaway}
+여러 문서 재사용·캐시 활용이 가능한 가장 권장 방식. `href`는 HTML 기준 상대 경로.
+:::
+
+## 09. 캐스케이드와 명시도
+
+같은 요소를 여러 규칙이 가리키면 **명시도가 높은 선택자**가 우선.
+
+```css
+p          { color: gray; }
+.message   { color: blue; }
+#notice    { color: red; }   /* id가 가장 높음 → 빨강 적용 */
+```
+
+명시도 순서: **인라인 > id > class·속성·가상클래스 > 요소·가상요소.**
+
+## 10. 상속
+
+일부 속성은 부모에서 자식으로 **상속**됨.
+
+| 구분 | 예 |
+|---|---|
+| 상속됨 | `color`, `font-family`, `line-height` |
+| 상속 안 됨 | `margin`, `padding`, `border`, `width` |
+
+::: {.note}
+부모 `div`에 지정한 글자색·글꼴을 자식 `p`가 물려받음.
+:::
+
+## 11. 기본 선택자
+
+요소·id·class·속성으로 대상을 선택.
+
+```css
+p       { padding: 6px; }              /* 요소: 같은 태그 전체 */
+#intro  { background-color: #fff3cd; } /* id: 특정 하나 */
+.card   { border: 1px solid #0969da; }  /* class: 같은 class 전체 */
+input[type="password"] { letter-spacing: .3em; } /* 속성값 */
+```
+
+`#`은 id 하나, `.`은 class 그룹, 대괄호는 속성 값 기준.
+
+## 12. 속성 선택자의 부분 일치
+
+값의 시작·끝·포함 여부로 선택.
+
+```css
+a[href^="https://"] { color: #0969da; }       /* ^ : ~로 시작 */
+a[href$=".pdf"]::after { content: " (PDF)"; }  /* $ : ~로 끝 */
+a[href*="github.com"] { font-weight: 700; }    /* *= : 포함 */
+```
+
+## 13. 링크와 사용자 반응 상태
+
+링크·요소의 상태에 따라 스타일을 지정.
+
+```css
+a:link    { color: #0969da; }  /* 방문 전 */
+a:visited { color: #8250df; }  /* 방문 후 */
+a:hover   { color: #0550ae; }  /* 마우스 올림 */
+a:active  { color: #cf222e; }  /* 누르는 순간 */
+```
+
+::: {.note}
+터치 기기에는 hover가 없을 수 있으므로 핵심 기능을 hover에만 의존하지 않음.
+:::
+
+## 14. 초점(focus)과 접근성
+
+키보드 사용자를 위해 **focus 표현**을 반드시 제공.
+
+```css
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid #ffbf47;
+  outline-offset: 3px;
+}
+```
+
+::: {.takeaway}
+색만으로 상태를 전달하지 않고, 초점 외곽선으로 키보드 이동 위치를 표시.
+:::
+
+## 15. 구조 가상 클래스
+
+형제 요소 중 **위치**를 기준으로 선택.
+
+```css
+li:first-child { font-weight: 700; }
+li:last-child  { color: #8250df; }
+tr:nth-child(even) { background-color: #f6f8fa; }
+tr:nth-child(odd)  { background-color: #ffffff; }
+```
+
+`nth-child()`에서 `even`은 짝수, `odd`는 홀수 번째.
+
+## 16. 폼 상태 선택자
+
+폼 컨트롤의 상태에 따라 선택.
+
+| 선택자 | 대상 상태 |
+|---|---|
+| `:enabled` / `:disabled` | 활성 / 비활성 |
+| `:focus` | 초점을 받은 상태 |
+| `:required` | 필수 입력 항목 |
+| `:checked` | 체크된 상태 |
+
+::: {.note}
+색상만으로 오류·선택 상태를 전달하지 않고 아이콘·설명 텍스트를 병행.
+:::
+
+## 17. 가상 요소
+
+요소의 특정 부분이나 생성 콘텐츠를 선택.
+
+```css
+.lead::first-letter { font-size: 2.5rem; font-weight: 700; }
+.lead::first-line   { color: #0550ae; }
+::selection         { color: #fff; background-color: #0969da; }
+.external-link::after { content: " ↗"; }
+```
+
+::: {.note}
+생성 콘텐츠(`content`)는 보조 기술에 일관되게 전달되지 않을 수 있어 핵심 정보 전달에는 부적합.
+:::
+
+## 18. 선택자 조합
+
+여러 요소의 **관계**로 선택.
+
+```css
+article p { line-height: 1.8; }  /* 후손: 안의 모든 p */
+nav > ul  { display: flex; }     /* 자식: 바로 아래 */
+h2 + p    { color: #0969da; }    /* 인접 형제: 바로 뒤 p */
+```
+
+| 결합자 | 의미 |
+|---|---|
+| 공백 | 모든 후손 |
+| `>` | 바로 아래 자식 |
+| `+` | 바로 뒤 형제 하나 |
+| `~` | 뒤의 형제들 |
+
+## 19. 현대적인 관계 선택자
+
+복잡한 관계를 간결하게 표현.
+
+```css
+:is(h1, h2, h3) code { color: #cf222e; }     /* 묶어서 선택 */
+.project-card:not(.featured) { opacity: .5; } /* 아닌 것 */
+.form-field:has(input:invalid) {              /* 자식을 포함하는 것 */
+  color: #cf222e;
+}
+```
+
+::: {.note}
+사용 대상 브라우저의 지원 범위를 확인하고 지나치게 복잡한 선택자는 지양.
+:::
+
+## 20. 값과 단위
+
+| 단위 | 기준과 용도 |
+|---|---|
+| `px` | CSS 픽셀, 테두리 등 고정적인 작은 값 |
+| `%` | 부모·기준값에 대한 비율 |
+| `em` / `rem` | 현재 요소 / 루트 요소의 글자 크기 기준 |
+| `vw` / `vh` | viewport 너비 / 높이의 1% |
+| `ch` | 숫자 0 글리프 너비, 글줄 길이에 활용 |
+
+::: {.takeaway}
+본문 글자 크기는 사용자가 조절할 수 있도록 **rem 기반** 설계가 유리.
+:::
+
+## 21. 유동적 크기: clamp()
+
+`min()`·`max()`·`clamp()`로 최소·최대를 제한하며 유동 크기 지정.
+
+```css
+.hero-title  { font-size: clamp(1.5rem, 5vw, 3rem); }
+.article-body { max-width: 40ch; }
+```
+
+- `clamp(최소, 유동, 최대)` → 화면 폭에 따라 크기 변화.
+- `max-width: 40ch` → 한 줄이 지나치게 길어지지 않도록 제한.
+
+## 22. 박스 모델
+
+모든 요소는 네 겹의 사각형 박스로 구성.
+
+```text
+┌───────── margin (바깥 여백) ─────────┐
+│  ┌────── border (테두리) ──────┐     │
+│  │  ┌─── padding (안쪽 여백) ──┐│     │
+│  │  │      content (콘텐츠)    ││     │
+│  │  └─────────────────────────┘│     │
+│  └─────────────────────────────┘     │
+└──────────────────────────────────────┘
+```
+
+바깥에서 안으로 **margin → border → padding → content** 순서.
+
+## 23. box-sizing
+
+`width`가 무엇을 포함하는지를 결정.
+
+```css
+.content-box { box-sizing: content-box; } /* 200+padding+border */
+.border-box  { box-sizing: border-box; }  /* 200px 고정 */
+```
+
+| 값 | width 의미 |
+|---|---|
+| `content-box`(기본) | 콘텐츠만, padding·border가 더해짐 |
+| `border-box` | padding·border 포함, 크기 예측 쉬움 |
+
+## 24. 테두리와 모서리
+
+`border-style`·`border-radius`로 모양과 모서리를 지정.
+
+```css
+.solid   { border: 3px solid #0969da; }
+.dashed  { border: 3px dashed #0969da; }
+.rounded { border: 3px solid #0969da; border-radius: 12px; }
+```
+
+주요 스타일: `solid`, `dotted`, `dashed`, `double`.
+
+## 25. 원형 이미지
+
+정사각형 크기와 `border-radius: 50%`를 함께 사용.
+
+```css
+.avatar {
+  width: 8rem;
+  aspect-ratio: 1;      /* 정사각형 */
+  object-fit: cover;
+  border-radius: 50%;   /* 완전한 원형 */
+}
+```
+
+`object-fit: cover`로 비율을 유지하며 영역을 채움.
+
+## 26. 배경
+
+`background-*`로 배경색과 배경 이미지를 지정.
+
+| 속성 | 역할 |
+|---|---|
+| `background-color` | 배경색 |
+| `background-image` | 배경 이미지·gradient |
+| `background-repeat` | 반복 여부·방향 |
+| `background-position` | 배경 위치 |
+| `background-size` | 크기(`cover`·`contain`) |
+
+::: {.note}
+배경 이미지는 대체 텍스트가 없음. 의미 있는 이미지는 `img`로, 텍스트는 충분한 대비 확보.
+:::
+
+## 27. 글자 스타일
+
+`font-*`·`text-*`로 글자를 조정.
+
+```css
+h1 { font-size: 2rem; font-weight: 800; text-align: center; }
+.prose { max-width: 40ch; line-height: 1.8; }
+```
+
+- `font-family`는 앞 글꼴을 못 쓰면 뒤의 **대체 글꼴**을 시도.
+- 본문은 충분한 `line-height`와 읽기 좋은 줄 길이를 유지.
+
+## 28. 링크 스타일
+
+기본 링크와 버튼형 링크.
+
+```css
+a { color: #0969da; }
+a:hover { color: #0550ae; }
+
+.button-link {
+  display: inline-block;
+  padding: .6rem 1rem;
+  color: #fff; background-color: #1f6feb;
+  border-radius: .5rem; text-decoration: none;
+}
+```
+
+::: {.note}
+페이지 이동이면 `a`, 현재 페이지에서 명령 실행이면 `button`을 사용.
+:::
+
+## 29. 표 스타일
+
+```css
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: .6rem 1rem; border-bottom: 1px solid #d0d7de; }
+thead th { color: #fff; background-color: #24292f; }
+tbody tr:nth-child(even) { background-color: #f6f8fa; }
+```
+
+- `border-collapse: collapse` → 셀 사이 이중선을 하나로 합침.
+- 작은 화면 대비 `overflow-x: auto` 컨테이너로 가로 스크롤 제공.
+
+## 30. display
+
+요소의 배치 방식을 지정.
+
+| 값 | 특징 |
+|---|---|
+| `inline` | 줄 안에 흐름, 너비 지정 불가 |
+| `block` | 새 줄 + 가로 전체 차지 |
+| `inline-block` | 줄 안에 있으면서 너비·높이 지정 가능 |
+
+## 31. 가시성
+
+숨김 방식마다 의미가 다름.
+
+| 방식 | 효과 |
+|---|---|
+| `display: none` | 레이아웃·접근성 트리에서 제거 |
+| `visibility: hidden` | 자리 공간은 남기고 안 보임 |
+| `opacity: 0` | 투명하지만 공간·상호작용 유지 |
+
+::: {.note}
+용도에 맞는 숨김 방식을 선택.
+:::
+
+## 32. 위치 지정 (position)
+
+`position`으로 배치 기준을 변경.
+
+| 값 | 기준 |
+|---|---|
+| `static` | 기본 흐름 |
+| `relative` | 원래 자리 기준 이동, absolute 자식의 기준 |
+| `absolute` | 가장 가까운 위치 지정 조상 기준 |
+| `fixed` | viewport 기준 고정 |
+| `sticky` | 임계 위치까지 흐름, 이후 고정 |
+
+겹침 순서는 `z-index`가 결정. 전체 레이아웃은 Flexbox·Grid가 우선.
+
+## 33. overflow
+
+콘텐츠가 상자를 넘칠 때의 처리 방식.
+
+```css
+.scroll-box {
+  width: 20rem; height: 8rem;
+  overflow: auto;   /* 넘치면 스크롤바 */
+}
+```
+
+| 값 | 동작 |
+|---|---|
+| `visible`(기본) | 넘친 콘텐츠 그대로 표시 |
+| `hidden` | 잘라냄 |
+| `scroll` / `auto` | 항상 / 필요할 때 스크롤 |
+
+## 34. float
+
+원래 **이미지 주위로 텍스트를 흐르게** 하는 기능.
+
+```css
+.profile-photo {
+  float: left;
+  width: 8rem;
+  margin: 0 1rem .5rem 0;
+}
+```
+
+::: {.note}
+과거에는 전체 레이아웃에 사용했으나, 현재 레이아웃은 Flexbox·Grid가 적합.
+:::
+
+## 35. Flexbox 기본
+
+한 방향(행 또는 열)의 항목 배치에 적합.
+
+```css
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+```
+
+`display: flex` 하나로 자식들이 가로로 나란히 정렬.
+
+## 36. Flexbox 주요 속성
+
+| 속성 | 역할 |
+|---|---|
+| `justify-content` | 주축 정렬 |
+| `align-items` | 교차축 정렬 |
+| `flex-wrap` | 줄바꿈 |
+| `gap` | 항목 간 간격 |
+| `flex` | 증가·축소·기본 크기 |
+
+```css
+.cell { flex: 1 1 10rem; }  /* 기본 10rem, 남으면 늘고 부족하면 줄어듦 */
+```
+
+## 37. Grid 기본
+
+행과 열을 함께 다루는 2차원 레이아웃.
+
+```css
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 1rem;
+}
+```
+
+`repeat(auto-fit, minmax(...))` → 공간에 맞춰 열 수를 자동 조정.
+
+## 38. Grid 영역 이름
+
+이름 붙인 영역으로 전체 레이아웃을 구성.
+
+```css
+.page-layout {
+  display: grid;
+  grid-template-areas:
+    "header header"
+    "sidebar main"
+    "footer footer";
+  grid-template-columns: 8rem 1fr;
+}
+.s { grid-area: sidebar; }
+```
+
+## 39. 반응형 웹과 미디어 쿼리
+
+콘텐츠가 사용 가능한 공간에 유연하게 적응하도록 설계.
+
+```css
+@media (min-width: 48rem) {   /* 화면이 넓을 때만 */
+  .layout {
+    display: grid;
+    grid-template-columns: 12rem 1fr;
+    gap: 1rem;
+  }
+}
+```
+
+넓은 화면에서만 2열로 확장.
+
+## 40. mobile-first 원칙
+
+- 모바일에서도 읽을 수 있는 **기본 스타일을 먼저** 작성.
+- 공간이 넓어질 때 레이아웃을 확장.
+- breakpoint는 기기 이름이 아니라 **콘텐츠가 무너지는 지점**으로 결정.
+
+```css
+img { max-width: 100%; height: auto; }
+```
+
+::: {.takeaway}
+`prefers-reduced-motion`·`prefers-color-scheme`로 사용자 환경 설정에도 대응.
+:::
+
+## 41. CSS 사용자 정의 속성 (변수)
+
+반복되는 색상·간격을 변수로 관리.
+
+```css
+:root {
+  --primary: #0969da;
+  --space: 1.5rem;
+}
+.project-card {
+  padding: var(--space);
+  border-left: 4px solid var(--primary);
+}
+```
+
+`--이름`으로 선언, `var(--이름)`으로 사용. 한곳에서 바꾸면 전체 반영.
+
+## 42. 전환과 애니메이션
+
+`transition`은 상태 변화를 부드럽게, `animation`은 여러 단계를 실행.
+
+```css
+.project-card {
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+.project-card:hover { transform: translateY(-4px); }
+
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+.notice { animation: fade-in 1200ms ease-out; }
+```
+
+## 43. 움직임과 접근성
+
+- 움직임은 상태 변화를 이해시키는 수준으로 제한.
+- 큰 이동·반복 애니메이션은 지양.
+- 색만으로 정보를 전달하지 않고 텍스트·아이콘 병행.
+
+::: {.note}
+`prefers-reduced-motion` 대응으로 모션에 민감한 사용자를 배려.
+:::
+
+## 44. 핵심 정리
+
+1. CSS는 HTML의 구조 위에 **표현**을 담당하는 스타일시트 언어.
+2. 외부 스타일시트가 재사용·유지보수에 가장 유리.
+3. 선택자·명시도·상속으로 어떤 규칙이 적용될지 결정.
+4. 박스 모델과 `box-sizing`이 크기 계산의 기준.
+5. 레이아웃은 **Flexbox·Grid**, 화면 대응은 **미디어 쿼리**로.
+
+::: {.takeaway}
+구조는 HTML, 표현은 CSS, 배치는 Flexbox·Grid — 역할을 나누어 설계.
+:::

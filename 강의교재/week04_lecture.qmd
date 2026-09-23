@@ -31,7 +31,7 @@ function App() {
   return (
     <main>
       <article>
-        <h3>minji_dev</h3>
+        <h3>minjun_dev</h3>
         <p>오늘 React 배움</p>
       </article>
       <article>
@@ -309,7 +309,7 @@ import { Header } from "./components/Header.jsx"; // 중괄호로 가져옴
 **Props는 부모 컴포넌트가 자식 컴포넌트에 건네주는 입력 데이터**입니다. 두 가지 익숙한 것에 비유할 수 있습니다.
 
 - **함수의 인자와 같습니다.** `Math.max(3, 7)`처럼 함수에 값을 넣으면 다른 결과가 나오듯, 컴포넌트에 Props를 넣으면 다른 화면이 나옵니다.
-- **HTML 속성과 같습니다.** `<img src="a.jpg">`, `<a href="...">`처럼 태그에 값을 주듯, 우리가 만든 컴포넌트에도 `<Profile name="민지" />`처럼 원하는 이름으로 값을 줍니다.
+- **HTML 속성과 같습니다.** `<img src="a.jpg">`, `<a href="...">`처럼 태그에 값을 주듯, 우리가 만든 컴포넌트에도 `<Profile name="민준" />`처럼 원하는 이름으로 값을 줍니다.
 
 값을 **주는 쪽**이 부모, **받는 쪽**이 자식입니다. 아래 예제에서는 `App`이 부모, `ProductCard`가 자식입니다. 받는 쪽은 전달받은 값을 꺼내 쓰는데, 보통 **구조 분해 할당**(`{ }`로 필요한 값을 꺼내는 문법)을 사용합니다.
 
@@ -450,7 +450,7 @@ function Avatar({ username, size = 80 }) {
 function App() {
   return (
     <div className="avatar-row">
-      <Avatar username="minji" />
+      <Avatar username="minjun" />
       <Avatar username="react_fan" size={120} />
     </div>
   );
@@ -470,7 +470,7 @@ function Avatar({ username, size = 80 }) {
 `size = 80`은 **부모가 `size`를 안 주면 80을 쓰고, 주면 그 값을 쓴다**는 뜻입니다.
 
 ```jsx
-<Avatar username="minji" />                {/* size 생략 → 80 사용 */}
+<Avatar username="minjun" />                {/* size 생략 → 80 사용 */}
 <Avatar username="react_fan" size={120} /> {/* size=120 → 120 사용 */}
 ```
 

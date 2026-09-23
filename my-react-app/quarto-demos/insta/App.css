@@ -1,0 +1,128 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #111;
+  background: #fafafa;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+input {
+  font: inherit;
+}
+
+.feed {
+  width: min(470px, 92%);
+  margin: 24px auto;
+  display: grid;
+  gap: 24px;
+}
+
+.post {
+  background: white;
+  border: 1px solid #dbdbdb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.post__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+}
+
+.post__user {
+  font-weight: 700;
+}
+
+.post__image {
+  display: block;
+  width: 100%;
+}
+
+.post__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px 0;
+}
+
+.post__actions button {
+  border: 0;
+  background: none;
+  font-size: 24px;
+  line-height: 1;
+  padding: 0;
+}
+
+.post__likes {
+  margin: 0;
+  padding: 6px 14px 0;
+  font-weight: 700;
+}
+
+.post__caption {
+  margin: 0;
+  padding: 4px 14px;
+}
+
+.post input {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid #efefef;
+  padding: 12px 14px;
+  outline: none;
+}
+
+.post__preview {
+  margin: 0;
+  padding: 4px 14px 12px;
+  color: #8e8e8e;
+}
+
+/* ===== 새로 추가한 기능 CSS ===== */
+
+.post__save {
+  margin-left: auto;
+  border: 0;
+  background: none;
+  font-weight: 600;
+  color: #0095f6;
+}
+
+.post__follow {
+  padding: 5px 12px;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  background: white;
+  font-weight: 600;
+  color: #0095f6;
+}
+
+.post__more {
+  border: 0;
+  background: none;
+  color: #8e8e8e;
+  padding: 0 14px 4px;
+}
+
+.post__detail {
+  margin: 0;
+  padding: 0 14px 8px;
+  color: #333;
+}
+
+.post__count {
+  margin: 0;
+  padding: 0 14px 12px;
+  color: #c7c7c7;
+  font-size: 13px;
+}

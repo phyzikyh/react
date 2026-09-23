@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>댓글 입력 실시간 반영</title>
+<style>
+  body { margin:0; padding:16px; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif; }
+  input { font-size:14px; padding:8px 10px; border:1px solid #cfd4da; border-radius:8px; width:min(320px,80%); }
+  p { font-size:14px; color:#333; }
+</style></head><body><div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+<script type="text/babel">
+const { useState } = React;
+function CommentBox() {
+  const [text, setText] = useState("");
+  return (
+    <div>
+      <input
+        value={text}
+        onChange={(event) => setText(event.target.value)}
+        placeholder="댓글 달기..."
+      />
+      <p>미리보기: {text}</p>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<CommentBox />);
+</script></body></html>

@@ -20,7 +20,7 @@ number-sections: false
 2. State로 값 기억하기
 3. 불리언 State로 켜고 끄기
 4. 입력값을 State로 관리하기
----
+
 
 # 1. 이벤트 처리하기
 
@@ -401,78 +401,3 @@ onChange={(e) => setText(e.target.value)}    // 입력창 → State (갱신)
 입력창에 보이는 값이 State `text`로 고정되는데, `text`를 갱신하는 `onChange`가 없으면 값이 영영 그대로이기 때문입니다. `onChange`로 State를 바꿔 줘야 입력한 글자가 반영됩니다.
 :::
 :::
-
----
-
-# 이번 주 만들기
-
-인스타 게시물에 **좋아요 토글**과 **댓글 입력**을 더해, 정적이던 피드를 반응하는 화면으로 만듭니다. 지금까지 배운 것(이벤트, 숫자 State, 불리언 토글, 입력 State)을 한 컴포넌트에 모읍니다.
-
-**예제 5-6  반응하는 게시물 카드**
-
-```jsx
-import { useState } from "react";
-
-function PostCard({ username, image, initialLikes, caption }) {
-  const [liked, setLiked] = useState(false);
-  const [likes, setLikes] = useState(initialLikes);
-  const [comment, setComment] = useState("");
-
-  function toggleLike() {
-    setLiked(!liked);
-    setLikes(liked ? likes - 1 : likes + 1);
-  }
-
-  return (
-    <article className="post">
-      <header className="post__head">
-        <span className="post__user">{username}</span>
-      </header>
-
-      <img className="post__image" src={image} alt={`${username}의 게시물`} />
-
-      <div className="post__actions">
-        <button onClick={toggleLike}>{liked ? "♥" : "♡"}</button>
-      </div>
-
-      <p className="post__likes">좋아요 {likes.toLocaleString()}개</p>
-      <p className="post__caption"><b>{username}</b> {caption}</p>
-
-      <input
-        value={comment}
-        onChange={(event) => setComment(event.target.value)}
-        placeholder="댓글 달기..."
-      />
-      {comment && <p className="post__preview">작성 중: {comment}</p>}
-    </article>
-  );
-}
-
-function App() {
-  return (
-    <div className="feed">
-      <PostCard username="minjun_dev" image="https://picsum.photos/seed/react1/470/470"
-        initialLikes={1284} caption="React State 배우는 중" />
-      <PostCard username="coding_kim" image="https://picsum.photos/seed/react2/470/470"
-        initialLikes={356} caption="좋아요가 진짜 눌린다" />
-    </div>
-  );
-}
-
-export default App;
-```
-
-**실행 결과** (하트를 누르고 댓글창에 타이핑해 보세요)
-
-<iframe class="site-demo-frame" title="반응하는 게시물 피드 실행 결과" src="react-demos/week05-feed.html"></iframe>
-
-- `liked`(불리언)와 `likes`(숫자) 두 State로 하트와 좋아요 수를 함께 관리합니다.
-- `toggleLike`는 하트를 뒤집고, 눌린 상태였으면 숫자를 1 내리고 아니면 1 올립니다.
-- `comment`(입력 State)로 댓글 입력을 실시간 반영합니다.
-- 각 `PostCard`는 **독립적인 State**를 가지므로, 첫 게시물의 좋아요가 둘째 게시물에 영향을 주지 않습니다.
-
-**확장 미션**
-
-1. 저장(북마크) 버튼을 추가해 눌림 상태를 토글해 보세요.
-2. 댓글 아래에 글자 수 `{comment.length}자`를 표시해 보세요.
-3. 좋아요를 처음부터 눌린 상태로 시작하려면 어디를 바꿔야 할지 찾아 바꿔 보세요.

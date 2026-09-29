@@ -1,21 +1,460 @@
 ---
 title: "6주차 코딩 실습"
+subtitle: "부천 여행 페이지에 React Hook 기능 추가하기"
+date: "2026-09-30"
+number-sections: false
 ---
 
-# 종합 예제: Hook으로 포트폴리오와 브라우저 연결하기
+# 이번 실습에서 만드는 것
+
+앞서 완성한 **부천 여행 페이지**를 이어서 사용합니다. 일정 담기, 여행 인원, 팁 펼치기, 메모 기능을 유지하면서 이번 주 이론의 `useRef`와 `useEffect`를 적용합니다.
+
+| 추가할 기능 | 적용할 곳 | 이번 주 개념 |
+|---|---|---|
+| 버튼을 누르면 입력창으로 커서 이동 | 여행 메모 | `useRef`로 DOM 요소 가리키기 |
+| 메모에 맞춰 브라우저 탭 제목 변경 | 여행 메모 | `useEffect`와 `[memo]` 의존성 배열 |
+| 현재 시각 표시 | 방문 정보 | `useEffect` 타이머와 정리 함수 |
+
+여행 페이지 Vite 프로젝트를 열고 `npm run dev`로 개발 서버를 실행합니다. 프로젝트가 없다면 아래 **시작 코드**를 `src/App.jsx`, `src/App.css`에 각각 작성하세요. Vite 기본 화면에서 새로 시작한다면 `src/index.css`의 기본 스타일도 지워 여행 페이지 CSS와 충돌하지 않게 합니다.
+
+## 시작 코드: 지금까지 완성한 App.jsx
+
+다음은 여행 페이지의 최종 코드입니다. 기존 프로젝트가 있다면 다시 입력할 필요 없이 코드가 같은지만 확인하세요.
+
+```jsx
+import { useState } from "react";
+import "./App.css";
+
+function TravelHeader() {
+  function handlePlanClick() {
+    alert("여행 플래너를 시작합니다.");
+  }
+
+  return (
+    <header className="travel-header">
+      <a className="brand" href="#intro">VISIT<span>BUCHEON</span></a>
+      <nav className="travel-nav">
+        <a href="#intro">부천 여행</a>
+        <a href="#info">가볼 만한 곳</a>
+        <a href="#guide">여행 안내</a>
+      </nav>
+      <a className="plan-link" href="#info" onClick={handlePlanClick}>
+        여행 플래너 ＋
+      </a>
+    </header>
+  );
+}
+
+function TravelIntro({ name, description }) {
+  return (
+    <section id="intro" className="travel-intro">
+      <p className="intro-label">GYEONGGI-DO · SOUTH KOREA</p>
+      <h1>{name}</h1>
+      <p>{description}</p>
+    </section>
+  );
+}
+
+function TravelInfo({ label, children }) {
+  const [selected, setSelected] = useState(false);
+
+  return (
+    <div className="travel-info">
+      <strong>{label}</strong>
+      <p>{children}</p>
+
+      <button
+        className="select-button"
+        onClick={() => setSelected(!selected)}
+      >
+        {selected ? "✓ 일정에 담김" : "+ 일정에 담기"}
+      </button>
+    </div>
+  );
+}
+
+function VisitInfo({ hours, fee = "무료" }) {
+  const [people, setPeople] = useState(1);
+
+  return (
+    <section className="visit-info">
+      <h2>방문 정보</h2>
+      <p>운영시간: {hours}</p>
+      <p>입장료: {fee}</p>
+
+      <div className="people-control">
+        <span>여행 인원: {people}명</span>
+        <button onClick={() => setPeople(people + 1)}>+ 1명</button>
+      </div>
+    </section>
+  );
+}
+
+function GuideBox({ title, children }) {
+  return (
+    <section className="guide-box">
+      <h2>{title}</h2>
+      {children}
+    </section>
+  );
+}
+
+function TravelTip() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <section className="travel-tip">
+      <h2>부천 여행 Tip</h2>
+
+      <button onClick={() => setOpen(!open)}>
+        {open ? "접기" : "자세히 보기"}
+      </button>
+
+      {open && (
+        <p>
+          주말에는 주요 관광지 주변이 혼잡할 수 있으므로
+          대중교통을 이용하면 더 편리하게 이동할 수 있습니다.
+        </p>
+      )}
+    </section>
+  );
+}
+
+function TravelMemo() {
+  const [memo, setMemo] = useState("");
+
+  return (
+    <section className="travel-memo">
+      <h2>나의 여행 메모</h2>
+
+      <input
+        value={memo}
+        onChange={(event) => setMemo(event.target.value)}
+        placeholder="여행 계획을 입력하세요..."
+      />
+
+      {memo && <p>내 계획: {memo}</p>}
+    </section>
+  );
+}
+
+function TravelFooter() {
+  return (
+    <footer className="travel-footer">
+      <p>VISIT BUCHEON</p>
+      <small>경기도 부천시 여행 안내</small>
+    </footer>
+  );
+}
+
+function App() {
+  return (
+    <>
+      <TravelHeader />
+      <main>
+        <TravelIntro
+          name="경기도 부천"
+          description="만화와 예술, 도심 속 공원과 계절의 꽃을 하루에 만날 수 있는 가까운 도시 여행지입니다."
+        />
+
+        <section id="info" className="info-section">
+          <h2>부천에서 꼭 만나야 할 곳</h2>
+          <TravelInfo label="원미산 진달래동산">부천의 대표 꽃 명소</TravelInfo>
+          <TravelInfo label="한국만화박물관">만화와 캐릭터를 만나는 문화 공간</TravelInfo>
+          <TravelInfo label="상동호수공원">도심 속 호수와 계절 정원</TravelInfo>
+        </section>
+
+        <VisitInfo hours="관광지별 운영시간 확인" fee="공간별 상이" />
+
+        <div id="guide" className="guide-layout">
+          <GuideBox title="지하철로 가볍게 떠나요">
+            <p>지하철 1호선과 7호선으로 주요 지역에 편리하게 이동할 수 있습니다.</p>
+          </GuideBox>
+          <GuideBox title="하루 여행 추천 코스">
+            <ul>
+              <li>한국만화박물관에서 부천의 문화 만나기</li>
+              <li>상동호수공원에서 여유롭게 산책하기</li>
+            </ul>
+          </GuideBox>
+        </div>
+
+        <TravelTip />
+        <TravelMemo />
+      </main>
+      <TravelFooter />
+    </>
+  );
+}
+
+export default App;
+```
+
+## 시작 코드: 지금까지 완성한 App.css
+
+이 CSS를 그대로 유지합니다. 새 버튼의 모양만 뒤에서 파일 맨 아래에 추가합니다.
+
+```css
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #243127;
+  background: #f5f2ea;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.travel-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 24px 8%;
+  background: white;
+  color: #111;
+}
+
+.travel-header h1 {
+  margin: 0;
+}
+
+.travel-nav {
+  display: flex;
+  gap: 54px;
+}
+
+.plan-link {
+  justify-self: end;
+  padding: 10px 18px;
+  border: 1px solid #111;
+  border-radius: 999px;
+}
+
+.travel-intro {
+  min-height: 640px;
+  padding: 120px 7% 74px;
+  color: white;
+  background: linear-gradient(90deg, rgba(24,19,36,.72), transparent),
+    url("https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=2000&q=85") center/cover;
+}
+
+.travel-intro h1 {
+  margin: 8px 0;
+  font-size: 80px;
+}
+
+.intro-label {
+  color: #37745f;
+  font-weight: bold;
+}
+
+.info-section {
+  margin-top: 24px;
+}
+
+.info-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.info-section h2 {
+  grid-column: 1 / -1;
+}
+
+.travel-info {
+  padding: 20px;
+  border: 1px solid #e3e7ec;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 8px 20px rgba(29,43,58,.1);
+}
+
+.visit-info {
+  margin-top: 24px;
+  padding: 24px;
+  background: #eaf5ff;
+}
+
+.guide-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.guide-box {
+  padding: 24px;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.travel-footer {
+  padding: 28px;
+  text-align: center;
+  background: #f4f6f8;
+  color: #111;
+}
+
+@media (max-width: 700px) {
+  .travel-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-section,
+  .guide-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== 새로 추가한 CSS ===== */
+
+.people-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.people-control button {
+  padding: 8px 14px;
+  border: 1px solid #9ebbd2;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+}
+
+.select-button {
+  padding: 8px 12px;
+  border: 1px solid #37745f;
+  border-radius: 8px;
+  color: #243127;
+  background: white;
+  cursor: pointer;
+}
+
+.travel-tip {
+  margin-top: 24px;
+  padding: 24px;
+  border-radius: 12px;
+  background: white;
+}
+
+.travel-tip button {
+  padding: 8px 14px;
+  border: 1px solid #111;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+}
+
+.travel-memo {
+  margin: 24px 0;
+  padding: 24px;
+  border-radius: 12px;
+  background: white;
+}
+
+.travel-memo input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccd3d8;
+  border-radius: 8px;
+  font-size: 16px;
+}
+```
+
+# 따라 하기 1. 메모 입력창으로 커서 이동하기
+
+`TravelMemo`의 메모 입력값은 **State**로 유지하고, 실제 입력창 DOM 요소는 **Ref**로 가리킵니다. 먼저 `App.jsx` 첫 줄을 바꿉니다.
+
+```jsx
+import { useRef, useState } from "react";
+import "./App.css";
+```
+
+기존 `TravelMemo` 함수 전체를 다음 코드로 교체합니다.
+
+```jsx
+function TravelMemo() {
+  const [memo, setMemo] = useState("");
+  const memoRef = useRef(null);
+
+  return (
+    <section className="travel-memo">
+      <h2>나의 여행 메모</h2>
+      <label htmlFor="travel-memo-input">여행 계획</label>
+      <input
+        id="travel-memo-input"
+        ref={memoRef}
+        value={memo}
+        onChange={(event) => setMemo(event.target.value)}
+        placeholder="여행 계획을 입력하세요..."
+      />
+      <button type="button" onClick={() => memoRef.current?.focus()}>
+        메모 작성하기
+      </button>
+      {memo && <p>내 계획: {memo}</p>}
+    </section>
+  );
+}
+```
+
+`memo`는 화면에 표시해야 하므로 State입니다. `memoRef`는 입력창 자체를 가리킵니다. 버튼을 누를 때만 `focus()`를 호출합니다. Hook은 클릭 함수나 조건문 안이 아닌 **컴포넌트 최상위**에서 호출합니다.
+
+`App.css` 맨 아래에 버튼 모양을 추가합니다.
+
+```css
+.travel-memo button {
+  margin-top: 12px;
+  padding: 10px 16px;
+  border: 1px solid #37745f;
+  border-radius: 8px;
+  color: #243127;
+  background: white;
+  cursor: pointer;
+}
+```
+
+**확인:** 다른 곳을 클릭한 뒤 `메모 작성하기`를 누르면 입력창에 커서가 나타납니다. 메모 미리보기도 그대로 동작해야 합니다.
+
+# 따라 하기 2. 메모에 맞춰 탭 제목 바꾸기
+
+브라우저 탭의 제목은 React가 그리는 JSX 바깥에 있습니다. `memo`가 바뀐 **뒤에** `document.title`을 맞추기 위해 Effect를 사용합니다. `App.jsx` 첫 줄을 다시 바꿉니다.
 
 ```jsx
 import { useEffect, useRef, useState } from "react";
+import "./App.css";
+```
 
-function useDocumentTitle(title) {
-  useEffect(() => {
-    const previousTitle = document.title;
-    document.title = title;
-    return () => { document.title = previousTitle; };
-  }, [title]);
-}
+`TravelMemo`에서 `const memoRef = useRef(null);` 바로 아래, `return` 위에 다음 코드를 추가합니다.
 
-function Clock() {
+```jsx
+useEffect(() => {
+  const text = memo.trim();
+  document.title = text
+    ? `${text.slice(0, 12)} · 부천 여행`
+    : "부천 여행 | VISIT BUCHEON";
+}, [memo]);
+```
+
+`[memo]`는 메모가 달라졌을 때 Effect를 다시 실행한다는 뜻입니다. `trim()`은 공백만 입력했는지 확인하고, `slice(0, 12)`는 탭 제목이 너무 길어지지 않게 합니다. 타이머나 이벤트를 등록하지 않으므로 정리 함수는 필요하지 않습니다.
+
+**확인:** 메모를 입력하면 탭 제목이 바뀌고, 내용을 모두 지우면 `부천 여행 | VISIT BUCHEON`으로 돌아옵니다.
+
+# 따라 하기 3. 방문 정보에 실시간 시계 넣기
+
+`VisitInfo` **바로 위에** 새 컴포넌트를 추가합니다. 타이머는 Effect에서 등록하고 정리 함수에서 해제합니다.
+
+```jsx
+function TravelClock() {
   const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
@@ -25,39 +464,106 @@ function Clock() {
 
   return <time dateTime={now.toISOString()}>{now.toLocaleTimeString("ko-KR")}</time>;
 }
+```
 
-export default function PortfolioTools() {
-  const [query, setQuery] = useState("");
-  const searchRef = useRef(null);
-  useDocumentTitle(query ? `${query} 검색 · 포트폴리오` : "포트폴리오");
+기존 `VisitInfo`에서 입장료 문단 **아래에** 현재 시각 문단을 추가합니다.
 
-  return (
-    <main>
-      <header><h1>홍길동 포트폴리오</h1><Clock /></header>
-      <section>
-        <label htmlFor="search">프로젝트 검색</label>
-        <input
-          ref={searchRef}
-          id="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-        />
-        <button type="button" onClick={() => searchRef.current?.focus()}>
-          검색창 포커스
-        </button>
-      </section>
-    </main>
-  );
+```jsx
+<p>입장료: {fee}</p>
+<p>현재 시각: <TravelClock /></p>
+```
+
+빈 의존성 배열 `[]`은 컴포넌트가 나타날 때 타이머를 등록하도록 합니다. 화면에서 사라질 때 `clearInterval(timerId)`가 실행됩니다. 개발 모드의 `StrictMode`에서는 Effect의 설정과 정리를 한 번 더 확인할 수 있으므로 정리 함수를 빠뜨리지 마세요.
+
+**확인:** 방문 정보의 시각이 약 1초마다 바뀌며 인원 버튼도 계속 동작합니다.
+
+# 완성 화면 확인
+
+다음은 위 세 단계를 여행 페이지에 적용한 React 결과입니다. 아래로 스크롤해 방문 정보의 시계와 여행 메모를 확인하세요.
+
+<iframe class="site-demo-frame" src="react-demos/week06-travel.html" title="부천 여행 React Hook 완성 화면" loading="lazy"></iframe>
+
+<p class="demo-caption"><a href="react-demos/week06-travel.html" target="_blank">완성 화면 새 창에서 보기</a></p>
+
+# 직접 해보기: 여행 페이지 확장 문제
+
+아래 문제는 위 예제의 **완성본에서 시작**합니다. 순서대로 풀되 기능을 직접 작성하세요.
+
+## 문제 1. 시계 켜고 끄기
+
+`VisitInfo`에 `showClock` State를 추가하고 `시계 숨기기` / `시계 보기` 버튼을 만드세요. `showClock`이 `true`일 때에만 `<TravelClock />`을 렌더링합니다.
+
+```jsx
+const [showClock, setShowClock] = useState(true);
+// 버튼 클릭 시 setShowClock으로 값을 반대로 바꾸기
+// showClock이 true일 때만 <TravelClock /> 표시하기
+```
+
+**확인할 것**
+
+- 처음에는 시계가 보이고 1초마다 바뀝니다.
+- 숨기면 시계가 사라지고 다시 보이면 현재 시각부터 표시됩니다.
+- 타이머를 만든 `TravelClock`의 정리 함수는 그대로 남아 있어야 합니다.
+
+## 문제 2. 여행 메모 글자 수 표시하기
+
+`TravelMemo`에 `현재 0자`처럼 입력한 글자 수를 표시하세요. 메모를 입력하거나 지울 때 숫자가 바로 바뀌어야 합니다.
+
+```jsx
+// 기존 memo State를 사용합니다.
+// memo.length는 현재 문자열의 길이입니다.
+```
+
+**확인할 것**
+
+- 빈 메모는 0자, `부천`은 2자로 표시됩니다.
+- 글자 수를 위한 별도 State나 Effect를 만들지 않습니다. 기존 `memo`로 바로 계산할 수 있기 때문입니다.
+- 탭 제목 변경과 입력창 포커스 기능이 계속 동작합니다.
+
+## 문제 3. 메모 비우고 바로 다시 쓰기
+
+`TravelMemo`에 `메모 비우기` 버튼을 추가하세요. 누르면 메모 내용이 지워지고 커서가 입력창으로 이동해야 합니다. 따라 하기 1의 `memoRef`를 다시 사용합니다.
+
+```jsx
+// 클릭 이벤트 안에서 기존 setMemo와 memoRef를 함께 사용합니다.
+// 새 useRef를 만들 필요는 없습니다.
+```
+
+**확인할 것**
+
+- 입력한 메모, 미리보기, 글자 수가 모두 비워집니다.
+- 브라우저 탭 제목이 기본 제목으로 돌아갑니다.
+- 버튼을 누른 직후 입력창에 다시 글을 쓸 수 있습니다.
+
+## 문제 4. 화면 너비를 알려주는 여행 안내
+
+`GuideBox`를 배치한 영역 아래에 `WindowGuide` 컴포넌트를 만들고 현재 브라우저 창의 너비를 표시하세요. 창을 조절할 때 숫자가 갱신되어야 합니다.
+
+```jsx
+function WindowGuide() {
+  const [width, setWidth] = useState(() => window.innerWidth);
+
+  useEffect(() => {
+    function handleResize() {
+      // setWidth로 현재 window.innerWidth를 반영
+    }
+    // resize 이벤트 구독
+    // 정리 함수에서 같은 handleResize로 구독 해제
+  }, []);
+
+  return <p>현재 창 너비: {/* width */}px</p>;
 }
 ```
 
-이 예제에서 State는 검색어와 시간을 화면에 표현하고, Effect는 문서 제목과 타이머라는 외부 시스템을 동기화하며, Ref는 DOM 입력 요소를 가리킵니다. 각 Hook의 역할이 겹치지 않도록 구분하는 것이 핵심입니다.
+**확인할 것**
 
+- 창 너비를 바꾸면 표시 숫자가 바뀝니다.
+- `addEventListener`와 `removeEventListener`에 **같은 함수**를 전달합니다.
+- 화면 배치는 기존 CSS 미디어 쿼리가 담당합니다. 이 문제에서는 창 너비를 **정보로 표시**합니다.
 
-# 실행 결과: Hook으로 확장한 포트폴리오
+## 제출 전 점검
 
-검색어를 입력하면 브라우저 탭 제목이 바뀌고, 포커스 버튼은 검색창으로 키보드 포커스를 이동합니다. 시계는 Effect로 생성한 타이머에 따라 갱신되며 테마 버튼은 React State와 문서 속성의 동기화를 보여줍니다.
-
-<iframe class="demo-frame demo-frame--tall" src="examples/week06/index.html" title="6주차 React Hook 실행 결과" loading="lazy"></iframe>
-
-<p class="demo-caption"><a href="examples/week06/index.html" target="_blank">실행 결과를 새 창에서 보기</a></p>
+1. 일정 담기, 인원 변경, 팁 펼치기, 메모 미리보기가 모두 동작하는지 확인합니다.
+2. 따라 하기의 포커스, 탭 제목, 시계를 확인합니다.
+3. 문제 1~4의 동작과 각 Effect의 정리 함수를 확인합니다.
+4. 브라우저 콘솔과 Vite 터미널에 오류가 없는지 확인합니다.

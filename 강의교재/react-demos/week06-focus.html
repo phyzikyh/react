@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>입력창 포커스</title>
+<style>
+  body { margin:0; padding:16px; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif; }
+  label { display:block; font-size:13px; margin-bottom:6px; }
+  input { font-size:14px; padding:8px 10px; border:1px solid #cfd4da; border-radius:8px; width:min(260px,70%); }
+  button { margin-top:10px; font-size:14px; padding:8px 14px; border:1px solid #cfd4da; border-radius:8px; background:#fff; cursor:pointer; }
+</style></head><body><div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+<script type="text/babel">
+const { useRef } = React;
+function SearchBox() {
+  const inputRef = useRef(null);
+  function handleFocus() { inputRef.current.focus(); }
+  return (
+    <div>
+      <label htmlFor="q">검색</label>
+      <input ref={inputRef} id="q" placeholder="검색어" />
+      <div><button type="button" onClick={handleFocus}>검색창으로 이동</button></div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<SearchBox />);
+</script></body></html>

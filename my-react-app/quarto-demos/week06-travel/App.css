@@ -184,3 +184,29 @@ a {
   background: white;
   cursor: pointer;
 }
+
+/* 6주차 예제 4: 창 너비 표시 */
+.window-width {
+  margin-top: 24px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #eef3f0;
+  color: #37745f;
+  font-weight: bold;
+}
+
+/* 6주차 예제 5: 오늘의 추천 (데이터 불러오기 + 로딩) */
+.today-pick {
+  margin-top: 24px;
+  padding: 24px;
+  border-radius: 12px;
+  background: white;
+}
+
+.today-pick .pick-card strong {
+  font-size: 18px;
+}
+
+.loading {
+  color: #7a8a99;
+}

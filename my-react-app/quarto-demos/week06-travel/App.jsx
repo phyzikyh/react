@@ -129,6 +129,45 @@ function TravelMemo() {
   );
 }
 
+function WindowWidth() {
+  const [width, setWidth] = useState(() => window.innerWidth);
+
+  useEffect(() => {
+    function handleResize() {
+      setWidth(window.innerWidth);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return <p className="window-width">현재 창 너비: {width}px</p>;
+}
+
+function TodayPick() {
+  const [pick, setPick] = useState(null);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setPick({ name: "부천아트벙커 B39", desc: "쓰레기 소각장을 개조한 복합문화예술공간" });
+    }, 1200);
+    return () => clearTimeout(timerId);
+  }, []);
+
+  return (
+    <section className="today-pick">
+      <h2>오늘의 추천</h2>
+      {pick === null ? (
+        <p className="loading">불러오는 중…</p>
+      ) : (
+        <div className="pick-card">
+          <strong>{pick.name}</strong>
+          <p>{pick.desc}</p>
+        </div>
+      )}
+    </section>
+  );
+}
+
 function TravelFooter() {
   return (
     <footer className="travel-footer">
@@ -153,6 +192,7 @@ function App() {
           <TravelInfo label="한국만화박물관">만화와 캐릭터를 만나는 문화 공간</TravelInfo>
           <TravelInfo label="상동호수공원">도심 속 호수와 계절 정원</TravelInfo>
         </section>
+        <TodayPick />
         <VisitInfo hours="관광지별 운영시간 확인" fee="공간별 상이" />
         <div id="guide" className="guide-layout">
           <GuideBox title="지하철로 가볍게 떠나요">
@@ -165,6 +205,7 @@ function App() {
             </ul>
           </GuideBox>
         </div>
+        <WindowWidth />
         <TravelTip />
         <TravelMemo />
       </main>

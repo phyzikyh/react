@@ -9,7 +9,7 @@ number-sections: false
 
 ## 여행 페이지 코드
 
-먼저 `src/App.jsx`를 다음과 같이 작성합니다. React Hook을 적용하기 전의 기본 여행 페이지입니다. 기존 프로젝트가 있다면 다시 입력할 필요 없이 코드가 같은지만 확인하세요.
+먼저 `src/App.jsx`를 다음과 같이 작성합니다. React Hook을 적용하기 전의 기본 여행 페이지입니다.
 
 ```jsx
 import { useState } from "react";
@@ -593,75 +593,518 @@ function TodayPick() {
 
 <p class="demo-caption"><a href="react-demos/week06-travel.html" target="_blank">완성 화면 새 창에서 보기</a></p>
 
-# 실습 문제: 여행 페이지 더 확장하기
+# 실습 문제: 미드나잇 타임세일 랜딩 페이지
 
-아래 문제는 위 완성본에서 시작합니다. 순서대로 풀되 기능을 직접 작성하세요.
+여행 페이지와 별개로, 이번에는 한정 특가를 알리는 **세일 랜딩 페이지**를 만듭니다. 마감 카운트다운, 상품 데이터 불러오기, 알림 입력창 자동 포커스를 직접 구현합니다. 완성하면 다음과 같은 화면이 됩니다.
 
-## 문제 1. 시계 켜고 끄기
+<iframe class="site-demo-frame" src="react-demos/week06-sale.html" title="미드나잇 타임세일 완성 화면" loading="lazy"></iframe>
 
-`VisitInfo`에 `showClock` State를 추가하고 `시계 숨기기` / `시계 보기` 버튼을 만드세요. `showClock`이 `true`일 때에만 `<TravelClock />`을 렌더링합니다.
+<p class="demo-caption"><a href="react-demos/week06-sale.html" target="_blank">완성 화면 새 창에서 보기</a></p>
+
+## 시작 코드
+
+새 연습이므로 `src/App.jsx`와 `src/App.css`를 아래 코드로 바꿉니다. `Countdown`·`ProductCard`·`NotifyForm`은 뼈대만 있고, 각 문제에서 내용을 채웁니다.
 
 ```jsx
-const [showClock, setShowClock] = useState(true);
-// 버튼 클릭 시 setShowClock으로 값을 반대로 바꾸기
-// showClock이 true일 때만 <TravelClock /> 표시하기
+import "./App.css";
+
+function Countdown() {
+  // 문제 1, 2에서 카운트다운을 구현합니다.
+  return <p className="hero__desc">카운트다운 준비 중…</p>;
+}
+
+function ProductCard() {
+  // 문제 3에서 상품 불러오기를 구현합니다.
+  return (
+    <section className="product">
+      <p className="loading">상품 자리</p>
+    </section>
+  );
+}
+
+function NotifyForm() {
+  // 문제 4에서 입력창과 포커스를 구현합니다.
+  return (
+    <section className="notify">
+      <h2>오픈 알림 신청</h2>
+      <p>다음 세일 소식을 가장 먼저 받아보세요.</p>
+    </section>
+  );
+}
+
+function App() {
+  return (
+    <div className="page">
+      <header className="site-header">
+        <span className="logo">MIDNIGHT<b>SALE</b></span>
+        <span className="tag">단 하루 특가</span>
+      </header>
+
+      <section className="hero">
+        <p className="hero__eyebrow">TODAY ONLY</p>
+        <h1 className="hero__title">MIDNIGHT SALE</h1>
+        <p className="hero__desc">자정이 지나면 사라지는 한정 특가. 마감까지 남은 시간</p>
+        <Countdown />
+      </section>
+
+      <main className="content">
+        <ProductCard />
+        <NotifyForm />
+      </main>
+
+      <footer className="site-footer">
+        <small>© 2026 MIDNIGHT STORE</small>
+      </footer>
+    </div>
+  );
+}
+
+export default App;
+```
+
+`src/App.css`에는 다음 완성 스타일을 그대로 작성합니다. 이후 문제는 JavaScript만 다루므로 CSS는 수정하지 않습니다.
+
+```css
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, "Malgun Gothic", sans-serif;
+}
+
+.page {
+  min-height: 100vh;
+  color: #1a1a2e;
+  background: #ffffff;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 7%;
+  border-bottom: 1px solid #ececf2;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.logo b {
+  color: #f43f7f;
+  margin-left: 4px;
+}
+
+.tag {
+  font-size: 13px;
+  color: #6b6b80;
+}
+
+.hero {
+  padding: 72px 7% 60px;
+  text-align: center;
+  background: radial-gradient(900px 360px at 50% -10%, rgba(244, 63, 127, 0.12), transparent 70%);
+}
+
+.hero__eyebrow {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: #f43f7f;
+}
+
+.hero__title {
+  margin: 10px 0 14px;
+  font-size: 60px;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, #1a1a2e, #f43f7f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero__desc {
+  margin: 0 0 28px;
+  color: #5b5b70;
+}
+
+.countdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.time-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 92px;
+  padding: 16px 10px;
+  border-radius: 14px;
+  background: #f7f7fb;
+  border: 1px solid #ececf2;
+}
+
+.time-box strong {
+  font-size: 46px;
+  font-variant-numeric: tabular-nums;
+  color: #1a1a2e;
+}
+
+.time-box span {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #8a8aa0;
+}
+
+.time-sep {
+  font-size: 40px;
+  color: #d0d0dc;
+}
+
+.countdown-over {
+  text-align: center;
+  font-size: 24px;
+  color: #f43f7f;
+}
+
+.content {
+  width: min(760px, 92%);
+  margin: 40px auto;
+  display: grid;
+  gap: 28px;
+}
+
+.product {
+  overflow: hidden;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid #ececf2;
+  box-shadow: 0 10px 30px rgba(26, 26, 46, 0.06);
+}
+
+.product__image {
+  display: block;
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+}
+
+.product__body {
+  padding: 24px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: #f43f7f;
+}
+
+.product__name {
+  margin: 14px 0 10px;
+  font-size: 24px;
+}
+
+.product__price {
+  margin: 0 0 20px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.original {
+  color: #9a9aae;
+  text-decoration: line-through;
+}
+
+.sale {
+  font-size: 30px;
+  color: #f43f7f;
+}
+
+.buy {
+  width: 100%;
+  padding: 15px;
+  border: 0;
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  background: #f43f7f;
+  cursor: pointer;
+}
+
+.loading {
+  padding: 60px 24px;
+  text-align: center;
+  color: #9a9aae;
+}
+
+.notify {
+  padding: 28px;
+  border-radius: 18px;
+  background: #f7f7fb;
+  border: 1px solid #ececf2;
+}
+
+.notify h2 {
+  margin: 0 0 6px;
+}
+
+.notify p {
+  margin: 0 0 16px;
+  color: #5b5b70;
+}
+
+.notify__row {
+  display: flex;
+  gap: 10px;
+}
+
+.notify__row input {
+  flex: 1;
+  padding: 13px 14px;
+  border-radius: 10px;
+  border: 1px solid #d7d7e2;
+  background: #ffffff;
+  color: #1a1a2e;
+  font-size: 15px;
+}
+
+.notify__row input:focus {
+  outline: none;
+  border-color: #f43f7f;
+}
+
+.notify__row button {
+  padding: 13px 22px;
+  border: 0;
+  border-radius: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: #1a1a2e;
+  cursor: pointer;
+}
+
+.notify__hint {
+  margin: 12px 0 0;
+  color: #1f9d57;
+  font-size: 14px;
+}
+
+.site-footer {
+  padding: 30px;
+  text-align: center;
+  color: #9a9aae;
+  border-top: 1px solid #ececf2;
+}
+```
+
+여기까지 실행하면 카운트다운·상품·알림 자리가 비어 있는 세일 페이지가 나옵니다. 이제 문제를 하나씩 풉니다.
+
+## 문제 1. 마감 카운트다운 만들기
+
+`Countdown`을 완성하세요. 1초마다 남은 시간이 줄고 시:분:초로 표시됩니다. 타이머는 **정리 함수**로 반드시 해제합니다.
+
+먼저 파일 첫 줄에서 Hook을 불러옵니다.
+
+```jsx
+import { useState, useEffect } from "react";
+import "./App.css";
+```
+
+`Countdown`을 다음과 같이 작성합니다. `pad`는 한 자리 수를 `03`처럼 두 자리로 맞춥니다.
+
+```jsx
+function pad(n) {
+  return String(n).padStart(2, "0");
+}
+
+function Countdown() {
+  const [remaining, setRemaining] = useState(3 * 3600 + 25 * 60 + 12);
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      // remaining을 1 줄입니다. (0보다 클 때만)
+    }, 1000);
+    // 정리 함수에서 타이머를 해제합니다.
+  }, []);
+
+  return (
+    <div className="countdown">
+      <div className="time-box"><strong>{/* 시간 */}</strong><span>시간</span></div>
+      <div className="time-sep">:</div>
+      <div className="time-box"><strong>{/* 분 */}</strong><span>분</span></div>
+      <div className="time-sep">:</div>
+      <div className="time-box"><strong>{/* 초 */}</strong><span>초</span></div>
+    </div>
+  );
+}
+```
+
+**구현 조건**
+
+- `setInterval`로 1초마다 `setRemaining((prev) => prev > 0 ? prev - 1 : 0)`을 호출합니다.
+- 정리 함수에서 `clearInterval(timerId)`로 타이머를 해제합니다.
+- 시간은 `pad(Math.floor(remaining / 3600))`, 분은 `pad(Math.floor((remaining % 3600) / 60))`, 초는 `pad(remaining % 60)`로 계산해 표시합니다.
+
+## 문제 2. 남은 시간을 탭 제목에 표시하기
+
+`Countdown`에 Effect를 하나 더 추가해, 남은 시간을 브라우저 탭 제목에 반영하세요.
+
+```jsx
+useEffect(() => {
+  const label = `${pad(Math.floor(remaining / 3600))}:${pad(Math.floor((remaining % 3600) / 60))}:${pad(remaining % 60)}`;
+  // document.title을 `${label} 남음 · MIDNIGHT SALE`로 바꾸기
+}, [/* 의존성 */]);
+```
+
+**구현 조건**
+
+- 의존성 배열에 `remaining`을 넣어, 남은 시간이 바뀔 때마다 제목을 갱신합니다.
+- `document.title = ` `` `${label} 남음 · MIDNIGHT SALE` `` 형태로 설정합니다.
+
+## 문제 3. 상품 정보 불러오기
+
+`ProductCard`를 완성하세요. 처음에는 로딩 문구를, 잠시 뒤 상품 카드를 보여 줍니다. `setTimeout`으로 서버에서 받아 오는 상황을 흉내 냅니다.
+
+```jsx
+function ProductCard() {
+  const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      // setProduct로 아래 상품 데이터를 넣기
+    }, 1200);
+    // 정리 함수에서 clearTimeout
+  }, []);
+
+  if (product === null) {
+    return (
+      <section className="product">
+        <p className="loading">상품 정보를 불러오는 중…</p>
+      </section>
+    );
+  }
+
+  return (
+    <section className="product">
+      <img className="product__image" src={product.image} alt={product.name} />
+      <div className="product__body">
+        <span className="badge">{product.discount}% OFF</span>
+        <h2 className="product__name">{product.name}</h2>
+        <p className="product__price">
+          <span className="original">{product.original.toLocaleString()}원</span>
+          <strong className="sale">{product.price.toLocaleString()}원</strong>
+        </p>
+        <button className="buy" type="button">지금 구매하기</button>
+      </div>
+    </section>
+  );
+}
+```
+
+넣을 상품 데이터는 다음과 같습니다.
+
+```jsx
+{
+  name: "무선 노이즈캔슬링 헤드폰",
+  image: "https://picsum.photos/seed/sale6/640/420",
+  original: 289000,
+  price: 169000,
+  discount: 41,
+}
+```
+
+**구현 조건**
+
+- `product`의 처음 값은 `null`입니다.
+- `setTimeout`이 1.2초 뒤 `setProduct(상품 데이터)`를 호출합니다.
+- 정리 함수에서 `clearTimeout(timerId)`으로 예약을 취소합니다.
+- `product === null`이면 로딩 문구를, 값이 있으면 카드를 보여 줍니다.
+
+## 문제 4. 알림 이메일 입력창 자동 포커스
+
+`NotifyForm`을 완성하세요. 화면에 뜨면 이메일 입력창에 커서가 가 있고, 입력하면 안내 문구가 실시간으로 바뀝니다.
+
+파일 첫 줄에 `useRef`를 더합니다.
+
+```jsx
+import { useState, useEffect, useRef } from "react";
+import "./App.css";
+```
+
+```jsx
+function NotifyForm() {
+  const [email, setEmail] = useState("");
+  const emailRef = useRef(null);
+
+  useEffect(() => {
+    // 화면에 처음 뜰 때 입력창에 포커스를 줍니다.
+  }, []);
+
+  return (
+    <section className="notify">
+      <h2>오픈 알림 신청</h2>
+      <p>다음 세일 소식을 가장 먼저 받아보세요.</p>
+      <div className="notify__row">
+        <input
+          ref={/* Ref 연결 */}
+          type="email"
+          value={/* State */}
+          onChange={(event) => /* 입력값으로 State 변경 */}
+          placeholder="이메일 주소"
+        />
+        <button type="button">신청</button>
+      </div>
+      {/* email이 있을 때만 안내 문구 표시 */}
+    </section>
+  );
+}
+```
+
+안내 문구는 다음과 같이 표시합니다.
+
+```jsx
+<p className="notify__hint">{email} 로 알림을 보내 드립니다.</p>
+```
+
+**구현 조건**
+
+- `useEffect(() => { emailRef.current?.focus(); }, [])`로 처음 한 번 포커스를 줍니다.
+- `ref={emailRef}`, `value={email}`, `onChange`에서 `setEmail(event.target.value)`을 연결합니다.
+- `email`이 빈 문자열이 아닐 때만 안내 문구를 보여 줍니다.
+
+## 문제 5. 전체 조립과 마감 처리
+
+세 컴포넌트가 `App`에 모두 배치돼 있는지 확인하고, 카운트다운이 0에 도달하면 마감 문구를 보여 주세요.
+
+```jsx
+// Countdown의 시:분:초 표시 위에 추가합니다.
+if (remaining <= 0) {
+  return <p className="countdown-over">세일이 마감되었습니다</p>;
+}
 ```
 
 **확인할 것**
 
-- 처음에는 시계가 보이고 1초마다 바뀝니다.
-- 숨기면 시계가 사라지고 다시 보이면 현재 시각부터 표시됩니다.
-- 타이머를 만든 `TravelClock`의 정리 함수는 그대로 남아 있어야 합니다.
-
-## 문제 2. 여행 메모 글자 수 표시하기
-
-`TravelMemo`에 `현재 0자`처럼 입력한 글자 수를 표시하세요. 메모를 입력하거나 지울 때 숫자가 바로 바뀌어야 합니다.
-
-```jsx
-// 기존 memo State를 사용합니다.
-// memo.length는 현재 문자열의 길이입니다.
-```
-
-**확인할 것**
-
-- 빈 메모는 0자, `부천`은 2자로 표시됩니다.
-- 글자 수를 위한 별도 State나 Effect를 만들지 않습니다. 기존 `memo`로 바로 계산할 수 있기 때문입니다.
-- 탭 제목 변경과 입력창 포커스 기능이 계속 동작합니다.
-
-## 문제 3. 메모 비우고 바로 다시 쓰기
-
-`TravelMemo`에 `메모 비우기` 버튼을 추가하세요. 누르면 메모 내용이 지워지고 커서가 입력창으로 이동해야 합니다. 예제 1의 `memoRef`를 다시 사용합니다.
-
-```jsx
-// 클릭 이벤트 안에서 기존 setMemo와 memoRef를 함께 사용합니다.
-// 새 useRef를 만들 필요는 없습니다.
-```
-
-**확인할 것**
-
-- 입력한 메모, 미리보기, 글자 수가 모두 비워집니다.
-- 브라우저 탭 제목이 기본 제목으로 돌아갑니다.
-- 버튼을 누른 직후 입력창에 다시 글을 쓸 수 있습니다.
-
-## 문제 4. 추천 여행지 새로고침하기
-
-`TodayPick`에 `새로고침` 버튼을 추가하세요. 누르면 다시 `불러오는 중…`이 잠깐 보였다가 추천이 나타나야 합니다.
-
-```jsx
-// 버튼 클릭 시 setPick(null)로 되돌립니다.
-// 의존성 배열을 [pick]으로 두고, pick이 null일 때만 setTimeout으로 다시 불러옵니다.
-// setTimeout은 정리 함수에서 clearTimeout으로 취소합니다.
-```
-
-**확인할 것**
-
-- 처음에도, 새로고침을 눌렀을 때도 로딩 문구가 잠깐 보입니다.
-- 데이터가 도착하면 추천 카드가 다시 나타납니다.
-- 예약한 `setTimeout`이 정리 함수에서 취소됩니다.
+- 카운트다운이 1초마다 줄고, 탭 제목도 함께 바뀝니다.
+- 상품이 로딩 문구 뒤에 나타나고, 이메일 입력창은 자동으로 포커스됩니다.
+- 마감을 빨리 확인하려면 시작값을 `5`처럼 작게 바꿔 0에 도달하는지 봅니다.
+- 각 Effect의 정리 함수(`clearInterval`, `clearTimeout`)가 모두 있는지 확인합니다.
 
 ## 제출 전 점검
 
-1. 일정 담기, 인원 변경, 팁 펼치기, 메모 미리보기가 모두 동작하는지 확인합니다.
-2. 예제의 포커스, 탭 제목, 시계, 창 너비, 데이터 불러오기를 확인합니다.
-3. 문제 1~4의 동작과 각 Effect의 정리 함수를 확인합니다.
+1. 여행 페이지 예제(포커스, 탭 제목, 시계, 창 너비, 데이터 불러오기)가 그대로 동작하는지 확인합니다.
+2. 세일 페이지의 카운트다운, 탭 제목, 상품 로딩, 이메일 포커스를 확인합니다.
+3. 모든 타이머에 정리 함수가 있는지 확인합니다.
 4. 브라우저 콘솔과 Vite 터미널에 오류가 없는지 확인합니다.

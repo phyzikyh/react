@@ -1,8 +1,436 @@
 ---
-title: "6주차 연습문제"
-subtitle: "React Hook 기초"
+title: "6주차 문제 풀이"
+subtitle: "React Hook 기초 (useEffect · useRef)"
+date: "2026-09-28"
 ---
 
 # 연습문제
 
-이 페이지에는 6주차 이론을 확인하는 연습문제를 작성합니다.
+::: {.quiz-item}
+**1.** Hook에 대한 설명으로 옳은 것은?
+
+[① 함수 컴포넌트에서 React 기능을 쓰게 해 주는, 이름이 `use`로 시작하는 함수]{.quiz-answer}
+
+② 화면의 색과 배치를 지정하는 CSS 규칙
+
+③ 사용자가 클릭·입력할 때 실행되는 이벤트 처리 함수
+
+④ HTML 파일에서 컴포넌트를 불러오는 태그
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. Hook은 함수 컴포넌트에서 값 기억·바깥 세계 연결 같은 React 기능을 쓰게 해 주는 함수이며, 이름이 `use`로 시작합니다. `useState`, `useEffect`, `useRef`가 모두 Hook입니다.
+:::
+:::
+
+::: {.quiz-item}
+**2.** 다음 두 코드에서 `useState`를 올바른 위치에서 호출한 것은?
+
+**코드 A**
+
+```jsx
+function Profile({ canEdit }) {
+  if (canEdit) {
+    const [name, setName] = useState("");
+  }
+  return <p>프로필</p>;
+}
+```
+
+**코드 B**
+
+```jsx
+function Profile() {
+  const [name, setName] = useState("");
+  return <p>{name || "이름 미입력"}</p>;
+}
+```
+
+① A와 B 모두 올바르다.
+
+② A와 B 모두 잘못되었다.
+
+③ A만 올바르다.
+
+[④ B만 올바르다.]{.quiz-answer}
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ④. A는 `canEdit` 값에 따라 `useState` 호출을 건너뛸 수 있어 Hook 호출 순서가 달라집니다. B는 컴포넌트 최상위에서 매번 같은 순서로 호출하므로 올바릅니다. 조건에 따른 화면 분기는 Hook을 호출한 뒤에 처리해야 합니다.
+:::
+:::
+
+::: {.quiz-item}
+**3.** Hook을 조건문 안에서 부르면 문제가 되는 이유는?
+
+① Hook은 한 컴포넌트에서 한 번만 부를 수 있어서
+
+[② React가 Hook을 부른 순서로 값을 구분하는데, 그 순서가 렌더링마다 달라져서]{.quiz-answer}
+
+③ 조건문 안에서는 JSX를 반환할 수 없어서
+
+④ 조건문이 Hook보다 느리게 실행되어서
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. React는 Hook을 부른 순서로 "첫 번째 State는 이것, 두 번째는 저것"을 이어 붙입니다. 조건문 안에 두면 렌더링마다 부르는 순서가 달라져 어느 값이 어느 Hook의 것인지 알 수 없게 됩니다.
+:::
+:::
+
+::: {.quiz-item}
+**4.** 컴포넌트 안의 코드는 실행 시점에 따라 렌더링 로직·이벤트 처리·Effect로 나뉜다. 이 중 **화면이 그려진 뒤**에 실행되는 것은?
+
+① Props·State로 JSX를 계산하는 렌더링 로직
+
+② 사용자가 클릭할 때 실행되는 이벤트 처리
+
+[③ 화면이 그려진 뒤 바깥 시스템을 맞추는 Effect]{.quiz-answer}
+
+④ 컴포넌트 이름을 대문자로 짓는 규칙
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. Effect는 화면이 그려진 뒤 실행되어 문서 제목·타이머·서버 같은 바깥 시스템을 맞춥니다. 렌더링 로직은 React가 컴포넌트를 부를 때, 이벤트 처리는 사용자가 행동할 때 실행됩니다.
+:::
+:::
+
+::: {.quiz-item}
+**5.** 다음 네 가지 일 중 `useEffect`(Effect)에 넣기 알맞은 것은?
+
+① 좋아요 수를 나타내는 표시 문구 만들기
+
+② `firstName`과 `lastName`을 합쳐 `fullName` 만들기
+
+③ 버튼 클릭 시 좋아요 수 올리기
+
+[④ 브라우저 탭 제목(`document.title`)을 현재 값에 맞추기]{.quiz-answer}
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ④. `document.title`은 React가 그리는 화면 바깥, 브라우저가 관리하는 값이므로 화면이 그려진 뒤 Effect에서 맞춥니다. 표시 문구와 파생값은 렌더링 중 계산, 클릭 처리는 이벤트 함수에 둡니다.
+:::
+:::
+
+::: {.quiz-item}
+**6.** `useEffect(함수, 의존성배열)`에 넘긴 함수는 언제 실행되는가?
+
+[① 화면이 그려진 뒤]{.quiz-answer}
+
+② 화면을 그리는 도중
+
+③ 컴포넌트를 정의하는 순간
+
+④ 버튼을 클릭할 때만
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. Effect 함수는 렌더링이 끝나 화면이 그려진 뒤에 실행됩니다. 그래서 렌더링 중에 계산할 수 있는 값이 아니라, 화면 바깥 시스템을 다룰 때 사용합니다.
+:::
+:::
+
+::: {.quiz-item}
+**7.** 아래는 두 Props만으로 만들 수 있는 값을 State와 Effect로 만든 코드다. 이 방식의 문제는?
+
+```jsx
+function Name({ firstName, lastName }) {
+  const [fullName, setFullName] = useState("");
+  useEffect(() => {
+    setFullName(`${lastName}${firstName}`);
+  }, [firstName, lastName]);
+  return <p>{fullName}</p>;
+}
+```
+
+① 값이 서버에 저장되지 않는다.
+
+② Hook 호출 순서가 뒤바뀐다.
+
+[③ 렌더링이 한 번 더 일어나고 값이 잠깐 어긋날 수 있다.]{.quiz-answer}
+
+④ 컴포넌트 이름을 대문자로 쓰지 못한다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. Props가 바뀌면 먼저 이전 `fullName`으로 한 번 렌더링된 뒤, Effect가 `setFullName`을 호출해 다시 렌더링됩니다. 렌더링이 늘고 값이 잠깐 어긋날 수 있으므로, 이런 파생값은 `const fullName = ...`처럼 렌더링 중에 바로 계산합니다.
+:::
+:::
+
+::: {.quiz-item}
+**8.** 아래 Effect는 언제 다시 실행되는가?
+
+```jsx
+useEffect(() => {
+  document.title = query ? `${query} 검색` : "포트폴리오";
+}, [query]);
+```
+
+① 렌더링될 때마다 매번
+
+[② `query` 값이 이전과 달라졌을 때]{.quiz-answer}
+
+③ 화면에 처음 나타날 때 한 번만
+
+④ 한 번도 실행하지 않는다
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. 의존성 배열 `[query]`는 "`query`가 이전과 달라졌으면 다시 실행하라"는 뜻입니다. 매번 실행은 배열 생략, 처음 한 번만은 빈 배열 `[]`입니다.
+:::
+:::
+
+::: {.quiz-item}
+**9.** 아래처럼 의존성 배열에 빈 배열 `[]`을 넣으면 Effect는 언제 실행되는가?
+
+```jsx
+useEffect(() => {
+  console.log("실행됨");
+}, []);
+```
+
+① 렌더링될 때마다 매번
+
+② State가 바뀔 때마다
+
+[③ 화면에 처음 나타난 뒤 한 번만]{.quiz-answer}
+
+④ 컴포넌트가 사라질 때만
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. 빈 배열은 "다시 볼 값이 없다"는 뜻이라 화면에 처음 나타난 뒤 한 번만 실행됩니다. 타이머 등록이나 최초 데이터 불러오기에 적합합니다.
+:::
+:::
+
+::: {.quiz-item}
+**10.** 아래 컴포넌트에서 버튼을 0에서 세 번 누른 뒤, 브라우저 탭 제목은?
+
+```jsx
+function LikeButton() {
+  const [likes, setLikes] = useState(0);
+  useEffect(() => {
+    document.title = `좋아요 ${likes}개`;
+  }, [likes]);
+  return <button onClick={() => setLikes(likes + 1)}>좋아요 {likes}</button>;
+}
+```
+
+① 좋아요 0개
+
+② 좋아요 1개
+
+③ 제목이 바뀌지 않는다
+
+[④ 좋아요 3개]{.quiz-answer}
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ④. 클릭마다 `likes`가 1씩 늘고, `[likes]` 덕분에 값이 바뀔 때마다 Effect가 실행되어 탭 제목을 새 값으로 맞춥니다. 세 번 누르면 `likes`는 3이 되어 "좋아요 3개"가 됩니다.
+:::
+:::
+
+::: {.quiz-item}
+**11.** `useEffect`의 정리 함수(cleanup)에 대한 설명으로 옳은 것은?
+
+① 화면을 그리기 직전에 실행되는 렌더링 함수이다.
+
+[② Effect 함수가 `return`한 함수로, Effect가 시작한 일을 되돌린다.]{.quiz-answer}
+
+③ 의존성 배열을 대신하는 두 번째 인자이다.
+
+④ State를 처음 값으로 되돌리는 함수이다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. `useEffect`에 넘긴 함수가 `return`하는 함수가 정리 함수입니다. 컴포넌트가 사라지거나 Effect를 다시 실행하기 직전에 불려, 타이머 해제·구독 해제처럼 시작한 일을 되돌립니다.
+:::
+:::
+
+::: {.quiz-item}
+**12.** 아래 타이머 코드의 주석 자리에 들어갈 정리 함수로 알맞은 것은?
+
+```jsx
+useEffect(() => {
+  const timerId = setInterval(() => setNow(new Date()), 1000);
+  // 여기에 정리 함수가 온다
+}, []);
+```
+
+[① `return () => clearInterval(timerId);`]{.quiz-answer}
+
+② `return () => setInterval(timerId);`
+
+③ `return clearInterval(timerId);`
+
+④ `clearInterval(timerId);`
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. 정리 함수는 "함수를 return"해야 하고, `setInterval`이 돌려준 `timerId`를 `clearInterval`로 해제해야 합니다. ③은 함수가 아니라 실행 결과를 반환하고, ④는 `return`이 없어 정리 함수로 등록되지 않습니다.
+:::
+:::
+
+::: {.quiz-item}
+**13.** 아래 시계 컴포넌트에서 `return () => clearInterval(timerId);` 줄을 지우면 생기는 문제는?
+
+```jsx
+function Clock() {
+  const [now, setNow] = useState(new Date());
+  useEffect(() => {
+    const timerId = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timerId);   // ← 이 줄을 지운다면?
+  }, []);
+  return <time>{now.toLocaleTimeString("ko-KR")}</time>;
+}
+```
+
+① 시계가 아예 시작되지 않는다.
+
+② 시각이 1초가 아니라 2초마다 바뀐다.
+
+[③ 화면이 사라진 뒤에도 타이머가 계속 돌아 오류·성능 문제가 생긴다.]{.quiz-answer}
+
+④ Hook 호출 순서가 달라진다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. 정리 함수가 없으면 컴포넌트가 화면에서 사라져도 타이머가 계속 돌며 없어진 화면을 갱신하려 합니다. 이는 오류나 성능 저하로 이어지므로 타이머는 정리 함수에서 꺼야 합니다.
+:::
+:::
+
+::: {.quiz-item}
+**14.** 아래처럼 구독한 이벤트를 정리 함수에서 해제하려 한다. 올바른 해제 코드는?
+
+```jsx
+useEffect(() => {
+  function handleResize() {
+    setWidth(window.innerWidth);
+  }
+  window.addEventListener("resize", handleResize);
+  // 정리 함수에서 이 구독을 해제한다
+}, []);
+```
+
+① `window.removeEventListener("resize");`
+
+[② `window.removeEventListener("resize", handleResize);`]{.quiz-answer}
+
+③ `window.removeEventListener("resize", () => setWidth(window.innerWidth));`
+
+④ `window.clearEventListener("resize", handleResize);`
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. 해제는 구독할 때와 똑같은 함수 객체를 넘겨야 합니다. ③처럼 새 화살표 함수를 넘기면 다른 객체라 해제되지 않고, ①은 함수 인자가 빠졌으며 `clearEventListener`는 존재하지 않습니다. 그래서 `handleResize`를 이름 붙여 재사용합니다.
+:::
+:::
+
+::: {.quiz-item}
+**15.** 아래 코드의 빈칸 `____`에 들어갈 함수 이름은?
+
+```jsx
+useEffect(() => {
+  window.addEventListener("resize", handleResize);
+  return () => window.____("resize", handleResize);
+}, []);
+```
+
+① `addEventListener`
+
+② `clearInterval`
+
+③ `preventDefault`
+
+[④ `removeEventListener`]{.quiz-answer}
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ④. 구독은 `addEventListener`, 해제는 `removeEventListener`이며 둘은 한 쌍입니다. 정리 함수에서 같은 이벤트 이름과 같은 함수로 `removeEventListener`를 불러 구독을 해제합니다.
+:::
+:::
+
+::: {.quiz-item}
+**16.** 아래 컴포넌트에서 `fullName`은 어떻게 관리하는 것이 가장 좋은가?
+
+```jsx
+function Name({ firstName, lastName }) {
+  // fullName을 어떻게 만들까?
+  return <p>{fullName}</p>;
+}
+```
+
+[① 렌더링 중에 `const fullName = ...`으로 그 자리에서 바로 계산한다.]{.quiz-answer}
+
+② `useState`로 State에 담는다.
+
+③ `useEffect`로 만들어 State에 넣는다.
+
+④ `useRef` 상자에 담는다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. `fullName`은 두 Props만 있으면 렌더링 중에 바로 계산할 수 있는 파생값입니다. State나 Effect로 만들면 렌더링이 늘고 값이 어긋날 수 있으므로 `const fullName = ...`처럼 그 자리에서 계산합니다.
+:::
+:::
+
+::: {.quiz-item}
+**17.** 다음 네 가지 중 Effect가 아니라 **이벤트 처리 함수**에 두어야 하는 일은?
+
+① 화면이 처음 뜰 때 데이터 한 번 불러오기
+
+[② 사용자가 폼 제출 버튼을 눌러 저장하기]{.quiz-answer}
+
+③ 좋아요 수로 브라우저 탭 제목 맞추기
+
+④ 1초마다 시각 갱신하기
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. 폼 제출·저장처럼 사용자의 행동으로 일어나는 일은 이벤트 처리 함수에 둡니다. 처음 데이터 불러오기·탭 제목 맞추기·타이머처럼 바깥 시스템과 맞추는 일은 Effect에 둡니다.
+:::
+:::
+
+::: {.quiz-item}
+**18.** `useRef`에 대한 설명으로 옳은 것은?
+
+① 값이 바뀌면 화면을 자동으로 다시 그린다.
+
+② 이름이 `use`로 시작하지 않는 함수다.
+
+[③ `{ current: 값 }` 상자를 만들며, `current`를 바꿔도 재렌더링되지 않는다.]{.quiz-answer}
+
+④ 오직 문자열만 담을 수 있다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. `useRef`는 `{ current: 값 }` 형태의 상자를 만듭니다. `ref.current`를 바꿔도 화면은 다시 그려지지 않아, DOM 요소나 타이머 ID처럼 화면에 직접 쓰지 않는 값을 담습니다.
+:::
+:::
+
+::: {.quiz-item}
+**19.** 아래 코드에서 버튼을 누르면 어떤 일이 일어나는가?
+
+```jsx
+function SearchBox() {
+  const inputRef = useRef(null);
+  function handleFocus() {
+    inputRef.current.focus();
+  }
+  return (
+    <div>
+      <input ref={inputRef} placeholder="검색어" />
+      <button type="button" onClick={handleFocus}>검색창으로 이동</button>
+    </div>
+  );
+}
+```
+
+[① 커서가 그 입력창으로 옮겨 간다.]{.quiz-answer}
+
+② 입력창이 화면에서 사라진다.
+
+③ 입력창의 값이 `null`로 바뀐다.
+
+④ 컴포넌트가 처음부터 다시 그려진다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. `ref={inputRef}`로 입력창 DOM이 `inputRef.current`에 연결되고, 그 DOM의 내장 `focus()`를 부르면 커서가 입력창으로 들어갑니다. Ref 접근은 재렌더링을 일으키지 않습니다.
+:::
+:::
+
+::: {.quiz-item}
+**20.** "값이 바뀌면 화면도 함께 바뀌어야 하는" 값은 무엇으로 관리하는가?
+
+① 그냥 지역 변수
+
+② `useRef` 상자
+
+③ `document.title`
+
+[④ State(`useState`)]{.quiz-answer}
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ④. 값이 바뀔 때 화면도 바뀌어야 하면 State로 관리합니다. Ref는 바꿔도 재렌더링되지 않고, 지역 변수는 다음 렌더링까지 유지되지 않습니다. Props·State로 바로 계산되는 값은 그냥 변수로 둡니다.
+:::
+:::

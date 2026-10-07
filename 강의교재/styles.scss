@@ -350,6 +350,13 @@ h1.title, .quarto-title h1 { font-weight: 800; }
   margin: 0 0 1.6rem;
 }
 
+.week7-map-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 1.2rem auto 2rem;
+}
+
 // Quarto Book의 장 번호는 책 전체에서 연속되지만, 이 교재는 주차별 학습 단위입니다.
 // 각 페이지에서 제목 번호를 다시 시작하여 첫 내용이 항상 1번이 되게 표시합니다.
 main.content {

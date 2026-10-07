@@ -1,72 +1,1084 @@
 ---
 title: "7주차 코딩 실습"
+subtitle: "여행지 목록에 조건과 필터 적용하기"
+date: "2026-10-07"
+number-sections: false
 ---
 
-# 종합 예제: 검색하고 필터링하는 프로젝트 목록
+## 시작 코드
+
+먼저 `src/App.jsx`에 다음 코드를 작성합니다. 여행지 카드, 오늘의 추천, 방문 정보, 여행 팁과 여행 메모가 포함된 전체 코드입니다.
 
 ```jsx
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import "./App.css";
 
-const projects = [
-  { id: "learning-log", title: "학습 기록", status: "complete", technologies: ["React", "CSS"], featured: true },
-  { id: "portfolio", title: "개발자 포트폴리오", status: "progress", technologies: ["React", "HTML"], featured: true },
-  { id: "weather", title: "날씨 대시보드", status: "progress", technologies: ["JavaScript", "CSS"], featured: false },
-];
+function TravelHeader() {
+  function handlePlanClick() {
+    alert("여행 플래너를 시작합니다.");
+  }
 
-function ProjectCard({ project }) {
   return (
-    <article>
-      {project.featured && <strong>추천</strong>}
-      <span>{project.status === "complete" ? "완료" : "진행 중"}</span>
-      <h2>{project.title}</h2>
-      <ul>
-        {project.technologies.map((technology) => (
-          <li key={technology}>{technology}</li>
-        ))}
-      </ul>
+    <header className="travel-header">
+      <a className="brand" href="#intro">
+        VISIT<span>BUCHEON</span>
+      </a>
+
+      <nav className="travel-nav">
+        <a href="#intro">부천 여행</a>
+        <a href="#info">가볼 만한 곳</a>
+        <a href="#guide">여행 안내</a>
+      </nav>
+
+      <a className="plan-link" href="#info" onClick={handlePlanClick}>
+        여행 플래너 ＋
+      </a>
+    </header>
+  );
+}
+
+function TravelIntro({ name, description }) {
+  return (
+    <section id="intro" className="travel-intro">
+      <p className="intro-label">GYEONGGI-DO · SOUTH KOREA</p>
+      <h1>{name}</h1>
+      <p>{description}</p>
+    </section>
+  );
+}
+
+function TravelInfo({ label, children }) {
+  const [selected, setSelected] = useState(false);
+
+  return (
+    <article className="travel-info">
+      <strong>{label}</strong>
+      <p>{children}</p>
+      <button
+        className="select-button"
+        onClick={() => setSelected(!selected)}
+      >
+        {selected ? "✓ 일정에 담김" : "+ 일정에 담기"}
+      </button>
     </article>
   );
 }
 
-export default function PortfolioProjects() {
-  const [query, setQuery] = useState("");
-  const [completeOnly, setCompleteOnly] = useState(false);
+function TodayPick() {
+  const [pick, setPick] = useState(null);
 
-  const visibleProjects = projects.filter((project) => {
-    const matchesQuery = project.title.toLowerCase().includes(query.toLowerCase());
-    const matchesStatus = !completeOnly || project.status === "complete";
-    return matchesQuery && matchesStatus;
-  });
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setPick({
+        name: "부천아트벙커 B39",
+        desc: "쓰레기 소각장을 개조한 복합문화예술공간",
+      });
+    }, 1200);
+
+    return () => clearTimeout(timerId);
+  }, []);
 
   return (
-    <main>
-      <h1>프로젝트</h1>
-      <input value={query} onChange={(e) => setQuery(e.target.value)} aria-label="프로젝트 검색" />
-      <label>
-        <input type="checkbox" checked={completeOnly} onChange={(e) => setCompleteOnly(e.target.checked)} />
-        완료 프로젝트만
-      </label>
-      <p role="status">검색 결과 {visibleProjects.length}개</p>
-
-      {visibleProjects.length > 0 ? (
-        <section>
-          {visibleProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </section>
+    <section className="today-pick">
+      <h2>오늘의 추천</h2>
+      {pick === null ? (
+        <p className="loading">불러오는 중…</p>
       ) : (
-        <p>조건에 맞는 프로젝트가 없습니다.</p>
+        <div className="pick-card">
+          <strong>{pick.name}</strong>
+          <p>{pick.desc}</p>
+        </div>
       )}
-    </main>
+    </section>
+  );
+}
+
+function TravelClock() {
+  const [now, setNow] = useState(() => new Date());
+
+  useEffect(() => {
+    const timerId = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timerId);
+  }, []);
+
+  return (
+    <time dateTime={now.toISOString()}>
+      {now.toLocaleTimeString("ko-KR")}
+    </time>
+  );
+}
+
+function VisitInfo({ hours, fee = "무료" }) {
+  const [people, setPeople] = useState(1);
+
+  return (
+    <section className="visit-info">
+      <h2>방문 정보</h2>
+      <p>운영시간: {hours}</p>
+      <p>입장료: {fee}</p>
+      <p>현재 시각: <TravelClock /></p>
+
+      <div className="people-control">
+        <span>여행 인원: {people}명</span>
+        <button onClick={() => setPeople(people + 1)}>+ 1명</button>
+      </div>
+    </section>
+  );
+}
+
+function GuideBox({ title, children }) {
+  return (
+    <section className="guide-box">
+      <h2>{title}</h2>
+      {children}
+    </section>
+  );
+}
+
+function TravelTip() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <section className="travel-tip">
+      <h2>부천 여행 Tip</h2>
+      <button onClick={() => setOpen(!open)}>
+        {open ? "접기" : "자세히 보기"}
+      </button>
+
+      {open && (
+        <p>
+          주말에는 주요 관광지 주변이 혼잡할 수 있으므로
+          대중교통을 이용하면 더 편리하게 이동할 수 있습니다.
+        </p>
+      )}
+    </section>
+  );
+}
+
+function TravelMemo() {
+  const [memo, setMemo] = useState("");
+  const memoRef = useRef(null);
+
+  useEffect(() => {
+    const text = memo.trim();
+    document.title = text
+      ? `${text.slice(0, 12)} · 부천 여행`
+      : "부천 여행 | VISIT BUCHEON";
+  }, [memo]);
+
+  return (
+    <section className="travel-memo">
+      <h2>나의 여행 메모</h2>
+      <label htmlFor="travel-memo-input">여행 계획</label>
+      <input
+        id="travel-memo-input"
+        ref={memoRef}
+        value={memo}
+        onChange={(event) => setMemo(event.target.value)}
+        placeholder="여행 계획을 입력하세요..."
+      />
+      <button type="button" onClick={() => memoRef.current?.focus()}>
+        메모 작성하기
+      </button>
+      {memo && <p>내 계획: {memo}</p>}
+    </section>
+  );
+}
+
+function TravelFooter() {
+  return (
+    <footer className="travel-footer">
+      <p>VISIT BUCHEON</p>
+      <small>경기도 부천시 여행 안내</small>
+    </footer>
+  );
+}
+
+function App() {
+  return (
+    <>
+      <TravelHeader />
+      <main>
+        <TravelIntro
+          name="경기도 부천"
+          description="만화와 예술, 도심 속 공원과 계절의 꽃을 하루에 만날 수 있는 가까운 도시 여행지입니다."
+        />
+
+        <div className="content">
+          <section id="info" className="place-section">
+            <h2>부천에서 꼭 만나야 할 곳</h2>
+            <div className="info-section">
+              <TravelInfo label="원미산 진달래동산">
+                부천의 대표 꽃 명소
+              </TravelInfo>
+              <TravelInfo label="한국만화박물관">
+                만화와 캐릭터를 만나는 문화 공간
+              </TravelInfo>
+              <TravelInfo label="상동호수공원">
+                도심 속 호수와 계절 정원
+              </TravelInfo>
+            </div>
+          </section>
+
+          <TodayPick />
+          <VisitInfo hours="관광지별 운영시간 확인" fee="공간별 상이" />
+
+          <div id="guide" className="guide-layout">
+            <GuideBox title="지하철로 가볍게 떠나요">
+              <p>지하철 1호선과 7호선으로 주요 지역에 편리하게 이동할 수 있습니다.</p>
+            </GuideBox>
+            <GuideBox title="하루 여행 추천 코스">
+              <ul>
+                <li>한국만화박물관에서 부천의 문화 만나기</li>
+                <li>상동호수공원에서 여유롭게 산책하기</li>
+              </ul>
+            </GuideBox>
+          </div>
+
+          <TravelTip />
+          <TravelMemo />
+        </div>
+      </main>
+      <TravelFooter />
+    </>
+  );
+}
+
+export default App;
+```
+
+`src/App.css`에는 다음 전체 CSS를 작성합니다. 이후 예제의 CSS는 이 파일 맨 아래에 이어서 추가합니다.
+
+```css
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, "Malgun Gothic", sans-serif;
+  color: #243127;
+  background: #f5f2ea;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.travel-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 24px 8%;
+  color: #111;
+  background: white;
+}
+
+.brand {
+  font-size: 21px;
+  font-weight: 900;
+}
+
+.brand span {
+  color: #e63f79;
+}
+
+.travel-nav {
+  display: flex;
+  gap: 54px;
+}
+
+.plan-link {
+  justify-self: end;
+  padding: 10px 18px;
+  border: 1px solid #111;
+  border-radius: 999px;
+}
+
+.travel-intro {
+  display: flex;
+  min-height: clamp(460px, 70vh, 640px);
+  padding: 80px 7% 60px;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: white;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(20, 16, 30, .84) 0%,
+      rgba(20, 16, 30, .52) 55%,
+      rgba(20, 16, 30, .18) 100%
+    ),
+    url("https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=2000&q=85") center / cover;
+}
+
+.travel-intro h1 {
+  margin: 8px 0;
+  font-size: clamp(48px, 7vw, 80px);
+  line-height: 1.1;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, .45);
+}
+
+.travel-intro > p:last-child {
+  max-width: 620px;
+  line-height: 1.7;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, .55);
+}
+
+.intro-label {
+  color: #58a78b;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+}
+
+.content {
+  max-width: 1180px;
+  margin: auto;
+  padding: 72px 28px;
+}
+
+.place-section > h2 {
+  margin: 8px 0 28px;
+  font-size: 38px;
+}
+
+.info-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.travel-info {
+  padding: 22px;
+  border: 1px solid #e3e7ec;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 8px 20px rgba(29, 43, 58, .1);
+}
+
+.travel-info > strong {
+  display: block;
+  font-size: 20px;
+}
+
+.select-button,
+.people-control button,
+.travel-tip button,
+.travel-memo button {
+  padding: 9px 14px;
+  border: 1px solid #37745f;
+  border-radius: 8px;
+  color: #243127;
+  background: white;
+  cursor: pointer;
+}
+
+.today-pick,
+.visit-info,
+.guide-box,
+.travel-tip,
+.travel-memo {
+  margin-top: 24px;
+  padding: 24px;
+  border-radius: 12px;
+  background: white;
+}
+
+.visit-info {
+  background: #eaf5ff;
+}
+
+.people-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.guide-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.travel-memo label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.travel-memo input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccd3d8;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.travel-memo button {
+  margin-top: 12px;
+}
+
+.loading {
+  color: #7a8a99;
+}
+
+.travel-footer {
+  padding: 28px;
+  text-align: center;
+  color: white;
+  background: #26342d;
+}
+
+@media (max-width: 700px) {
+  .travel-header {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .travel-nav {
+    gap: 18px;
+  }
+
+  .travel-intro {
+    min-height: 480px;
+  }
+
+  .info-section,
+  .guide-layout {
+    grid-template-columns: 1fr;
+  }
+}
+```
+
+위 코드를 실행하여 여행 페이지가 나타나고 각 버튼과 입력창이 동작하는지 확인합니다. 이후 예제에서는 여행지 목록 부분을 단계별로 바꿉니다.
+
+## 예제 1. 여행지 데이터를 배열로 만들기
+
+`App.jsx`에서 컴포넌트보다 위에 다음 배열을 추가합니다.
+
+```jsx
+const places = [
+  {
+    id: 1,
+    label: "원미산 진달래동산",
+    description: "부천의 대표 꽃 명소",
+    category: "자연",
+    open: true,
+    featured: true,
+    tags: ["봄여행", "산책"],
+  },
+  {
+    id: 2,
+    label: "한국만화박물관",
+    description: "만화와 캐릭터를 만나는 문화 공간",
+    category: "문화",
+    open: false,
+    featured: true,
+    tags: ["전시", "가족여행"],
+  },
+  {
+    id: 3,
+    label: "상동호수공원",
+    description: "도심 속 호수와 계절 정원",
+    category: "자연",
+    open: true,
+    featured: false,
+    tags: ["호수", "피크닉"],
+  },
+  {
+    id: 4,
+    label: "부천아트벙커 B39",
+    description: "산업 시설을 바꾼 복합문화예술공간",
+    category: "예술",
+    open: false,
+    featured: false,
+    tags: ["미디어아트", "공연"],
+  },
+];
+```
+
+`places` 배열에는 여행지 네 곳이 들어 있습니다. 각 객체의 속성 이름은 같고 값만 다릅니다. `open`과 `featured`에는 문자열이 아닌 불리언 값 `true` 또는 `false`를 사용합니다.
+
+**이 코드에 쓰인 문법**
+
+- `const places = [...]` — 여러 여행지 데이터를 하나의 배열에 저장합니다.
+- `{ id: 1, ... }` — 여행지 한 곳의 정보를 객체로 묶습니다.
+- `id` — 각 여행지를 구별하는 고유 번호입니다.
+- `tags: [...]` — 한 여행지에 속한 여러 태그를 배열로 저장합니다.
+
+## 예제 2. `map()`으로 여행지 카드 반복하기
+
+기존 `TravelInfo` 함수를 다음 코드로 교체합니다.
+
+```jsx
+function TravelInfo({ place }) {
+  const [selected, setSelected] = useState(false);
+
+  return (
+    <article className="travel-info">
+      <strong>{place.label}</strong>
+      <p>{place.description}</p>
+      <button
+        className="select-button"
+        onClick={() => setSelected(!selected)}
+      >
+        {selected ? "✓ 일정에 담김" : "+ 일정에 담기"}
+      </button>
+    </article>
   );
 }
 ```
 
+`App`에서 여행지 카드 세 개를 직접 작성했던 `info-section`을 다음 코드로 교체합니다.
 
-# 실행 결과: 검색과 필터가 적용된 프로젝트 목록
+```jsx
+<section id="info" className="place-section">
+  <h2>부천에서 꼭 만나야 할 곳</h2>
 
-검색어, 기술 선택과 완료 프로젝트 필터를 변경합니다. `filter()`가 표시할 프로젝트를 계산하고 `map()`이 카드 목록을 생성합니다. 추천 배지와 상태 문구는 조건부로 렌더링되며 결과가 없으면 빈 목록 안내로 전환됩니다.
+  <div className="info-section">
+    {places.map((place) => (
+      <TravelInfo place={place} />
+    ))}
+  </div>
+</section>
+```
 
-<iframe class="demo-frame demo-frame--tall" src="examples/week07/index.html" title="7주차 조건부 렌더링과 리스트 실행 결과" loading="lazy"></iframe>
+`map()`은 배열의 여행지를 앞에서부터 하나씩 꺼냅니다. 현재 꺼낸 객체는 `place`에 들어가고, `<TravelInfo place={place} />`가 카드 한 장을 만듭니다.
 
-<p class="demo-caption"><a href="examples/week07/index.html" target="_blank">실행 결과를 새 창에서 보기</a></p>
+**이 코드에 쓰인 문법**
+
+- `places.map(...)` — 여행지 수만큼 코드를 반복합니다.
+- `(place) => (...)` — 현재 여행지로 만들 JSX를 반환합니다.
+- `place={place}` — 여행지 객체를 `TravelInfo`의 Props로 전달합니다.
+- `place.label` — 객체에서 여행지 이름을 읽습니다.
+
+## 예제 3. 각 카드에 `key` 지정하기
+
+`map()` 안의 `TravelInfo`에 `key`를 추가합니다.
+
+```jsx
+{places.map((place) => (
+  <TravelInfo
+    key={place.id}
+    place={place}
+  />
+))}
+```
+
+React는 `key`를 보고 목록에서 어떤 항목이 추가되거나 사라졌는지 구별합니다. 배열의 순서가 달라져도 같은 여행지를 찾을 수 있도록 고유한 `id`를 사용합니다.
+
+**이 코드에 쓰인 문법**
+
+- `key={place.id}` — 현재 카드의 고유 식별값을 React에 전달합니다.
+- `key`는 `TravelInfo` 안에서 화면에 표시하는 Props가 아닙니다.
+- 배열의 위치를 나타내는 번호보다 데이터에 저장된 고유한 `id`가 알맞습니다.
+
+## 예제 4. `if`문으로 운영 상태 표시하기
+
+`TravelInfo` 위에 `OpenStatus` 함수를 추가합니다.
+
+```jsx
+function OpenStatus({ open }) {
+  if (open) {
+    return <span className="status open">운영 중</span>;
+  }
+
+  return <span className="status closed">운영 종료</span>;
+}
+```
+
+`TravelInfo`의 `<article>` 바로 아래에 상태를 배치합니다.
+
+```jsx
+<article className="travel-info">
+  <OpenStatus open={place.open} />
+  <strong>{place.label}</strong>
+```
+
+`open`이 `true`이면 첫 번째 `return`이 실행되고 함수가 끝납니다. `false`이면 첫 번째 `return`을 건너뛰고 운영 종료 요소를 반환합니다.
+
+`App.css` 맨 아래에 추가합니다.
+
+```css
+.status {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.status.open {
+  background: #28845f;
+}
+
+.status.closed {
+  background: #737b77;
+}
+```
+
+## 예제 5. 추천 여행지에만 배지 표시하기
+
+예제 4에서 `TravelInfo`에 넣은 다음 한 줄을 찾습니다.
+
+```jsx
+<OpenStatus open={place.open} />
+```
+
+위 한 줄을 삭제하고, 같은 자리에 다음 코드로 교체합니다.
+
+```jsx
+<div className="card-labels">
+  <OpenStatus open={place.open} />
+  {place.featured && (
+    <span className="featured">추천</span>
+  )}
+</div>
+```
+
+교체를 마친 `TravelInfo` 전체 코드는 다음과 같습니다.
+
+```jsx
+function TravelInfo({ place }) {
+  const [selected, setSelected] = useState(false);
+
+  return (
+    <article className="travel-info">
+      <div className="card-labels">
+        <OpenStatus open={place.open} />
+        {place.featured && (
+          <span className="featured">추천</span>
+        )}
+      </div>
+
+      <strong>{place.label}</strong>
+      <p>{place.description}</p>
+
+      <button
+        className="select-button"
+        onClick={() => setSelected(!selected)}
+      >
+        {selected ? "✓ 일정에 담김" : "+ 일정에 담기"}
+      </button>
+    </article>
+  );
+}
+```
+
+`card-labels`는 운영 상태와 추천 배지를 한 줄에 배치하는 상자입니다. `OpenStatus`는 항상 표시됩니다. `place.featured`가 `true`일 때만 오른쪽에 `추천` 배지가 만들어지고, `false`이면 해당 위치에 아무것도 표시하지 않습니다.
+
+`App.css` 맨 아래에 추가합니다.
+
+```css
+.card-labels {
+  display: flex;
+  justify-content: space-between;
+}
+
+.featured {
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: white;
+  background: #e63f79;
+  font-size: 11px;
+  font-weight: bold;
+}
+```
+
+## 예제 6. 태그 배열을 목록으로 표시하기
+
+`TravelInfo`에서 설명 문단 아래에 태그 목록을 추가합니다.
+
+```jsx
+<p>{place.description}</p>
+
+<ul className="tag-list">
+  {place.tags.map((tag) => (
+    <li key={tag}>#{tag}</li>
+  ))}
+</ul>
+```
+
+바깥쪽 `map()`은 여행지 카드를 만들고, 카드 안의 `map()`은 해당 여행지의 태그를 만듭니다. 같은 여행지 안에서 태그 이름이 겹치지 않으므로 태그 문자열을 `key`로 사용합니다.
+
+`App.css` 맨 아래에 추가합니다.
+
+```css
+.tag-list {
+  display: flex;
+  gap: 7px;
+  margin: 18px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tag-list li {
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: #eef3f0;
+  color: #56675e;
+  font-size: 12px;
+}
+```
+
+## 예제 7. 카테고리 버튼으로 목록 필터링하기
+
+`TravelInfo` 아래에 `PlaceSection`을 추가합니다.
+
+```jsx
+function PlaceSection() {
+  const [category, setCategory] = useState("전체");
+  const categories = ["전체", "자연", "문화", "예술", "맛집"];
+
+  const visiblePlaces = places.filter((place) => {
+    return category === "전체" || place.category === category;
+  });
+
+  return (
+    <section id="info" className="place-section">
+      <h2>부천에서 꼭 만나야 할 곳</h2>
+
+      <div className="filter-buttons">
+        {categories.map((item) => (
+          <button
+            className={category === item ? "active" : ""}
+            key={item}
+            onClick={() => setCategory(item)}
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+
+      <p className="result-count">여행지 {visiblePlaces.length}곳</p>
+
+      <div className="info-section">
+        {visiblePlaces.map((place) => (
+          <TravelInfo key={place.id} place={place} />
+        ))}
+      </div>
+    </section>
+  );
+}
+```
+
+이제 `App`에서 다음 `place-section` 영역을 찾습니다.
+
+```jsx
+<section id="info" className="place-section">
+  <h2>부천에서 꼭 만나야 할 곳</h2>
+
+  <div className="info-section">
+    {places.map((place) => (
+      <TravelInfo key={place.id} place={place} />
+    ))}
+  </div>
+</section>
+```
+
+위 코드는 시작 태그 `<section>`부터 닫는 태그 `</section>`까지 **모두 삭제**합니다. 삭제한 자리에 다음 한 줄만 넣습니다.
+
+```jsx
+<PlaceSection />
+```
+
+버튼을 누르면 `setCategory(item)`이 선택값을 바꿉니다. `filter()`는 전체 여행지 중 선택한 분류와 같은 여행지만 새 배열에 남깁니다. `전체`를 선택하면 `||`의 왼쪽 조건이 참이므로 모든 여행지가 남습니다.
+
+`App.css` 맨 아래에 추가합니다.
+
+```css
+.filter-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-buttons button {
+  padding: 9px 18px;
+  border: 1px solid #ccd3d0;
+  border-radius: 999px;
+  background: white;
+  cursor: pointer;
+}
+
+.filter-buttons button.active {
+  border-color: #37745f;
+  color: white;
+  background: #37745f;
+}
+
+.result-count {
+  margin: 22px 0 12px;
+  color: #68766e;
+}
+```
+
+## 예제 8. 결과가 없을 때 안내 문구 표시하기
+
+`PlaceSection`의 `info-section` 부분을 다음 코드로 교체합니다.
+
+```jsx
+{visiblePlaces.length === 0 ? (
+  <div className="empty-result">
+    <strong>해당하는 여행지가 없습니다.</strong>
+    <p>다른 분류를 선택해 보세요.</p>
+  </div>
+) : (
+  <div className="info-section">
+    {visiblePlaces.map((place) => (
+      <TravelInfo key={place.id} place={place} />
+    ))}
+  </div>
+)}
+```
+
+`맛집`에 해당하는 데이터는 없으므로 `visiblePlaces.length`가 `0`이 됩니다. 삼항 연산자는 이때 안내 문구를 선택하고, 결과가 한 개 이상이면 카드 목록을 선택합니다.
+
+`App.css` 맨 아래에 추가합니다.
+
+```css
+.empty-result {
+  padding: 55px;
+  text-align: center;
+  border-radius: 18px;
+  background: white;
+}
+```
+
+## 완성 화면
+
+카테고리를 선택하면 조건에 맞는 여행지만 남습니다. 각 카드에는 운영 상태, 추천 여부, 태그와 일정 담기 버튼이 표시됩니다. 기존의 오늘의 추천, 방문 정보, 여행 팁과 여행 메모도 그대로 동작합니다.
+
+<iframe class="demo-frame demo-frame--tall" src="react-demos/week07-travel.html" title="부천 여행지 필터 완성 화면" loading="lazy"></iframe>
+
+<p class="demo-caption"><a href="react-demos/week07-travel.html" target="_blank">완성 화면을 새 창에서 보기</a></p>
+
+# 실습 문제: 공연 프로그램 안내 페이지
+
+## 시작 코드
+
+```jsx
+import { useState } from "react";
+import "./App.css";
+
+const programs = [
+  { id: 1, title: "로비 콘서트", genre: "클래식", date: "10.09", hall: "콘서트홀 로비", available: true, special: true, color: "pink", tags: ["무료", "해설"] },
+  { id: 2, title: "BAC 재즈 나이트", genre: "재즈", date: "10.12", hall: "소공연장", available: true, special: false, color: "blue", tags: ["재즈", "트리오"] },
+  { id: 3, title: "오르간 유니버스", genre: "클래식", date: "10.18", hall: "콘서트홀", available: false, special: true, color: "green", tags: ["오르간", "리사이틀"] },
+  { id: 4, title: "도시를 그리는 춤", genre: "무용", date: "10.24", hall: "소공연장", available: true, special: false, color: "orange", tags: ["현대무용", "창작"] },
+];
+
+function ProgramCard({ program }) {
+  return (
+    <article className="program-card">
+      <div className={`poster ${program.color}`}>
+        <span>BAC</span>
+        <strong>{program.title}</strong>
+      </div>
+      <div className="card-content">
+      {/* 문제 2~5에서 완성합니다. */}
+      </div>
+    </article>
+  );
+}
+
+function ProgramList() {
+  const [genre, setGenre] = useState("전체");
+
+  return (
+    <section className="program-section">
+      <h1>공연안내</h1>
+      {/* 문제 6~8에서 완성합니다. */}
+    </section>
+  );
+}
+
+function App() {
+  return (
+    <>
+      <header>
+        <strong className="logo">BAC</strong>
+        <nav><a href="#programs">공연</a><a href="#guide">이용안내</a></nav>
+        <span>MY</span>
+      </header>
+      <section className="hero">
+        <p>BUCHEON ARTS CENTER</p>
+        <h1>음악이 머무는 도시</h1>
+        <span>부천의 공연을 한눈에 확인하세요.</span>
+      </section>
+      <main id="programs"><ProgramList /></main>
+      <footer id="guide">
+        <strong>BUCHEON ARTS CENTER</strong>
+        <span>경기도 부천시 원미구 소향로 165</span>
+      </footer>
+    </>
+  );
+}
+
+export default App;
+```
+
+`src/App.css`에는 다음 코드를 작성합니다. 문제를 풀 때 CSS는 수정하지 않습니다.
+
+```css
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, "Malgun Gothic", sans-serif; color: #151515; background: white; }
+a { color: inherit; text-decoration: none; }
+header { height: 76px; padding: 0 7%; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ddd; }
+.logo { font-size: 26px; letter-spacing: -2px; }
+nav { display: flex; gap: 50px; font-weight: bold; }
+header > span { padding: 5px; border: 2px solid #111; font-size: 11px; font-weight: bold; }
+.hero { padding: 75px 8%; color: white; background: #07584f; }
+.hero p { margin: 0; font-size: 11px; letter-spacing: 3px; }
+.hero h1 { margin: 16px 0; font-size: clamp(46px, 6vw, 72px); letter-spacing: -4px; }
+.hero > span { color: #c4ded8; }
+main { max-width: 1120px; margin: auto; padding: 75px 28px; }
+.program-section > h1 { margin: 0 0 30px; padding-bottom: 20px; border-bottom: 2px solid #111; font-size: 42px; }
+.filter-buttons { display: flex; justify-content: center; gap: 25px; }
+.filter-buttons button { padding: 9px 5px; border: 0; border-bottom: 2px solid transparent; background: white; font-weight: bold; cursor: pointer; }
+.filter-buttons button.active { color: #07584f; border-color: #07584f; }
+.result-count { margin: 30px 0 14px; color: #777; font-size: 13px; }
+.program-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.program-card { overflow: hidden; border: 1px solid #ddd; background: white; }
+.poster { aspect-ratio: 3 / 4; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
+.poster span { font-size: 12px; font-weight: bold; letter-spacing: 2px; }
+.poster strong { font-size: 28px; line-height: 1.12; word-break: keep-all; }
+.pink { color: #263747; background: #f2d7d0; }
+.blue { color: white; background: repeating-linear-gradient(90deg, #087bb1 0 16px, #17212b 16px 30px); }
+.green { color: #064e46; background: repeating-linear-gradient(110deg, #eff1dd 0 10px, #76a9a4 11px 14px); }
+.orange { color: white; background: linear-gradient(145deg, #f16649 0 55%, #176374 55%); }
+.card-content { padding: 18px; }
+.card-labels { display: flex; justify-content: space-between; align-items: center; }
+.booking, .special { font-size: 11px; font-weight: bold; }
+.open { color: #08725f; }
+.closed { color: #9b3c48; }
+.special { padding: 4px 7px; color: white; background: #07584f; }
+.card-content h2 { min-height: 48px; margin: 17px 0 8px; font-size: 19px; }
+.card-content p { color: #666; font-size: 13px; }
+.card-content ul { display: flex; gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; color: #777; font-size: 11px; }
+.empty { padding: 70px; text-align: center; background: #f5f5f2; }
+footer { padding: 40px 7%; display: flex; justify-content: space-between; color: #aaa; background: #222; }
+footer strong { color: white; }
+@media (max-width: 850px) { .program-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { nav { display: none; } .program-grid { grid-template-columns: 1fr; } }
+```
+
+## 문제 1. 공연 제목과 장르 표시하기
+
+`ProgramCard`의 `card-content` 안에 공연 제목, 날짜와 공연장을 표시합니다. `program.title`, `program.date`, `program.hall`을 사용합니다.
+
+## 문제 2. 예매 상태 표시하기
+
+`available`이 참이면 `예매 가능`, 거짓이면 `매진`을 표시하는 `BookingStatus` 컴포넌트를 만듭니다. CSS 클래스는 각각 `booking open`, `booking closed`를 사용합니다.
+
+## 문제 3. 특별 공연 배지 표시하기
+
+`special`이 참인 공연에만 `기획공연` 배지를 표시합니다. `&&` 연산자를 사용합니다.
+
+## 문제 4. 공연 태그 표시하기
+
+`program.tags`에 `map()`을 사용하여 모든 태그를 `<li>`로 표시합니다. 각 `<li>`에는 `key`를 지정합니다.
+
+## 문제 5. 모든 공연 카드 출력하기
+
+`programs`에 `map()`을 사용하여 `ProgramCard`를 반복합니다. 각 카드에는 `key={program.id}`를 지정합니다.
+
+## 문제 6. 장르 선택 버튼 만들기
+
+`["전체", "클래식", "재즈", "무용", "연극"]` 배열에 `map()`을 사용하여 버튼을 만듭니다. 버튼을 누르면 `setGenre()`로 선택한 장르를 저장합니다.
+
+## 문제 7. 선택한 장르만 남기기
+
+`filter()`를 사용하여 `genre`와 같은 공연만 `visiblePrograms`에 저장합니다. `전체`를 선택했을 때는 모든 공연이 남아야 합니다.
+
+## 문제 8. 빈 결과 안내하기
+
+`visiblePrograms.length`가 `0`이면 `해당 장르의 공연이 없습니다.`를 표시하고, 그렇지 않으면 공연 카드 목록을 표시합니다. 삼항 연산자를 사용합니다.
+
+## 정답
+
+```jsx
+function BookingStatus({ available }) {
+  if (available) {
+    return <span className="booking open">예매 가능</span>;
+  }
+  return <span className="booking closed">매진</span>;
+}
+
+function ProgramCard({ program }) {
+  return (
+    <article className="program-card">
+      <div className={`poster ${program.color}`}>
+        <span>BAC</span>
+        <strong>{program.title}</strong>
+      </div>
+      <div className="card-content">
+        <div className="card-labels">
+          <BookingStatus available={program.available} />
+          {program.special && <span className="special">기획공연</span>}
+        </div>
+        <h2>{program.title}</h2>
+        <p>{program.date} · {program.hall}</p>
+        <ul>
+          {program.tags.map((tag) => <li key={tag}>#{tag}</li>)}
+        </ul>
+      </div>
+    </article>
+  );
+}
+
+function ProgramList() {
+  const [genre, setGenre] = useState("전체");
+  const genres = ["전체", "클래식", "재즈", "무용", "연극"];
+  const visiblePrograms = programs.filter((program) => {
+    return genre === "전체" || program.genre === genre;
+  });
+
+  return (
+    <section className="program-section">
+      <h1>공연안내</h1>
+      <div className="filter-buttons">
+        {genres.map((item) => (
+          <button
+            className={genre === item ? "active" : ""}
+            key={item}
+            onClick={() => setGenre(item)}
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+
+      <p className="result-count">공연 {visiblePrograms.length}개</p>
+
+      {visiblePrograms.length === 0 ? (
+        <div className="empty">해당 장르의 공연이 없습니다.</div>
+      ) : (
+        <div className="program-grid">
+          {visiblePrograms.map((program) => (
+            <ProgramCard key={program.id} program={program} />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+```
+
+## 제출 전 점검
+
+- 네 개의 공연 카드가 처음 화면에 표시되는지 확인합니다.
+- `클래식`, `재즈`, `무용` 버튼을 누르면 해당 장르만 남는지 확인합니다.
+- `연극` 버튼을 누르면 빈 결과 안내가 표시되는지 확인합니다.
+- 특별 공연에만 `기획공연` 배지가 표시되는지 확인합니다.
+- 각 공연의 모든 태그가 표시되는지 확인합니다.
+- 개발자 도구 콘솔에 `key` 경고가 없는지 확인합니다.

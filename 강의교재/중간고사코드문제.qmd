@@ -1,0 +1,291 @@
+---
+title: "중간고사 코드 문제"
+number-sections: false
+---
+
+# 문제 1
+
+```jsx
+function App() {
+  const studentName = "홍길동";
+
+  return (
+    <section>
+      <h1>{studentName}의 포트폴리오</h1>
+      <p>React로 웹 인터페이스를 공부합니다.</p>
+    </section>
+  );
+}
+
+export default App;
+```
+
+# 문제 2
+
+```jsx
+function App() {
+  const name = "김유한";
+  const completed = 3;
+  const total = 7;
+
+  return (
+    <article>
+      <h2>{name}</h2>
+      <p>완료한 과제: {completed}개</p>
+      <p>남은 과제: {total - completed}개</p>
+    </article>
+  );
+}
+
+export default App;
+```
+
+# 문제 3
+
+```jsx
+function ProductCard({ title, price, location, image }) {
+  return (
+    <article className="product-card">
+      <img className="product-card__image" src={image} alt={title} />
+      <h4>{title}</h4>
+      <p className="product-card__location">{location}</p>
+      <p className="product-card__price">{price.toLocaleString()}원</p>
+    </article>
+  );
+}
+
+function App() {
+  return (
+    <main>
+      <h2>인기 매물</h2>
+      <div className="product-list">
+        <ProductCard title="아이패드 에어" price={650000} location="역삼동"
+          image="https://picsum.photos/seed/ipad/300/200" />
+        <ProductCard title="캠핑용 의자" price={35000} location="서초동"
+          image="https://picsum.photos/seed/chair/300/200" />
+        <ProductCard title="기계식 키보드" price={89000} location="양재동"
+          image="https://picsum.photos/seed/keyboard/300/200" />
+      </div>
+    </main>
+  );
+}
+
+export default App;
+```
+
+# 문제 4
+
+```jsx
+function CardFrame({ children }) {
+  return <div className="card-frame">{children}</div>;
+}
+
+function App() {
+  return (
+    <main className="card-list">
+      <CardFrame>
+        <h3>공지</h3>
+        <p>새 소식이 등록되었습니다.</p>
+      </CardFrame>
+      <CardFrame>
+        <h3>오늘의 통계</h3>
+        <p>방문자 1,240명</p>
+      </CardFrame>
+    </main>
+  );
+}
+
+export default App;
+```
+
+# 문제 5
+
+```jsx
+import { useState } from "react";
+
+function LikeButton() {
+  const [likes, setLikes] = useState(0);
+
+  function handleClick() {
+    setLikes(likes + 1);
+  }
+
+  return <button onClick={handleClick}>좋아요 {likes}</button>;
+}
+
+function App() {
+  return <LikeButton />;
+}
+
+export default App;
+```
+
+# 문제 6
+
+```jsx
+import { useState } from "react";
+
+function CommentBox() {
+  const [text, setText] = useState("");
+
+  return (
+    <div>
+      <input
+        value={text}
+        onChange={(event) => setText(event.target.value)}
+        placeholder="댓글 달기..."
+      />
+      <p>미리보기: {text}</p>
+    </div>
+  );
+}
+
+function App() {
+  return <CommentBox />;
+}
+
+export default App;
+```
+
+# 문제 7
+
+```jsx
+import { useState, useEffect } from "react";
+
+function Clock() {
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const timerId = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timerId);
+  }, []);
+
+  return <time>{now.toLocaleTimeString("ko-KR")}</time>;
+}
+
+function App() {
+  return <Clock />;
+}
+
+export default App;
+```
+
+# 문제 8
+
+```jsx
+import { useRef } from "react";
+
+function SearchBox() {
+  const inputRef = useRef(null);
+
+  function handleFocus() {
+    inputRef.current.focus();
+  }
+
+  return (
+    <div>
+      <input ref={inputRef} placeholder="검색어" />
+      <button type="button" onClick={handleFocus}>검색창으로 이동</button>
+    </div>
+  );
+}
+
+function App() {
+  return <SearchBox />;
+}
+
+export default App;
+```
+
+# 문제 9
+
+```jsx
+import "./App.css";
+
+const posts = [
+  { id: "p1", username: "minjun_dev", caption: "오늘은 React를 공부했습니다." },
+  { id: "p2", username: "coding_kim", caption: "배열 데이터를 화면에 표시합니다." },
+  { id: "p3", username: "web_lee", caption: "반복되는 카드를 재사용합니다." },
+];
+
+function PostCard({ post }) {
+  return (
+    <article className="post-card">
+      <h3>{post.username}</h3>
+      <p>{post.caption}</p>
+    </article>
+  );
+}
+
+function App() {
+  return (
+    <main>
+      <h1>게시물</h1>
+      <section>
+        {posts.map((post) => (
+          <PostCard key={post.id} post={post} />
+        ))}
+      </section>
+    </main>
+  );
+}
+
+export default App;
+```
+
+# 문제 10
+
+```jsx
+import "./App.css";
+import { useState } from "react";
+
+const posts = [
+  { id: "p1", username: "minjun_dev", caption: "오늘은 React를 공부했습니다." },
+  { id: "p2", username: "coding_kim", caption: "배열 데이터를 화면에 표시합니다." },
+  { id: "p3", username: "web_lee", caption: "React 프로젝트를 완성했습니다." },
+];
+
+function PostCard({ post }) {
+  return (
+    <article className="post-card">
+      <h2>{post.username}</h2>
+      <p>{post.caption}</p>
+    </article>
+  );
+}
+
+function App() {
+  const [query, setQuery] = useState("");
+  const normalizedQuery = query.trim().toLowerCase();
+  const visiblePosts = posts.filter((post) =>
+    post.caption.toLowerCase().includes(normalizedQuery)
+  );
+
+  return (
+    <main>
+      <h1>게시물 검색</h1>
+      <label htmlFor="post-search">검색어</label>
+      <input
+        id="post-search"
+        type="search"
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+        placeholder="예: React"
+      />
+
+      <p role="status">검색 결과 {visiblePosts.length}개</p>
+      {visiblePosts.length === 0 ? (
+        <p>검색 결과가 없습니다.</p>
+      ) : (
+        <section>
+          {visiblePosts.map((post) => (
+            <PostCard key={post.id} post={post} />
+          ))}
+        </section>
+      )}
+    </main>
+  );
+}
+
+export default App;
+```

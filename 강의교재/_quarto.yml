@@ -71,6 +71,7 @@ book:
           href: week07_quiz.qmd
         - text: "3. 코딩실습"
           href: week07_code.qmd
+    - 중간고사코드문제.qmd
 
 crossref:
   fig-title: "그림"

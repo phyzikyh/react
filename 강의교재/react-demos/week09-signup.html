@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>회원가입 검증</title>
+<style>
+  body{margin:0;padding:16px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;color:#262626;}
+  form{display:grid;gap:6px;max-width:320px;}
+  label{font-size:13px;font-weight:600;margin-top:4px;}
+  input{font-size:14px;padding:8px 10px;border:1px solid #cfd4da;border-radius:8px;}
+  input[aria-invalid="true"]{border-color:#d93025;}
+  .error{color:#d93025;font-size:12px;margin:0;}
+  button{font-size:14px;padding:8px 14px;border:none;border-radius:8px;background:#0095f6;color:#fff;cursor:pointer;margin-top:8px;}
+  .done{margin-top:12px;font-size:14px;color:#1a7f37;}
+</style></head><body><div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+<script type="text/babel">
+const { useState } = React;
+const emptyForm = { email: "", password: "", passwordCheck: "" };
+
+function App() {
+  const [form, setForm] = useState({ ...emptyForm });
+  const [errors, setErrors] = useState({});
+  const [done, setDone] = useState(false);
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setForm((previous) => ({ ...previous, [name]: value }));
+    setErrors((previous) => ({ ...previous, [name]: "" }));
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    const nextErrors = {};
+    if (!form.email.includes("@")) nextErrors.email = "이메일 형식이 올바르지 않습니다.";
+    if (form.password.length < 8) nextErrors.password = "비밀번호는 8자 이상이어야 합니다.";
+    if (form.password !== form.passwordCheck) nextErrors.passwordCheck = "비밀번호가 서로 다릅니다.";
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) { setDone(false); return; }
+    setDone(true);
+    setForm({ ...emptyForm });
+  }
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit} noValidate>
+        <label htmlFor="email">이메일</label>
+        <input id="email" name="email" value={form.email} onChange={handleChange} aria-invalid={Boolean(errors.email)} />
+        {errors.email && <p className="error" role="alert">{errors.email}</p>}
+
+        <label htmlFor="password">비밀번호</label>
+        <input id="password" name="password" type="password" value={form.password} onChange={handleChange} aria-invalid={Boolean(errors.password)} />
+        {errors.password && <p className="error" role="alert">{errors.password}</p>}
+
+        <label htmlFor="passwordCheck">비밀번호 확인</label>
+        <input id="passwordCheck" name="passwordCheck" type="password" value={form.passwordCheck} onChange={handleChange} aria-invalid={Boolean(errors.passwordCheck)} />
+        {errors.passwordCheck && <p className="error" role="alert">{errors.passwordCheck}</p>}
+
+        <button type="submit">가입하기</button>
+      </form>
+      {done && <p className="done">가입 정보를 확인했습니다.</p>}
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script></body></html>

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>방명록 목록 쌓기</title>
+<style>
+  body{margin:0;padding:16px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;color:#262626;}
+  form{display:grid;gap:6px;max-width:340px;margin-bottom:14px;}
+  label{font-size:13px;font-weight:600;}
+  input,textarea{font-size:14px;padding:8px 10px;border:1px solid #cfd4da;border-radius:8px;}
+  textarea{height:54px;}
+  button{font-size:14px;padding:8px 14px;border:none;border-radius:8px;background:#0095f6;color:#fff;cursor:pointer;}
+  ul{list-style:none;padding:0;margin:0;max-width:340px;}
+  li{padding:10px 12px;margin-bottom:8px;border:1px solid #e1e4e8;border-radius:8px;font-size:14px;}
+  .empty{color:#8e8e8e;font-size:14px;}
+</style></head><body><div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+<script type="text/babel">
+const { useState } = React;
+const emptyForm = { name: "", message: "" };
+
+function App() {
+  const [form, setForm] = useState({ ...emptyForm });
+  const [entries, setEntries] = useState([]);
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setForm((previous) => ({ ...previous, [name]: value }));
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    if (form.name.trim() === "" || form.message.trim() === "") return;
+    const newEntry = { id: crypto.randomUUID(), name: form.name.trim(), message: form.message.trim() };
+    setEntries((previous) => [...previous, newEntry]);
+    setForm({ ...emptyForm });
+  }
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="name">이름</label>
+        <input id="name" name="name" value={form.name} onChange={handleChange} />
+        <label htmlFor="message">남길 말</label>
+        <textarea id="message" name="message" value={form.message} onChange={handleChange} />
+        <button type="submit">남기기</button>
+      </form>
+      <h3>방명록 {entries.length}개</h3>
+      {entries.length === 0 ? (
+        <p className="empty">아직 남긴 글이 없습니다.</p>
+      ) : (
+        <ul>
+          {entries.map((entry) => (
+            <li key={entry.id}><strong>{entry.name}</strong><br />{entry.message}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script></body></html>

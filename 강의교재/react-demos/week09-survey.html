@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>설문 폼</title>
+<style>
+  body{margin:0;padding:16px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;color:#262626;}
+  .row{margin:10px 0;font-size:14px;}
+  label{margin-right:10px;font-size:14px;}
+  select,textarea{font-size:14px;padding:6px 8px;border:1px solid #cfd4da;border-radius:8px;}
+  textarea{width:min(320px,90%);height:56px;display:block;margin-top:6px;}
+  .result{margin-top:12px;padding:10px;background:#f6f7f8;border-radius:8px;font-size:13px;}
+</style></head><body><div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+<script type="text/babel">
+const { useState } = React;
+function App() {
+  const [grade, setGrade] = useState("2");
+  const [level, setLevel] = useState("beginner");
+  const [agree, setAgree] = useState(false);
+  const [comment, setComment] = useState("");
+
+  return (
+    <div>
+      <div className="row">
+        <label htmlFor="grade">학년</label>
+        <select id="grade" value={grade} onChange={(event) => setGrade(event.target.value)}>
+          <option value="1">1학년</option>
+          <option value="2">2학년</option>
+          <option value="3">3학년</option>
+        </select>
+      </div>
+      <div className="row">
+        <label><input type="radio" name="level" value="beginner" checked={level === "beginner"} onChange={(event) => setLevel(event.target.value)} /> 입문</label>
+        <label><input type="radio" name="level" value="advanced" checked={level === "advanced"} onChange={(event) => setLevel(event.target.value)} /> 경험 있음</label>
+      </div>
+      <div className="row">
+        <label><input type="checkbox" checked={agree} onChange={(event) => setAgree(event.target.checked)} /> 결과 공개에 동의</label>
+      </div>
+      <div className="row">
+        <label htmlFor="comment">의견</label>
+        <textarea id="comment" value={comment} onChange={(event) => setComment(event.target.value)} />
+      </div>
+      <div className="result">
+        {grade}학년 · {level === "beginner" ? "입문" : "경험 있음"} · {agree ? "공개 동의" : "공개 미동의"}
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script></body></html>

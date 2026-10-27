@@ -78,6 +78,12 @@ book:
           href: week09_lecture.qmd
         - text: "2. 연습문제"
           href: week09_quiz.qmd
+    - part: "10주차 : State 끌어올리기와 데이터 공유"
+      chapters:
+        - text: "1. 이론"
+          href: week10_lecture.qmd
+        - text: "2. 연습문제"
+          href: week10_quiz.qmd
 
 crossref:
   fig-title: "그림"

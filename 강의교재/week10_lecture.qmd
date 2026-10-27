@@ -1,0 +1,499 @@
+---
+title: "10주차: State 끌어올리기와 데이터 공유"
+subtitle: "여러 컴포넌트가 같은 데이터를 함께 쓰도록 State를 부모로 옮기기"
+date: "2026-10-26"
+number-sections: false
+---
+
+# 1. State를 나눠 쓸 수 없을 때
+
+## 검색이 되지 않는 검색창
+
+검색창과 게시물 목록을 컴포넌트 둘로 나누면 코드가 읽기 쉬워집니다. 그런데 나누고 나면 한 가지가 어긋납니다. 아래 코드는 화면에 문제없이 뜨지만, 검색창에 글자를 입력해도 목록이 줄어들지 않습니다.
+
+::: {.callout-note title="용어"}
+- **형제 컴포넌트**: 같은 부모 안에 나란히 놓인 컴포넌트. 아래 예제에서 `SearchBar`와 `PostList`는 `App` 안의 형제입니다.
+:::
+
+**예제 10-1  검색이 동작하지 않는 코드**
+
+```jsx
+import { useState } from "react";
+
+const posts = [
+  { id: "p1", username: "minjun_dev", caption: "오늘은 React를 공부했습니다." },
+  { id: "p2", username: "coding_kim", caption: "배열 데이터를 화면에 표시합니다." },
+  { id: "p3", username: "web_lee", caption: "React 프로젝트를 완성했습니다." },
+];
+
+function SearchBar() {
+  const [query, setQuery] = useState("");
+
+  return (
+    <input
+      value={query}
+      onChange={(event) => setQuery(event.target.value)}
+      placeholder="게시물 검색"
+    />
+  );
+}
+
+function PostList() {
+  return (
+    <ul>
+      {posts.map((post) => (
+        <li key={post.id}>
+          <strong>{post.username}</strong> {post.caption}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function App() {
+  return (
+    <main>
+      <h1>게시물 검색</h1>
+      <SearchBar />
+      <PostList />
+    </main>
+  );
+}
+
+export default App;
+```
+
+::: {.callout-note title="먼저 생각해 보기"}
+실행하기 전에 답을 정해 보세요. 검색창에 `React`를 입력하면 목록은 어떻게 될까요?
+
+::: {.callout-note collapse="true" title="정답 보기"}
+목록은 그대로입니다. 검색어 `query`는 `SearchBar` 안에만 있어서, `PostList`는 검색어가 무엇인지 알 방법이 없습니다. 알 수 없는 값으로 목록을 거를 수는 없습니다.
+:::
+:::
+
+**실행 결과** (검색창에 글자를 입력해 보세요)
+
+<iframe class="jsx-output-frame site-demo-frame" style="height: 300px" title="검색이 동작하지 않는 코드 실행 결과" src="react-demos/week10-search-broken.html"></iframe>
+
+## State는 만든 곳에서만 보입니다
+
+State는 그 State를 만든 컴포넌트 안에서만 읽고 바꿀 수 있습니다. Props는 부모에서 자식으로만 흐르고, 형제끼리 값을 직접 주고받는 길은 없습니다. `SearchBar`가 `query`를 가지고 있어도 `PostList`에는 그 값을 건넬 방법이 없습니다.
+
+```{mermaid}
+flowchart TB
+  A["App"] --> S["SearchBar<br/>query State를 가짐"]
+  A --> L["PostList<br/>query를 알 방법이 없음"]
+```
+
+::: {.text-center}
+**그림 10.1** 형제 컴포넌트는 서로의 State를 볼 수 없습니다.
+:::
+
+::: {.callout-tip title="직접 해보기"}
+`SearchBar` 안에 `<p>입력 중: {query}</p>`를 추가해 보세요. 같은 컴포넌트 안에서는 `query`를 쓸 수 있습니다. 이 줄을 `PostList`로 옮기면 어떤 오류가 나는지도 확인해 보세요.
+:::
+
+::: {.callout-note title="확인 문제"}
+1. `PostList`가 `SearchBar`의 `query`를 읽지 못하는 이유는 무엇일까요?
+
+::: {.callout-note collapse="true" title="정답 보기"}
+State는 만든 컴포넌트 안에서만 쓸 수 있고, 형제 컴포넌트 사이에는 값을 전달하는 경로가 없기 때문입니다. Props는 부모에서 자식으로만 흐릅니다.
+:::
+:::
+
+# 2. State를 부모로 올리기
+
+## 공통 부모가 State를 갖기
+
+해결 방법은 두 컴포넌트를 모두 품고 있는 부모로 State를 옮기는 것입니다. 부모가 값을 가지고 있으면 Props로 두 자식에게 모두 내려줄 수 있습니다. 이렇게 State를 부모로 옮기는 일을 **State 끌어올리기**라고 부릅니다.
+
+::: {.callout-note title="용어"}
+- **State 끌어올리기(lifting state up)**: 여러 컴포넌트가 함께 쓰는 State를 가장 가까운 공통 부모로 옮기는 일.
+:::
+
+끌어올리는 순서는 세 단계입니다.
+
+1. 자식 안에 있던 State를 지웁니다.
+2. 공통 부모에 같은 State를 만듭니다.
+3. 값을 Props로 내려주고, 값을 바꾸는 함수도 Props로 내려줍니다.
+
+**예제 10-2  검색어를 App으로 올리기**
+
+```jsx
+import { useState } from "react";
+
+const posts = [
+  { id: "p1", username: "minjun_dev", caption: "오늘은 React를 공부했습니다." },
+  { id: "p2", username: "coding_kim", caption: "배열 데이터를 화면에 표시합니다." },
+  { id: "p3", username: "web_lee", caption: "React 프로젝트를 완성했습니다." },
+];
+
+function SearchBar({ query, onQueryChange }) {
+  return (
+    <input
+      value={query}
+      onChange={(event) => onQueryChange(event.target.value)}
+      placeholder="게시물 검색"
+    />
+  );
+}
+
+function PostList({ query }) {
+  const visiblePosts = posts.filter((post) =>
+    post.caption.toLowerCase().includes(query.trim().toLowerCase())
+  );
+
+  return (
+    <ul>
+      {visiblePosts.map((post) => (
+        <li key={post.id}>
+          <strong>{post.username}</strong> {post.caption}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function App() {
+  const [query, setQuery] = useState("");
+
+  return (
+    <main>
+      <h1>게시물 검색</h1>
+      <SearchBar query={query} onQueryChange={setQuery} />
+      <PostList query={query} />
+    </main>
+  );
+}
+
+export default App;
+```
+
+**실행 결과** (이번에는 검색창에 `React`를 입력해 보세요)
+
+<iframe class="jsx-output-frame site-demo-frame" style="height: 300px" title="State를 부모로 올린 검색 실행 결과" src="react-demos/week10-search.html"></iframe>
+
+바뀐 곳은 세 군데입니다.
+
+- `SearchBar`에서 `useState`가 사라졌습니다. 값 `query`와 바꾸는 함수 `onQueryChange`를 Props로 받습니다.
+- `App`이 `query` State를 만들고 두 자식에게 내려줍니다.
+- `PostList`는 받은 `query`로 `posts`를 걸러냅니다.
+
+데이터가 오가는 방향을 라벨로 표시하면 이렇습니다.
+
+```jsx
+// 부모(App): 값과 함수를 내려준다
+<SearchBar query={query} onQueryChange={setQuery} />
+<PostList query={query} />
+```
+
+```jsx
+// 자식(SearchBar): 받은 값을 보여주고, 입력이 바뀌면 받은 함수를 호출한다
+function SearchBar({ query, onQueryChange }) {
+  ...
+  onChange={(event) => onQueryChange(event.target.value)}
+}
+```
+
+`onQueryChange={setQuery}`는 `setQuery` 함수 자체를 자식에게 건넵니다. 자식이 `onQueryChange(새 값)`을 호출하면 사실은 부모의 `setQuery`가 실행되고, 부모의 State가 바뀌어 화면이 다시 그려집니다. 새 `query`는 `SearchBar`와 `PostList` 둘 다에 전달됩니다.
+
+```{mermaid}
+flowchart TB
+  A["App<br/>query State를 가짐"]
+  S["SearchBar"]
+  L["PostList"]
+  A -->|"query, onQueryChange (Props)"| S
+  A -->|"query (Props)"| L
+  S -->|"onQueryChange(새 값) 호출"| A
+```
+
+::: {.text-center}
+**그림 10.2** 값은 아래로 내려가고, 변경 요청은 위로 올라갑니다.
+:::
+
+::: {.callout-warning title="흔한 실수"}
+`onQueryChange={setQuery()}`처럼 괄호를 붙이면 화면을 그리는 순간 함수가 실행됩니다. 함수 이름만 전달합니다. 또 `SearchBar` 안에서 `query = "새 값"`처럼 받은 값을 직접 바꾸려 해도 안 됩니다. Props는 읽기 전용이라, 바꾸려면 부모가 내려준 함수를 호출해야 합니다.
+:::
+
+::: {.callout-tip title="직접 해보기"}
+`App`의 `<PostList>` 위에 `<p>검색어: {query}</p>`를 추가해 보세요. State를 가진 `App`도 같은 값을 그대로 쓸 수 있습니다.
+:::
+
+::: {.callout-note title="확인 문제"}
+1. 자식 컴포넌트가 부모의 State를 바꾸려면 어떻게 해야 할까요?
+
+::: {.callout-note collapse="true" title="정답 보기"}
+부모가 State를 바꾸는 함수(`setQuery` 등)를 Props로 내려주고, 자식이 그 함수를 호출합니다. 자식이 State를 직접 바꿀 수는 없습니다.
+:::
+:::
+
+# 3. 자식이 부모의 State를 바꾸는 방법
+
+## 함수를 Props로 내려주기
+
+앞의 검색창에서는 입력창 하나가 State를 바꿨습니다. 이번에는 목록의 **여러 자식**이 같은 State를 바꾸는 경우를 봅니다. 게시물마다 좋아요 버튼이 있고, 화면 위쪽에는 "좋아요한 게시물 N개"가 표시됩니다. 카드 안의 하트와 위쪽 숫자는 같은 데이터를 보고 있어야 합니다.
+
+**예제 10-3  좋아요한 게시물 요약**
+
+```jsx
+import { useState } from "react";
+
+const posts = [
+  { id: "p1", username: "minjun_dev", caption: "오늘은 React를 공부했습니다." },
+  { id: "p2", username: "coding_kim", caption: "배열 데이터를 화면에 표시합니다." },
+  { id: "p3", username: "web_lee", caption: "React 프로젝트를 완성했습니다." },
+];
+
+function PostCard({ post, liked, onToggleLike }) {
+  return (
+    <article>
+      <span><strong>{post.username}</strong> {post.caption}</span>
+      <button type="button" onClick={() => onToggleLike(post.id)}>
+        {liked ? "♥ 좋아요 취소" : "♡ 좋아요"}
+      </button>
+    </article>
+  );
+}
+
+function App() {
+  const [likedIds, setLikedIds] = useState([]);
+
+  function toggleLike(postId) {
+    setLikedIds((previous) =>
+      previous.includes(postId)
+        ? previous.filter((id) => id !== postId)
+        : [...previous, postId]
+    );
+  }
+
+  return (
+    <main>
+      <h1>게시물</h1>
+      <p>좋아요한 게시물 {likedIds.length}개</p>
+      {posts.map((post) => (
+        <PostCard
+          key={post.id}
+          post={post}
+          liked={likedIds.includes(post.id)}
+          onToggleLike={toggleLike}
+        />
+      ))}
+    </main>
+  );
+}
+
+export default App;
+```
+
+**실행 결과** (하트를 눌러 위쪽 숫자가 함께 바뀌는지 확인하세요)
+
+<iframe class="jsx-output-frame site-demo-frame" style="height: 340px" title="좋아요한 게시물 요약 실행 결과" src="react-demos/week10-like.html"></iframe>
+
+State는 `App`의 `likedIds` 하나입니다. 좋아요를 누른 게시물의 `id`를 배열에 모아 둡니다.
+
+```jsx
+// 부모(App): 이 카드가 눌렸는지(liked)와, 누를 때 부를 함수(onToggleLike)를 내려준다
+<PostCard post={post} liked={likedIds.includes(post.id)} onToggleLike={toggleLike} />
+```
+
+```jsx
+// 자식(PostCard): 클릭하면 받은 함수에 자기 게시물의 id를 넘겨 호출한다
+<button onClick={() => onToggleLike(post.id)}>
+```
+
+`onClick`에 `() => onToggleLike(post.id)`처럼 화살표 함수를 쓴 이유는 `post.id`라는 값을 함께 넘겨야 하기 때문입니다. `toggleLike`는 그 `id`가 이미 배열에 있으면 `filter`로 빼고, 없으면 `[...previous, postId]`로 추가합니다.
+
+카드 안의 하트 모양과 위쪽 "좋아요한 게시물 N개"는 모두 `likedIds` 하나에서 나옵니다. 같은 데이터를 한 곳에서만 들고 있으니 두 화면이 어긋날 수 없습니다.
+
+::: {.callout-warning title="흔한 실수"}
+`onClick={onToggleLike(post.id)}`처럼 괄호를 붙이면 화면을 그릴 때 함수가 바로 실행됩니다. 값을 넘겨야 할 때는 `() => onToggleLike(post.id)`처럼 화살표 함수로 감쌉니다.
+:::
+
+::: {.callout-tip title="직접 해보기"}
+`App`에 "모두 취소" 버튼을 추가해 보세요. 누르면 `setLikedIds([])`가 실행되어 모든 하트가 꺼지고 숫자가 0이 됩니다.
+:::
+
+::: {.callout-note title="확인 문제"}
+1. "좋아요한 게시물 N개"를 `PostCard` 안에서 만들 수 없는 이유는 무엇일까요?
+
+::: {.callout-note collapse="true" title="정답 보기"}
+`PostCard`는 자기 게시물 하나만 알고 있습니다. 어떤 게시물이 눌렸는지에 대한 전체 정보는 부모가 가진 `likedIds`에 있으므로, 전체 개수는 부모에서 계산해야 합니다.
+:::
+:::
+
+# 4. 배열 State를 함께 쓰기
+
+## 상품 목록과 장바구니
+
+카페 주문 화면으로 지금까지 배운 것을 합쳐 봅니다. 왼쪽 메뉴에서 [담기]를 누르면 오른쪽 장바구니에 항목이 쌓이고, 장바구니에서 [빼기]를 누르면 항목이 사라집니다. `ProductList`와 `Cart`는 형제이므로 State는 `App`에 둡니다.
+
+**예제 10-4  카페 주문**
+
+```jsx
+import { useState } from "react";
+
+const products = [
+  { id: "coffee", name: "아메리카노", price: 3500 },
+  { id: "latte", name: "라떼", price: 4000 },
+  { id: "sandwich", name: "샌드위치", price: 5500 },
+];
+
+function ProductList({ onAdd }) {
+  return (
+    <section>
+      <h2>메뉴</h2>
+      <ul>
+        {products.map((product) => (
+          <li key={product.id}>
+            <span>{product.name} {product.price.toLocaleString()}원</span>
+            <button type="button" onClick={() => onAdd(product)}>담기</button>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function Cart({ items, onRemove }) {
+  let total = 0;
+  for (const item of items) {
+    total += item.price;
+  }
+
+  return (
+    <section>
+      <h2>장바구니 {items.length}개</h2>
+      {items.length === 0 ? (
+        <p>담은 메뉴가 없습니다.</p>
+      ) : (
+        <ul>
+          {items.map((item) => (
+            <li key={item.cartId}>
+              <span>{item.name} {item.price.toLocaleString()}원</span>
+              <button type="button" onClick={() => onRemove(item.cartId)}>빼기</button>
+            </li>
+          ))}
+        </ul>
+      )}
+      <p>합계 {total.toLocaleString()}원</p>
+    </section>
+  );
+}
+
+function App() {
+  const [items, setItems] = useState([]);
+
+  function addItem(product) {
+    setItems((previous) => [
+      ...previous,
+      { ...product, cartId: crypto.randomUUID() },
+    ]);
+  }
+
+  function removeItem(cartId) {
+    setItems((previous) => previous.filter((item) => item.cartId !== cartId));
+  }
+
+  return (
+    <main>
+      <h1>카페 주문</h1>
+      <ProductList onAdd={addItem} />
+      <Cart items={items} onRemove={removeItem} />
+    </main>
+  );
+}
+
+export default App;
+```
+
+**실행 결과** (메뉴를 여러 번 담고 빼 보세요)
+
+<iframe class="jsx-output-frame site-demo-frame" style="height: 420px" title="카페 주문 실행 결과" src="react-demos/week10-cart.html"></iframe>
+
+구조를 한눈에 보면 이렇습니다.
+
+| 컴포넌트 | State | 하는 일 |
+|---|---|---|
+| `App` | `items` | 장바구니 배열을 가지고, 담기·빼기 함수를 만듦 |
+| `ProductList` | 없음 | 메뉴를 그리고, [담기]를 누르면 `onAdd(product)` 호출 |
+| `Cart` | 없음 | 받은 `items`를 그리고, [빼기]를 누르면 `onRemove(cartId)` 호출 |
+
+세 곳은 따로 읽어 둘 만합니다.
+
+```jsx
+{ ...product, cartId: crypto.randomUUID() }
+```
+
+같은 메뉴를 두 번 담을 수 있으므로, 담을 때마다 `cartId`를 새로 만듭니다. `product.id`는 같은 메뉴끼리 겹쳐서 `key`로도, "이 항목을 뺀다"는 구분용으로도 쓸 수 없습니다.
+
+```jsx
+setItems((previous) => previous.filter((item) => item.cartId !== cartId));
+```
+
+빼기는 `cartId`가 다른 항목만 남기는 `filter`입니다. 배열을 직접 고치지 않고 새 배열을 만들어 넘깁니다.
+
+```jsx
+let total = 0;
+for (const item of items) {
+  total += item.price;
+}
+```
+
+합계는 State로 따로 저장하지 않고, `Cart`가 그릴 때마다 `items`로 계산합니다. 이 이유는 다음 단원에서 다룹니다.
+
+::: {.callout-tip title="직접 해보기"}
+합계가 10,000원 이상일 때 "무료 배달" 문구가 보이게 해 보세요. `Cart` 안에 `{total >= 10000 && <p>무료 배달</p>}`를 넣으면 됩니다.
+:::
+
+::: {.callout-note title="확인 문제"}
+1. 같은 메뉴를 두 번 담아도 항목마다 `cartId`를 따로 만드는 이유는 무엇일까요?
+
+::: {.callout-note collapse="true" title="정답 보기"}
+`key`는 형제 사이에서 고유해야 하는데 같은 메뉴는 `product.id`가 같아서 겹칩니다. 빼기에서도 같은 메뉴 둘 중 하나만 정확히 지우려면 항목마다 구분되는 값이 필요합니다.
+:::
+:::
+
+# 5. State의 배치
+
+## 배치 기준
+
+모든 State를 `App`으로 올리면 되는 것은 아닙니다. 너무 높이 올리면 `App`이 커지고, 관계없는 컴포넌트까지 다시 그려집니다. 아래 기준으로 위치를 정합니다.
+
+| 상황 | State를 두는 곳 |
+|---|---|
+| 둘 이상의 컴포넌트가 같은 값을 읽거나 바꿔야 함 | 그 컴포넌트들의 가장 가까운 공통 부모 |
+| 한 컴포넌트만 쓰는 값 | 그 컴포넌트 안 (예: 입력창에 쓰는 중인 글자) |
+| 다른 State로 계산할 수 있는 값 | State로 두지 않고, 그릴 때 계산 (예: 개수, 합계) |
+
+::: {.callout-warning title="흔한 실수"}
+계산할 수 있는 값을 State로 또 만들면 두 값이 어긋납니다.
+
+```jsx
+const [items, setItems] = useState([]);
+const [count, setCount] = useState(0);   // items.length와 같은 값을 따로 저장
+```
+
+항목을 담을 때 `setCount`를 빼먹으면 장바구니는 3개인데 화면에는 2개로 나옵니다. `const count = items.length;`처럼 그릴 때 계산하면 어긋날 일이 없습니다.
+:::
+
+::: {.callout-note title="먼저 생각해 보기"}
+카페 주문 화면에 아래 기능을 더한다고 합시다. 각 값의 State를 어디에 두어야 할까요?
+
+1. 메뉴 검색창에 쓰는 중인 글자 (`ProductList` 안의 검색창만 사용)
+2. 장바구니에 담긴 메뉴 배열 (`ProductList`와 `Cart`가 함께 사용)
+3. 장바구니 합계 금액
+
+::: {.callout-note collapse="true" title="정답 보기"}
+1. `ProductList` 안에 둡니다. 한 컴포넌트만 쓰는 값은 올릴 이유가 없습니다.
+2. `App`에 둡니다. 두 형제가 함께 쓰므로 공통 부모로 올립니다.
+3. State로 두지 않습니다. `items`로 계산할 수 있는 값입니다.
+:::
+:::
+
+::: {.callout-note title="확인 문제"}
+1. State를 항상 최상위 컴포넌트에 두면 안 되는 이유는 무엇일까요?
+
+::: {.callout-note collapse="true" title="정답 보기"}
+한 컴포넌트만 쓰는 값까지 올리면 `App`이 복잡해지고 Props 전달 경로만 길어집니다. State는 그 값을 쓰는 컴포넌트들의 가장 가까운 공통 부모에 둡니다.
+:::
+:::

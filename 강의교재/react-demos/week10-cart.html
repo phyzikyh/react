@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>상품 목록과 장바구니</title>
+<style>
+  body{margin:0;padding:16px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;color:#262626;}
+  h1{font-size:18px;margin:0 0 8px;}
+  h2{font-size:15px;margin:14px 0 6px;}
+  ul{list-style:none;padding:0;margin:0;max-width:380px;}
+  li{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;margin-bottom:6px;border:1px solid #e1e4e8;border-radius:8px;font-size:14px;}
+  button{font-size:13px;padding:5px 10px;border:1px solid #cfd4da;border-radius:8px;background:#fff;cursor:pointer;}
+  p{font-size:14px;margin:6px 0;}
+</style></head><body><div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+<script type="text/babel">
+const { useState } = React;
+
+const products = [
+  { id: "coffee", name: "아메리카노", price: 3500 },
+  { id: "latte", name: "라떼", price: 4000 },
+  { id: "sandwich", name: "샌드위치", price: 5500 },
+];
+
+function ProductList({ onAdd }) {
+  return (
+    <section>
+      <h2>메뉴</h2>
+      <ul>
+        {products.map((product) => (
+          <li key={product.id}>
+            <span>{product.name} {product.price.toLocaleString()}원</span>
+            <button type="button" onClick={() => onAdd(product)}>담기</button>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function Cart({ items, onRemove }) {
+  let total = 0;
+  for (const item of items) {
+    total += item.price;
+  }
+
+  return (
+    <section>
+      <h2>장바구니 {items.length}개</h2>
+      {items.length === 0 ? (
+        <p>담은 메뉴가 없습니다.</p>
+      ) : (
+        <ul>
+          {items.map((item) => (
+            <li key={item.cartId}>
+              <span>{item.name} {item.price.toLocaleString()}원</span>
+              <button type="button" onClick={() => onRemove(item.cartId)}>빼기</button>
+            </li>
+          ))}
+        </ul>
+      )}
+      <p>합계 {total.toLocaleString()}원</p>
+    </section>
+  );
+}
+
+function App() {
+  const [items, setItems] = useState([]);
+
+  function addItem(product) {
+    setItems((previous) => [
+      ...previous,
+      { ...product, cartId: crypto.randomUUID() },
+    ]);
+  }
+
+  function removeItem(cartId) {
+    setItems((previous) => previous.filter((item) => item.cartId !== cartId));
+  }
+
+  return (
+    <main>
+      <h1>카페 주문</h1>
+      <ProductList onAdd={addItem} />
+      <Cart items={items} onRemove={removeItem} />
+    </main>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script></body></html>

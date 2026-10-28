@@ -21,16 +21,16 @@ function App() {
 }
 ```
 
-[① (가) `query`, (나) `setQuery`]{.quiz-answer}
+① (가) `query`, (나) `setQuery()`
 
 ② (가) `setQuery`, (나) `query`
 
-③ (가) `query`, (나) `setQuery()`
+[③ (가) `query`, (나) `setQuery`]{.quiz-answer}
 
 ④ (가) `useState`, (나) `query`
 
 ::: {.callout-note collapse="true" title="노트"}
-정답 ①. 부모가 가진 값 `query`와, 그 값을 바꾸는 함수 `setQuery`를 Props로 내려줍니다. 함수는 이름만 전달해야 하며, `setQuery()`처럼 괄호를 붙이면 그리는 순간 호출됩니다.
+정답 ③. 부모가 가진 값 `query`와, 그 값을 바꾸는 함수 `setQuery`를 Props로 내려줍니다. 함수는 이름만 전달해야 하며, `setQuery()`처럼 괄호를 붙이면 그리는 순간 호출됩니다.
 :::
 :::
 
@@ -48,16 +48,16 @@ function SearchBar({ query, onQueryChange }) {
 }
 ```
 
-① (가) `onQueryChange`, (나) `query`
+[① (가) `query`, (나) `onQueryChange`]{.quiz-answer}
 
-[② (가) `query`, (나) `onQueryChange`]{.quiz-answer}
+② (가) `onQueryChange`, (나) `query`
 
 ③ (가) `query`, (나) `setQuery`
 
 ④ (가) `event.target.value`, (나) `onQueryChange`
 
 ::: {.callout-note collapse="true" title="노트"}
-정답 ②. 입력창의 `value`에는 부모에게 받은 값 `query`를 연결하고, 글자가 바뀌면 부모가 내려준 함수 `onQueryChange`를 호출합니다. 이 컴포넌트에는 `setQuery`가 없으므로 ③은 오류가 납니다.
+정답 ①. 입력창의 `value`에는 부모에게 받은 값 `query`를 연결하고, 글자가 바뀌면 부모가 내려준 함수 `onQueryChange`를 호출합니다. 이 컴포넌트에는 `setQuery`가 없으므로 ③은 오류가 납니다.
 :::
 :::
 
@@ -76,14 +76,14 @@ function PostCard({ post, onToggleLike }) {
 
 ① `onToggleLike`를 `PostCard` 안에서 `useState`로 만든다.
 
-[② `onClick`을 `() => onToggleLike(post.id)`로 바꾼다.]{.quiz-answer}
+② `post.id`를 `post`로 바꾼다.
 
-③ `post.id`를 `post`로 바꾼다.
+③ `button`을 `div`로 바꾼다.
 
-④ `button`을 `div`로 바꾼다.
+[④ `onClick`을 `() => onToggleLike(post.id)`로 바꾼다.]{.quiz-answer}
 
 ::: {.callout-note collapse="true" title="노트"}
-정답 ②. `onToggleLike(post.id)`처럼 괄호를 붙이면 함수를 건네는 것이 아니라 화면을 그리는 순간 그 자리에서 호출합니다. 값을 함께 넘겨야 할 때는 화살표 함수로 감싸서 클릭할 때 실행되게 합니다.
+정답 ④. `onToggleLike(post.id)`처럼 괄호를 붙이면 함수를 건네는 것이 아니라 화면을 그리는 순간 그 자리에서 호출합니다. 값을 함께 넘겨야 할 때는 화살표 함수로 감싸서 클릭할 때 실행되게 합니다.
 :::
 :::
 
@@ -105,14 +105,14 @@ function SearchBar({ query, onQueryChange }) {
 
 ① `value={query}`를 삭제한다.
 
-② `query`를 `const`로 선언한다.
+[② `query = event.target.value;`를 `onQueryChange(event.target.value);`로 바꾼다.]{.quiz-answer}
 
 ③ `onChange`를 `onClick`으로 바꾼다.
 
-[④ `query = event.target.value;`를 `onQueryChange(event.target.value);`로 바꾼다.]{.quiz-answer}
+④ `query`를 `const`로 선언한다.
 
 ::: {.callout-note collapse="true" title="노트"}
-정답 ④. Props는 읽기 전용이라 자식이 값을 직접 바꿀 수 없습니다. 값을 바꾸려면 부모가 내려준 함수 `onQueryChange`를 호출해야 하고, 그러면 부모의 State가 바뀌어 새 `query`가 다시 내려옵니다.
+정답 ②. Props는 읽기 전용이라 자식이 값을 직접 바꿀 수 없습니다. 값을 바꾸려면 부모가 내려준 함수 `onQueryChange`를 호출해야 하고, 그러면 부모의 State가 바뀌어 새 `query`가 다시 내려옵니다.
 :::
 :::
 
@@ -158,14 +158,14 @@ return <p>장바구니 {count}개</p>;
 
 ① `useState(0)`을 `useState(1)`로 바꾼다.
 
-[② `count` State를 지우고 `const count = items.length;`로 계산한다.]{.quiz-answer}
+② `setItems`를 `setCount`로 바꾼다.
 
-③ `setItems`를 `setCount`로 바꾼다.
+[③ `count` State를 지우고 `const count = items.length;`로 계산한다.]{.quiz-answer}
 
 ④ `{count}`를 `{count + 1}`로 바꾼다.
 
 ::: {.callout-note collapse="true" title="노트"}
-정답 ②. `items`로 계산할 수 있는 개수를 State로 따로 만들면 두 값이 어긋납니다. `addItem`에서 `setCount`를 호출하지 않아 `count`가 계속 0입니다. 그릴 때 `items.length`로 계산하면 어긋날 일이 없습니다.
+정답 ③. `items`로 계산할 수 있는 개수를 State로 따로 만들면 두 값이 어긋납니다. `addItem`에서 `setCount`를 호출하지 않아 `count`가 계속 0입니다. 그릴 때 `items.length`로 계산하면 어긋날 일이 없습니다.
 :::
 :::
 
@@ -184,16 +184,16 @@ function removeItem(cartId) {
 <button onClick={() => onRemove((나))}>빼기</button>
 ```
 
-[① (가) `!==`, (나) `item.cartId`]{.quiz-answer}
+① (가) `!==`, (나) `item`
 
-② (가) `===`, (나) `item.cartId`
+[② (가) `!==`, (나) `item.cartId`]{.quiz-answer}
 
-③ (가) `!==`, (나) `item`
+③ (가) `===`, (나) `item.cartId`
 
 ④ (가) `!==`, (나) `items`
 
 ::: {.callout-note collapse="true" title="노트"}
-정답 ①. `filter`는 조건이 참인 항목만 남기므로, 지울 항목의 `cartId`와 **다른** 항목(`!==`)을 남겨야 합니다. 자식은 눌린 항목의 `item.cartId`를 넘겨서 부모가 어떤 항목을 지울지 알게 합니다.
+정답 ②. `filter`는 조건이 참인 항목만 남기므로, 지울 항목의 `cartId`와 **다른** 항목(`!==`)을 남겨야 합니다. 자식은 눌린 항목의 `item.cartId`를 넘겨서 부모가 어떤 항목을 지울지 알게 합니다.
 :::
 :::
 
@@ -214,14 +214,14 @@ function removeItem(id) {
 
 ① `filter`의 `!==`를 `===`로 바꾼다.
 
-[② 담을 때 `{ ...product, cartId: crypto.randomUUID() }`로 항목마다 고유 값을 만들고, 빼기는 `cartId`로 구분한다.]{.quiz-answer}
+② `[...previous, product]`를 `[product, ...previous]`로 바꾼다.
 
-③ `[...previous, product]`를 `[product, ...previous]`로 바꾼다.
+③ `setItems`를 한 번 더 호출한다.
 
-④ `setItems`를 한 번 더 호출한다.
+[④ 담을 때 `{ ...product, cartId: crypto.randomUUID() }`로 항목마다 고유 값을 만들고, 빼기는 `cartId`로 구분한다.]{.quiz-answer}
 
 ::: {.callout-note collapse="true" title="노트"}
-정답 ②. 같은 메뉴는 `product.id`가 같아서, `id`가 다른 항목만 남기면 같은 메뉴가 한꺼번에 사라집니다. 담을 때마다 항목별 고유 값 `cartId`를 만들어 그것으로 구분합니다. `key`도 `cartId`를 써야 겹치지 않습니다.
+정답 ④. 같은 메뉴는 `product.id`가 같아서, `id`가 다른 항목만 남기면 같은 메뉴가 한꺼번에 사라집니다. 담을 때마다 항목별 고유 값 `cartId`를 만들어 그것으로 구분합니다. `key`도 `cartId`를 써야 겹치지 않습니다.
 :::
 :::
 

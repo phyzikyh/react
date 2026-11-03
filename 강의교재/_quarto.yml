@@ -84,6 +84,12 @@ book:
           href: week10_lecture.qmd
         - text: "2. 연습문제"
           href: week10_quiz.qmd
+    - part: "11주차 : 컴포넌트 합성과 재사용"
+      chapters:
+        - text: "1. 이론"
+          href: week11_lecture.qmd
+        - text: "2. 연습문제"
+          href: week11_quiz.qmd
 
 crossref:
   fig-title: "그림"

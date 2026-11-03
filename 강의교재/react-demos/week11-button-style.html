@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>예제 11-5</title>
+<style>
+body { margin: 0; font-family: -apple-system, "Segoe UI", "Malgun Gothic", sans-serif; color: #1f2937; background: #f8fafc; }
+.page { max-width: 560px; margin: 24px auto; padding: 0 16px; }
+.card { margin-bottom: 12px; padding: 16px 18px; border: 1px solid #e5e7eb; border-radius: 12px; background: #fff; box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05); }
+.card .card { margin: 12px 0 0; background: #f9fafb; box-shadow: none; }
+.card h2 { margin: 0 0 8px; font-size: 15px; font-weight: 600; color: #111827; }
+.card-body { font-size: 14px; line-height: 1.6; color: #6b7280; }
+.card-body p { margin: 0 0 4px; }
+.badge { margin-left: 8px; padding: 2px 8px; border-radius: 999px; background: #eff6ff; color: #2563eb; font-size: 11px; font-weight: 600; vertical-align: middle; }
+.btn { margin-right: 8px; padding: 8px 16px; border: 1px solid transparent; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+.btn-primary { background: #2563eb; color: #fff; }
+.btn-primary:hover { background: #1d4ed8; }
+.btn-danger { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
+.btn-danger:hover { background: #fee2e2; }
+.btn-outline { background: #fff; color: #2563eb; border-color: #bfdbfe; }
+.btn-outline:hover { background: #eff6ff; }
+.btn-small { padding: 5px 12px; font-size: 12px; }
+.btn-large { padding: 12px 24px; font-size: 16px; }
+.message { margin-top: 12px; font-size: 14px; color: #6b7280; }
+.profile { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; padding: 14px 18px; border: 1px solid #e5e7eb; border-radius: 12px; background: #fff; box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05); }
+.profile strong { color: #111827; }
+.profile p { margin: 2px 0 0; font-size: 13px; color: #6b7280; }
+.avatar { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #60a5fa, #2563eb); color: #fff; font-weight: 600; }
+.noti { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f3f4f6; }
+.noti:last-child { border-bottom: none; }
+.noti-time { color: #9ca3af; font-size: 12px; }
+.layout { display: grid; grid-template-columns: 150px 1fr; gap: 16px; max-width: 560px; margin: 24px auto; padding: 0 16px; }
+.layout-header { grid-column: 1 / -1; padding: 14px 18px; border: 1px solid #e5e7eb; border-radius: 12px; background: #fff; box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05); color: #111827; font-size: 16px; }
+.layout-side { align-self: start; padding: 14px; border: 1px solid #e5e7eb; border-radius: 12px; background: #fff; font-size: 14px; color: #374151; }
+.layout-side p { margin: 0 0 10px; }
+.layout-main { min-width: 0; }
+.menu { margin: 0; padding: 0; list-style: none; line-height: 2; color: #374151; }
+</style></head><body><div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+<script type="text/babel">
+const { useState } = React;
+
+function Button({ variant = "primary", size = "medium", children }) {
+  const className = `btn btn-${variant} btn-${size}`;
+
+  return (
+    <button type="button" className={className}>
+      {children}
+    </button>
+  );
+}
+
+function App() {
+  return (
+    <main className="page">
+      <Button>저장</Button>
+      <Button variant="danger">삭제</Button>
+      <Button variant="outline" size="small">취소</Button>
+      <Button size="large">큰 버튼</Button>
+    </main>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script></body></html>

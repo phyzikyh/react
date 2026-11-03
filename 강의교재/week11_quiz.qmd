@@ -1,0 +1,489 @@
+---
+title: "11주차 연습문제"
+subtitle: "컴포넌트 합성과 재사용"
+---
+
+# 연습문제
+
+::: {.quiz-item}
+**1.** 제목과 내용을 담는 `Card` 컴포넌트이다. 아래처럼 `<Card>` 태그 사이에 쓴 내용이 카드 안에 나타나도록 빈칸 (가), (나)에 들어갈 코드를 고르시오.
+
+```jsx
+function Card({ title, (가) }) {
+  return (
+    <div className="card">
+      <h2>{title}</h2>
+      <div className="card-body">(나)</div>
+    </div>
+  );
+}
+
+// 사용
+<Card title="상품">아메리카노 3,500원</Card>
+```
+
+① (가) `content`, (나) `{content}`
+
+② (가) `children`, (나) `children`
+
+[③ (가) `children`, (나) `{children}`]{.quiz-answer}
+
+④ (가) `{children}`, (나) `{children}`
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. 여는 태그와 닫는 태그 사이의 내용은 `children`이라는 이름의 Props로 전달됩니다. 받을 때는 이름만 적고, 출력할 때는 중괄호로 감싸 `{children}`으로 씁니다. 중괄호 없이 `children`만 적으면 글자 그대로 출력됩니다.
+:::
+:::
+
+::: {.quiz-item}
+**2.** 아래 코드를 실행하면 카드에 `알림` 제목만 나오고, `<Card>` 사이에 쓴 `새 댓글이 달렸습니다.`가 보이지 않는다. 어디를 고쳐야 하는가?
+
+```jsx
+function Card({ title, children }) {
+  return (
+    <div className="card">
+      <h2>{title}</h2>
+    </div>
+  );
+}
+
+function App() {
+  return <Card title="알림">새 댓글이 달렸습니다.</Card>;
+}
+```
+
+[① `<h2>` 아래에 `{children}`을 출력하는 줄을 추가한다.]{.quiz-answer}
+
+② `title`을 `children`으로 바꾼다.
+
+③ `<Card>`를 `<card>`로 바꾼다.
+
+④ `Card` 안에 `useState`를 추가한다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. `children`으로 받기만 하고 출력하지 않으면 태그 사이의 내용은 어디에도 나타나지 않습니다. 내용을 놓을 자리에 `{children}`을 넣어야 합니다.
+:::
+:::
+
+::: {.quiz-item}
+**3.** 아래와 같이 사용할 때, `Card` 컴포넌트 안에서 `children`에 담기는 것은 무엇인가?
+
+```jsx
+<Card title="프로필">
+  <p>김도현</p>
+  <p>프론트엔드 개발자</p>
+</Card>
+```
+
+① 문자열 `"프로필"`
+
+② `<Card>` 요소 자체
+
+③ `title`과 같은 문자열 하나
+
+[④ 태그 사이에 쓴 두 개의 `<p>` 요소]{.quiz-answer}
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ④. `title="프로필"`처럼 이름=값 형태로 쓴 것은 해당 이름의 Props가 되고, 여는 태그와 닫는 태그 사이에 쓴 내용은 모두 `children`에 담깁니다. 요소가 여러 개여도 한꺼번에 전달됩니다.
+:::
+:::
+
+::: {.quiz-item}
+**4.** 상품 카드 안에 문단을 넣으려고 작성한 코드인데, 문단이 카드 안이 아니라 카드 아래에 따로 나타난다. 어디를 고쳐야 하는가?
+
+```jsx
+function Card({ title, children }) {
+  return (
+    <div className="card">
+      <h2>{title}</h2>
+      <div className="card-body">{children}</div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <main>
+      <Card title="상품" />
+      <p>아메리카노 3,500원</p>
+    </main>
+  );
+}
+```
+
+① `<p>`를 `<div>`로 바꾼다.
+
+[② `<Card title="상품" />`을 `<Card title="상품">`으로 바꾸고, `<p>` 뒤에 `</Card>`를 쓴다.]{.quiz-answer}
+
+③ `title="상품"`을 삭제한다.
+
+④ `<Card title="상품" children />`으로 바꾼다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. `<Card ... />`처럼 한 번에 닫으면 태그 사이가 비어 있어서 `children`에 담길 것이 없습니다. 카드 안에 넣을 내용은 여는 태그와 닫는 태그 사이에 써야 합니다.
+:::
+:::
+
+::: {.quiz-item}
+**5.** 종류(`variant`)와 크기(`size`)에 따라 모양이 달라지는 `Button`이다. 종류를 주지 않으면 `primary`를 사용하고, 클래스 이름이 `btn btn-primary btn-medium`처럼 만들어지도록 빈칸 (가), (나)에 들어갈 코드를 고르시오.
+
+```jsx
+function Button({ variant = (가), size = "medium", children }) {
+  const className = `btn btn-${(나)} btn-${size}`;
+
+  return <button className={className}>{children}</button>;
+}
+
+// 사용
+<Button>저장</Button>
+```
+
+① (가) `primary`, (나) `{variant}`
+
+② (가) `"primary"`, (나) `{variant}`
+
+[③ (가) `"primary"`, (나) `variant`]{.quiz-answer}
+
+④ (가) `variant`, (나) `"primary"`
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. 기본값은 구조 분해에서 `= 값`으로 쓰며 문자열이므로 따옴표가 필요합니다. 백틱 문자열 안에서는 `${ }`가 이미 값을 끼우는 자리이므로, 그 안에는 변수 이름만 적습니다. `${{variant}}`처럼 중괄호를 한 겹 더 쓰면 객체가 되어 원하는 클래스 이름이 만들어지지 않습니다.
+:::
+:::
+
+::: {.quiz-item}
+**6.** 아래 `Button`에 `variant="danger"`를 주었는데도 빨간 버튼 스타일이 적용되지 않는다. 개발자 도구로 확인하면 클래스 이름이 `btn btn-{variant} btn-{size}`로 글자 그대로 들어 있다. 어디를 고쳐야 하는가?
+
+```jsx
+function Button({ variant = "primary", size = "medium", children }) {
+  const className = "btn btn-{variant} btn-{size}";
+
+  return <button className={className}>{children}</button>;
+}
+```
+
+[① 큰따옴표를 백틱(`` ` ``)으로 바꾸고, `{variant}`와 `{size}`를 `${variant}`와 `${size}`로 바꾼다.]{.quiz-answer}
+
+② `className`을 `class`로 바꾼다.
+
+③ `variant`를 `useState`로 만든다.
+
+④ `btn-`을 모두 삭제한다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. 큰따옴표로 감싼 문자열 안의 `{variant}`는 값으로 바뀌지 않고 글자 그대로 남습니다. 문자열 안에 값을 끼우려면 백틱 문자열과 `${ }`를 사용해야 합니다.
+:::
+:::
+
+::: {.quiz-item}
+**7.** 아래 코드에서 [+1] 버튼을 눌러도 숫자가 늘어나지 않는다. 어디를 고쳐야 하는가?
+
+```jsx
+function Button({ children, onClick }) {
+  return (
+    <button type="button" className="btn">
+      {children}
+    </button>
+  );
+}
+
+function App() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <main>
+      <p>{count}</p>
+      <Button onClick={() => setCount(count + 1)}>+1</Button>
+    </main>
+  );
+}
+```
+
+① `App`의 `onClick`을 삭제한다.
+
+② `children`을 `onClick`으로 바꾼다.
+
+③ `Button` 안에 `useState`를 추가한다.
+
+[④ `<button>`에 `onClick={onClick}`을 연결한다.]{.quiz-answer}
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ④. `Button`은 `onClick`을 Props로 받기만 하고 실제 `<button>`에는 연결하지 않았습니다. HTML 태그에 `onClick={onClick}`으로 이어 주어야 클릭했을 때 부모가 건넨 함수가 실행됩니다.
+:::
+:::
+
+::: {.quiz-item}
+**8.** 모양만 담당하는 `Button`을 두고, 눌렀을 때 할 일은 부모(`App`)가 정하려고 한다. [저장]을 누르면 `저장했습니다.`, [삭제]를 누르면 `삭제했습니다.`가 나오도록 빈칸 (가), (나)에 들어갈 코드를 고르시오.
+
+```jsx
+function Button({ onClick, children }) {
+  return (
+    <button type="button" onClick={onClick}>
+      {children}
+    </button>
+  );
+}
+
+function App() {
+  const [message, setMessage] = useState("");
+
+  return (
+    <main>
+      <Button onClick={(가)}>저장</Button>
+      <Button onClick={(나)}>삭제</Button>
+      <p>{message}</p>
+    </main>
+  );
+}
+```
+
+① (가) `setMessage("저장했습니다.")`, (나) `setMessage("삭제했습니다.")`
+
+[② (가) `() => setMessage("저장했습니다.")`, (나) `() => setMessage("삭제했습니다.")`]{.quiz-answer}
+
+③ (가) `"저장했습니다."`, (나) `"삭제했습니다."`
+
+④ (가) `message("저장했습니다.")`, (나) `message("삭제했습니다.")`
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. `onClick`에는 클릭할 때 실행할 함수를 건네야 하므로 화살표 함수로 감쌉니다. ①처럼 괄호를 붙여 직접 호출하면 화면을 그리는 순간 실행되어 버립니다. `message`는 값이지 함수가 아니므로 ④는 호출할 수 없습니다.
+:::
+:::
+
+::: {.quiz-item}
+**9.** 머리글 자리, 옆 메뉴 자리, 본문 자리를 가진 `Layout`이다. 사용하는 쪽에서 쓴 내용이 알맞은 자리에 나타나도록 빈칸 (가), (나)에 들어갈 코드를 고르시오.
+
+```jsx
+function Layout({ header, sidebar, children }) {
+  return (
+    <div className="layout">
+      <header>{(가)}</header>
+      <aside>{sidebar}</aside>
+      <main>{(나)}</main>
+    </div>
+  );
+}
+
+// 사용
+<Layout header={<strong>My Blog</strong>} sidebar={<p>메뉴</p>}>
+  <h1>환영합니다</h1>
+</Layout>
+```
+
+① (가) `children`, (나) `header`
+
+② (가) `header`, (나) `sidebar`
+
+[③ (가) `header`, (나) `children`]{.quiz-answer}
+
+④ (가) `title`, (나) `children`
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. `header={...}`로 넘긴 JSX는 `header` Props에, 태그 사이에 쓴 `<h1>`은 `children`에 담깁니다. ④의 `title`은 받지 않은 이름이라 값이 없습니다.
+:::
+:::
+
+::: {.quiz-item}
+**10.** 아래 코드를 실행하면 화면 위쪽에 굵은 `My Blog` 대신 `<strong>My Blog</strong>`라는 글자가 태그째로 그대로 보인다. 어디를 고쳐야 하는가?
+
+```jsx
+function Layout({ header, children }) {
+  return (
+    <div className="layout">
+      <header>{header}</header>
+      <main>{children}</main>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Layout header="<strong>My Blog</strong>">
+      <h1>환영합니다</h1>
+    </Layout>
+  );
+}
+```
+
+[① `header="<strong>My Blog</strong>"`을 `header={<strong>My Blog</strong>}`로 바꾼다.]{.quiz-answer}
+
+② `<strong>`을 `<b>`로 바꾼다.
+
+③ `Layout`에서 `header`를 `children`으로 바꾼다.
+
+④ `<header>`를 `<div>`로 바꾼다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. 따옴표로 감싼 값은 문자열이므로 태그도 글자로 취급됩니다. JSX 요소를 Props로 넘기려면 따옴표 대신 중괄호로 감싸야 합니다.
+:::
+:::
+
+::: {.quiz-item}
+**11.** 버튼 종류마다 컴포넌트를 따로 만들었더니, 모든 버튼에 둥근 모서리나 새 속성을 추가할 때마다 세 곳을 고쳐야 한다. 가장 알맞은 개선 방법은 무엇인가?
+
+```jsx
+function SaveButton() {
+  return <button className="btn btn-primary">저장</button>;
+}
+
+function DeleteButton() {
+  return <button className="btn btn-danger">삭제</button>;
+}
+
+function CancelButton() {
+  return <button className="btn btn-outline">취소</button>;
+}
+```
+
+① 세 컴포넌트를 `App` 안으로 옮긴다.
+
+② CSS 파일을 지운다.
+
+③ 세 컴포넌트에 각각 `useState`를 추가한다.
+
+[④ 하나의 `Button`으로 합치고, 달라지는 부분을 `variant`와 `children` Props로 받는다.]{.quiz-answer}
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ④. 세 컴포넌트는 모양을 정하는 `className`과 글자만 다르고 나머지 구조는 같습니다. 달라지는 부분만 Props로 뽑아 하나의 `Button`으로 만들면 모양을 고칠 곳이 한 군데가 됩니다.
+:::
+:::
+
+::: {.quiz-item}
+**12.** `Card`를 `Card.jsx` 파일로 따로 두고 `App.jsx`에서 가져다 쓰려고 한다. 두 파일이 같은 폴더에 있을 때 빈칸 (가), (나)에 들어갈 코드를 고르시오.
+
+```jsx
+// Card.jsx
+function Card({ title, children }) {
+  return (
+    <div className="card">
+      <h2>{title}</h2>
+      {children}
+    </div>
+  );
+}
+
+(가)
+```
+
+```jsx
+// App.jsx
+(나)
+
+function App() {
+  return <Card title="상품">아메리카노</Card>;
+}
+
+export default App;
+```
+
+① (가) `import Card from "./Card";`, (나) `export default Card;`
+
+[② (가) `export default Card;`, (나) `import Card from "./Card";`]{.quiz-answer}
+
+③ (가) `export default Card;`, (나) `import { Card } from "./Card";`
+
+④ (가) `export Card;`, (나) `import Card from "./Card.jsx";`
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. 내보내는 파일에서는 `export default Card;`로 기본값으로 내보내고, 가져오는 파일에서는 `import Card from "./Card";`로 받습니다. 기본값으로 내보낸 것은 중괄호 없이 가져옵니다. ③처럼 중괄호를 쓰면 `Card`라는 이름으로 내보낸 것을 찾으려 해서 오류가 납니다.
+:::
+:::
+
+::: {.quiz-item}
+**13.** 폴더 구조와 코드가 아래와 같을 때, 실행하면 화면이 나오지 않고 `Card`를 찾을 수 없다는 오류가 난다. 어디를 고쳐야 하는가?
+
+```text
+src/
+├── App.jsx
+└── components/
+    └── Card.jsx
+```
+
+```jsx
+// src/App.jsx
+import Card from "./Card";
+
+function App() {
+  return <Card title="상품">아메리카노</Card>;
+}
+
+export default App;
+```
+
+① `Card.jsx`의 `export default`를 삭제한다.
+
+② `Card`를 `card`로 바꾼다.
+
+[③ `"./Card"`를 `"./components/Card"`로 바꾼다.]{.quiz-answer}
+
+④ `Card.jsx`의 내용을 `App.jsx`로 옮긴다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. `import` 경로는 현재 파일을 기준으로 한 위치입니다. `Card.jsx`는 `App.jsx`와 같은 폴더가 아니라 `components` 폴더 안에 있으므로 `./components/Card`로 적어야 합니다.
+:::
+:::
+
+::: {.quiz-item}
+**14.** 메뉴 목록을 `Card`로 그리는 코드이다. 화면은 정상으로 나오지만 콘솔에 `Each child in a list should have a unique "key" prop.` 경고가 나타난다. 어디를 고쳐야 하는가?
+
+```jsx
+const menus = [
+  { id: "coffee", name: "아메리카노", price: 3500 },
+  { id: "latte", name: "라떼", price: 4000 },
+];
+
+function App() {
+  return (
+    <main>
+      {menus.map((menu) => (
+        <Card title={menu.name}>
+          <p>{menu.price}원</p>
+        </Card>
+      ))}
+    </main>
+  );
+}
+```
+
+[① `<Card>`에 `key={menu.id}`를 추가한다.]{.quiz-answer}
+
+② `<Card>`를 `<div>`로 바꾼다.
+
+③ `title={menu.name}`을 `children`으로 옮긴다.
+
+④ `map`을 `for` 반복문으로 바꾼다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. 배열로 여러 요소를 그릴 때는 가장 바깥 요소에 항목을 구분하는 `key`를 주어야 합니다. 직접 만든 컴포넌트도 마찬가지이며, `Card` 안쪽이 아니라 `map`이 돌려주는 `<Card>`에 붙입니다.
+:::
+:::
+
+::: {.quiz-item}
+**15.** `Layout`의 `sidebar`에 문단과 버튼 두 요소를 함께 넘기려고 한다. 불필요한 태그를 만들지 않고 묶도록 빈칸 (가), (나)에 들어갈 코드를 고르시오.
+
+```jsx
+<Layout
+  header={<strong>카페 메뉴</strong>}
+  sidebar={
+    (가)
+      <p>담은 메뉴 {count}개</p>
+      <Button onClick={clear}>모두 비우기</Button>
+    (나)
+  }
+>
+  <MenuList />
+</Layout>
+```
+
+① (가) `<div>`, (나) `</div>`
+
+[② (가) `<>`, (나) `</>`]{.quiz-answer}
+
+③ (가) `{`, (나) `}`
+
+④ (가) `<span>`, (나) `</span>`
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. JSX는 한 번에 요소 하나만 돌려줄 수 있어서 여러 요소를 묶어야 합니다. `<>`와 `</>`는 화면에는 아무 태그도 만들지 않고 묶어 주기만 합니다. ①과 ④는 묶을 수는 있지만 `div`와 `span`이라는 불필요한 태그가 생깁니다.
+:::
+:::

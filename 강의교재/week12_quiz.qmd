@@ -1,0 +1,483 @@
+---
+title: "12주차 연습문제"
+subtitle: "Context와 전역 상태 관리"
+---
+
+# 연습문제
+
+::: {.quiz-item}
+**1.** 화면 테마를 Context로 내놓으려고 한다. 빈칸 (가), (나)에 들어갈 코드를 고르시오.
+
+```jsx
+const ThemeContext = (가)("light");
+
+function App() {
+  return (
+    <ThemeContext (나)="dark">
+      <Page />
+    </ThemeContext>
+  );
+}
+```
+
+① (가) `useContext`, (나) `value`
+
+[② (가) `createContext`, (나) `value`]{.quiz-answer}
+
+③ (가) `createContext`, (나) `theme`
+
+④ (가) `useState`, (나) `value`
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. `createContext`로 Context를 만들고, 그 Context를 태그로 써서 `value`로 값을 내놓습니다. `useContext`는 값을 꺼내는 Hook이라 Context를 만드는 데는 쓰지 않고, 값을 내놓는 속성의 이름은 `value`로 정해져 있습니다.
+:::
+:::
+
+::: {.quiz-item}
+**2.** 아래 코드를 실행하면 화면이 나오지 않고 `Cannot read properties of null (reading 'name')` 오류가 난다. 어디를 고쳐야 하는가?
+
+```jsx
+const UserContext = createContext(null);
+
+function Avatar() {
+  const user = useContext(UserContext);
+  return <span>{user.name[0]}</span>;
+}
+
+function App() {
+  return <Avatar />;
+}
+```
+
+① `createContext(null)`을 `createContext("")`로 바꾼다.
+
+② `user.name[0]`을 `user[0]`으로 바꾼다.
+
+③ `useContext(UserContext)` 줄을 삭제한다.
+
+[④ `<Avatar />`를 `<UserContext value={{ name: "민준" }}>`로 감싼다.]{.quiz-answer}
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ④. Provider로 감싸지 않은 곳에서 `useContext`를 부르면 `createContext`에 넣은 기본값 `null`이 나옵니다. `null`의 `name`을 읽으려 해서 오류가 나므로, 값을 내놓는 Provider 안에서 컴포넌트를 그려야 합니다.
+:::
+:::
+
+::: {.quiz-item}
+**3.** 로그인 상태를 Context로 공유한다. `App`에서 `user`와 `login`을 함께 내놓고, `UserMenu`에서 둘 다 꺼내 쓰려고 한다. 빈칸 (가), (나)에 들어갈 코드를 고르시오.
+
+```jsx
+function App() {
+  const [user, setUser] = useState(null);
+
+  function login() {
+    setUser({ name: "민준" });
+  }
+
+  return (
+    <AuthContext value={(가)}>
+      <UserMenu />
+    </AuthContext>
+  );
+}
+
+function UserMenu() {
+  const (나) = useContext(AuthContext);
+
+  return <button onClick={login}>{user ? user.name : "로그인"}</button>;
+}
+```
+
+[① (가) `{ user, login }`, (나) `{ user, login }`]{.quiz-answer}
+
+② (가) `user, login`, (나) `{ user, login }`
+
+③ (가) `{ user, login }`, (나) `[user, login]`
+
+④ (가) `{ user, login }`, (나) `AuthContext`
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. 값 여러 개를 내놓을 때는 객체 하나로 묶어 `value={{ user, login }}`처럼 쓰고, 꺼내는 쪽에서는 객체 구조 분해 `{ user, login }`으로 받습니다. 배열 구조 분해 `[user, login]`로는 객체를 받을 수 없습니다.
+:::
+:::
+
+::: {.quiz-item}
+**4.** 아래 코드에서 [로그인] 버튼을 눌러도 아무 일도 일어나지 않는다. 어디를 고쳐야 하는가?
+
+```jsx
+function App() {
+  const [user, setUser] = useState(null);
+
+  function login() {
+    setUser({ name: "민준" });
+  }
+
+  return (
+    <AuthContext value={{ user }}>
+      <UserMenu />
+    </AuthContext>
+  );
+}
+
+function UserMenu() {
+  const { user, login } = useContext(AuthContext);
+
+  return <button onClick={login}>{user ? user.name : "로그인"}</button>;
+}
+```
+
+① `onClick`을 `onChange`로 바꾼다.
+
+② `useContext`를 `useState`로 바꾼다.
+
+[③ Provider의 `value`를 `{{ user, login }}`으로 바꾼다.]{.quiz-answer}
+
+④ `useState(null)`을 `useState({})`로 바꾼다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. `value`에 `login`이 들어 있지 않아서 `UserMenu`가 꺼낸 `login`이 `undefined`입니다. 버튼에 `onClick={undefined}`가 연결되므로 눌러도 아무 일도 일어나지 않습니다. 읽는 쪽에서 꺼내는 이름이 모두 `value`에 있어야 합니다.
+:::
+:::
+
+::: {.quiz-item}
+**5.** 사용자 정보를 Props로 여러 단계 내려주는 코드이다. 값을 쓰지 않고 아래로 넘기기만 하는 컴포넌트는 무엇인가?
+
+```jsx
+function App() {
+  const user = { name: "민준" };
+  return <Layout user={user} />;
+}
+
+function Layout({ user }) {
+  return <Header user={user} />;
+}
+
+function Header({ user }) {
+  return <UserMenu user={user} />;
+}
+
+function UserMenu({ user }) {
+  return <span>{user.name}</span>;
+}
+```
+
+① `App`
+
+[② `Layout`과 `Header`]{.quiz-answer}
+
+③ `UserMenu`
+
+④ `Layout`, `Header`, `UserMenu`
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. `UserMenu`만 `user.name`을 실제로 사용합니다. `Layout`과 `Header`는 받은 `user`를 그대로 넘기기만 하는데, 이런 구조를 props drilling이라고 합니다. Context를 쓰면 이 두 컴포넌트가 `user`를 모르게 할 수 있습니다.
+:::
+:::
+
+::: {.quiz-item}
+**6.** 아래 코드를 실행했을 때 화면에 나타나는 문장을 위에서부터 순서대로 고르시오.
+
+```jsx
+const GreetingContext = createContext("안녕하세요");
+
+function Greeting() {
+  const greeting = useContext(GreetingContext);
+  return <p>{greeting}</p>;
+}
+
+function App() {
+  return (
+    <>
+      <Greeting />
+      <GreetingContext value="환영합니다">
+        <Greeting />
+      </GreetingContext>
+    </>
+  );
+}
+```
+
+[① 안녕하세요, 환영합니다]{.quiz-answer}
+
+② 환영합니다, 환영합니다
+
+③ 안녕하세요, 안녕하세요
+
+④ 환영합니다, 안녕하세요
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. 첫 번째 `Greeting`은 Provider 바깥에 있으므로 `createContext`에 넣은 기본값 `"안녕하세요"`가 나옵니다. 두 번째 `Greeting`은 Provider 안에 있어서 `value`로 준 `"환영합니다"`가 나옵니다.
+:::
+:::
+
+::: {.quiz-item}
+**7.** Provider가 겹쳐 있을 때 화면에 나타나는 문장은 무엇인가?
+
+```jsx
+const GreetingContext = createContext("안녕하세요");
+
+function Greeting() {
+  const greeting = useContext(GreetingContext);
+  return <p>{greeting}</p>;
+}
+
+function App() {
+  return (
+    <GreetingContext value="환영합니다">
+      <GreetingContext value="어서 오세요">
+        <Greeting />
+      </GreetingContext>
+    </GreetingContext>
+  );
+}
+```
+
+① 안녕하세요
+
+② 환영합니다
+
+③ 환영합니다와 어서 오세요가 모두 나타난다
+
+[④ 어서 오세요]{.quiz-answer}
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ④. `useContext`는 가장 가까운 위쪽 Provider의 값을 읽습니다. `Greeting` 바로 위에 있는 Provider의 값이 `"어서 오세요"`이므로 그 값이 나옵니다.
+:::
+:::
+
+::: {.quiz-item}
+**8.** State를 가진 `ThemeProvider` 컴포넌트를 만들었다. 사용하는 쪽에서 `<ThemeProvider><Page /></ThemeProvider>`처럼 감쌀 때 `Page`가 Provider 안에 들어가도록 빈칸 (가), (나)에 들어갈 코드를 고르시오.
+
+```jsx
+function ThemeProvider((가)) {
+  const [theme, setTheme] = useState("light");
+
+  return (
+    <ThemeContext value={{ theme, setTheme }}>
+      (나)
+    </ThemeContext>
+  );
+}
+```
+
+① (가) `children`, (나) `{children}`
+
+② (가) `{ Page }`, (나) `<Page />`
+
+[③ (가) `{ children }`, (나) `{children}`]{.quiz-answer}
+
+④ (가) `{ children }`, (나) `children`
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. 태그 사이에 쓴 내용은 `children` Props로 전달되므로 `{ children }`으로 구조 분해해서 받고, 출력할 때는 중괄호로 감싼 `{children}`을 씁니다. ①처럼 구조 분해 없이 받으면 `children`이 Props 객체 전체가 되어 그릴 수 없습니다.
+:::
+:::
+
+::: {.quiz-item}
+**9.** `<ThemeProvider><Page /></ThemeProvider>`로 사용했는데 화면이 비어 있다. 어디를 고쳐야 하는가?
+
+```jsx
+function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState("light");
+
+  return <ThemeContext value={{ theme, setTheme }} />;
+}
+```
+
+① `value`를 삭제한다.
+
+[② `<ThemeContext>`를 열고 닫는 태그로 나누어 그 안에 `{children}`을 넣는다.]{.quiz-answer}
+
+③ `Page`를 `page`로 바꾼다.
+
+④ `ThemeProvider`를 `ThemeContext`로 바꾼다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. `<ThemeContext ... />`처럼 한 번에 닫으면 안에 그릴 내용이 없습니다. 받은 `children`을 Provider 안에 넣어야 `Page`가 화면에 나타납니다.
+:::
+:::
+
+::: {.quiz-item}
+**10.** `useContext(ThemeContext)`를 매번 쓰지 않으려고 함수로 묶는다. Hook을 부르는 함수로 알맞게 만들도록 빈칸 (가), (나)에 들어갈 코드를 고르시오.
+
+```jsx
+function (가)() {
+  return useContext((나));
+}
+
+// 사용
+const { theme } = useTheme();
+```
+
+① (가) `getTheme`, (나) `ThemeContext`
+
+② (가) `useTheme`, (나) `ThemeProvider`
+
+③ (가) `theme`, (나) `ThemeContext`
+
+[④ (가) `useTheme`, (나) `ThemeContext`]{.quiz-answer}
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ④. Hook을 부르는 함수는 이름이 `use`로 시작해야 하고, 사용하는 쪽이 `useTheme()`으로 부르고 있으므로 이름이 같아야 합니다. `useContext`에는 Provider가 아니라 `createContext`로 만든 Context 자체를 넘깁니다.
+:::
+:::
+
+::: {.quiz-item}
+**11.** 장바구니 Context이다. 메뉴를 담아도 머리글에는 계속 `장바구니 0`으로 나온다. 어디를 고쳐야 하는가?
+
+```jsx
+function CartProvider({ children }) {
+  const [items, setItems] = useState([]);
+  const [count, setCount] = useState(0);
+
+  function addItem(product) {
+    setItems((previous) => [...previous, product]);
+  }
+
+  return (
+    <CartContext value={{ items, count, addItem }}>
+      {children}
+    </CartContext>
+  );
+}
+
+function Header() {
+  const { count } = useContext(CartContext);
+  return <span>장바구니 {count}</span>;
+}
+```
+
+[① `count` State를 지우고 `const count = items.length;`로 계산한다.]{.quiz-answer}
+
+② `useState(0)`을 `useState(1)`로 바꾼다.
+
+③ `Header`에서 `count`를 `addItem`으로 바꾼다.
+
+④ `{children}`을 `{items}`로 바꾼다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. `addItem`이 `items`만 바꾸고 `count`는 바꾸지 않아 `count`가 계속 0입니다. 개수는 `items`로 계산할 수 있는 값이므로 State로 따로 만들지 않고 `items.length`로 계산하면 어긋날 일이 없습니다.
+:::
+:::
+
+::: {.quiz-item}
+**12.** 아래 화면에서 [+1] 버튼을 눌러 `count`가 바뀔 때 다시 그려지는 컴포넌트는 무엇인가?
+
+```jsx
+function CountProvider({ children }) {
+  const [count, setCount] = useState(0);
+
+  return (
+    <CountContext value={{ count, setCount }}>
+      {children}
+    </CountContext>
+  );
+}
+
+function PlusButton() {
+  const { setCount } = useContext(CountContext);
+  return <button onClick={() => setCount((previous) => previous + 1)}>+1</button>;
+}
+
+function Reader() {
+  const { count } = useContext(CountContext);
+  return <p>count: {count}</p>;
+}
+
+function Bystander() {
+  return <p>값을 읽지 않습니다</p>;
+}
+
+function App() {
+  return (
+    <CountProvider>
+      <PlusButton />
+      <Reader />
+      <Bystander />
+    </CountProvider>
+  );
+}
+```
+
+① `Reader`만
+
+② `Reader`와 `Bystander`
+
+[③ `PlusButton`과 `Reader`]{.quiz-answer}
+
+④ 세 컴포넌트 모두
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. Context 값이 바뀌면 그 Context를 `useContext`로 읽는 컴포넌트가 다시 그려집니다. `PlusButton`과 `Reader`는 `useContext(CountContext)`를 부르므로 다시 그려지고, 읽지 않는 `Bystander`는 영향을 받지 않습니다.
+:::
+:::
+
+::: {.quiz-item}
+**13.** 다음 중 Context에 두기에 가장 알맞은 값은 무엇인가?
+
+[① 앱 여러 곳의 화면 색을 정하는 `theme`]{.quiz-answer}
+
+② 한 입력창 안에서 입력 중인 `text`
+
+③ 카드 하나가 펼쳐져 있는지 나타내는 `isOpen`
+
+④ 버튼 하나에 마우스가 올라와 있는지 나타내는 `hovered`
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ①. 앱 곳곳에서 읽는 값이 Context에 알맞습니다. 한 컴포넌트만 쓰는 `text`, `isOpen`, `hovered`는 그 컴포넌트 안의 State로 두는 것이 알맞고, 특히 자주 바뀌는 값을 Context에 올리면 읽는 컴포넌트가 모두 다시 그려집니다.
+:::
+:::
+
+::: {.quiz-item}
+**14.** 아래와 같이 한 Context에 `theme`, `user`, `text`를 모두 넣었다. `text`는 검색창에서 입력 중인 글자이며, 검색창 컴포넌트 하나만 읽는다. 글자를 입력할 때마다 `theme`만 읽는 `ThemeButton`까지 다시 그려진다. 가장 알맞은 개선 방법은 무엇인가?
+
+```jsx
+<AppContext value={{ theme, user, text, setText }}>
+  <App />
+</AppContext>
+```
+
+① `text`와 `setText`를 `theme` 안에 넣는다.
+
+[② `text`를 검색창 컴포넌트의 State로 옮기고 Context에서 뺀다.]{.quiz-answer}
+
+③ `useContext`를 `useState`로 바꾼다.
+
+④ `ThemeButton`을 삭제한다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ②. Context의 `value`가 바뀌면 그 Context를 읽는 모든 컴포넌트가 다시 그려집니다. 하나의 컴포넌트만 쓰고 자주 바뀌는 값은 Context에 두지 않고 쓰는 컴포넌트 안의 State로 두면 다른 컴포넌트가 영향을 받지 않습니다.
+:::
+:::
+
+::: {.quiz-item}
+**15.** 아래 코드를 실행하면 화면이 나오지 않고 `Cannot read properties of undefined (reading 'theme')` 오류가 난다. 어디를 고쳐야 하는가?
+
+```jsx
+const ThemeContext = createContext(null);
+
+function ThemeProvider({ children }) {
+  return (
+    <ThemeContext value={{ theme: "light" }}>
+      {children}
+    </ThemeContext>
+  );
+}
+
+function Page() {
+  const { theme } = useContext(ThemeProvider);
+  return <p>{theme}</p>;
+}
+```
+
+① `{ theme: "light" }`를 `"light"`로 바꾼다.
+
+② `createContext(null)`을 삭제한다.
+
+[③ `useContext(ThemeProvider)`를 `useContext(ThemeContext)`로 바꾼다.]{.quiz-answer}
+
+④ `{children}`을 삭제한다.
+
+::: {.callout-note collapse="true" title="노트"}
+정답 ③. `useContext`에는 `createContext`로 만든 Context를 넘겨야 합니다. Provider를 감싸는 컴포넌트 `ThemeProvider`를 넘기면 값을 얻지 못해 `undefined`가 되고, 그 `theme`을 읽으려다 오류가 납니다.
+:::
+:::

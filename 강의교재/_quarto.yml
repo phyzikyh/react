@@ -90,6 +90,12 @@ book:
           href: week11_lecture.qmd
         - text: "2. 연습문제"
           href: week11_quiz.qmd
+    - part: "12주차 : Context와 전역 상태 관리"
+      chapters:
+        - text: "1. 이론"
+          href: week12_lecture.qmd
+        - text: "2. 연습문제"
+          href: week12_quiz.qmd
 
 crossref:
   fig-title: "그림"

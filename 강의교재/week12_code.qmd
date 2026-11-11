@@ -1,6 +1,5 @@
 ---
 title: "미니 블로그 만들기 코딩 실습"
-subtitle: "3~11주차에 배운 내용으로 1시간 안에 블로그 완성하기"
 date: "2026-11-16"
 number-sections: false
 ---

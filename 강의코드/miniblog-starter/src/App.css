@@ -1,0 +1,245 @@
+:root {
+  --accent: #2f6fed;
+  --bg: #f6f7f9;
+  --text: #1f2430;
+  --muted: #6b7280;
+  --border: #e3e5ea;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, "Noto Sans KR", "Malgun Gothic", sans-serif;
+  line-height: 1.6;
+}
+
+/* ---------- 헤더 / 푸터 ---------- */
+.header {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.header h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+.header nav a {
+  margin-left: 16px;
+  color: var(--text);
+  text-decoration: none;
+}
+.footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 24px;
+  font-size: 0.85rem;
+}
+.footer p {
+  margin: 0;
+}
+
+/* ---------- 본문 / 글 카드 ---------- */
+.main {
+  max-width: 720px;
+  margin: 24px auto;
+  padding: 0 16px;
+  display: grid;
+  gap: 16px;
+}
+.post {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+.post h2 {
+  margin: 0 0 4px;
+  font-size: 1.2rem;
+}
+.post__meta {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 0 0 12px;
+}
+
+/* ---------- 4주차: 헤더 부제 ---------- */
+.header__sub {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* ---------- 5주차: 좋아요 / 더 보기 ---------- */
+.post p {
+  margin: 0 0 8px;
+}
+.post__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.btn-like,
+.btn-more,
+.btn-delete {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.btn-more {
+  border: none;
+  padding: 0;
+  color: var(--accent);
+  background: none;
+}
+.btn-like--on {
+  background: #ffe9ee;
+  border-color: #ff8fa3;
+  color: #d6336c;
+}
+
+/* ---------- 6주차: 시계 / 검색 / 로딩 ---------- */
+.header__right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.clock {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.search {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 1rem;
+}
+.status {
+  text-align: center;
+  color: var(--muted);
+  padding: 32px 0;
+}
+
+/* ---------- 7주차: 카테고리 칩 / NEW 배지 / 빈 결과 ---------- */
+.chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.chip {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 999px;
+  padding: 4px 14px;
+  cursor: pointer;
+}
+.chip--active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.badge-new {
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #ff5a5f;
+  color: #fff;
+  font-size: 0.7rem;
+  vertical-align: middle;
+}
+.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 32px 0;
+}
+
+/* ---------- 9주차: 글쓰기 폼 ---------- */
+.form {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  display: grid;
+  gap: 12px;
+}
+.form h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+.field {
+  display: grid;
+  gap: 4px;
+}
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.field input,
+.field select,
+.field textarea {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+}
+.hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-align: right;
+}
+.error {
+  margin: 0;
+  color: #d6336c;
+  font-size: 0.85rem;
+}
+.success {
+  color: #2b8a3e;
+  font-size: 0.9rem;
+}
+.form__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  cursor: pointer;
+  font: inherit;
+}
+@media (max-width: 700px) {
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- 10주차: 삭제 버튼 / 헤더의 좋아요 수 ---------- */
+.btn-delete {
+  color: #d6336c;
+}
+.liked-count {
+  color: #d6336c;
+  font-size: 0.9rem;
+}

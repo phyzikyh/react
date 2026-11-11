@@ -96,6 +96,8 @@ book:
           href: week12_lecture.qmd
         - text: "2. 연습문제"
           href: week12_quiz.qmd
+        - text: "3. 코딩실습"
+          href: week12_code.qmd
 
 crossref:
   fig-title: "그림"

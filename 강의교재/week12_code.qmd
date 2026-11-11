@@ -1,0 +1,390 @@
+---
+title: "미니 블로그 만들기 코딩 실습"
+subtitle: "3~11주차에 배운 내용으로 1시간 안에 블로그 완성하기"
+date: "2026-11-16"
+number-sections: false
+---
+
+# 준비
+
+## 시작 코드 실행하기
+
+수업 저장소의 `강의코드/miniblog-starter` 폴더를 내 컴퓨터에 복사한 뒤, 터미널에서 아래 명령을 실행합니다.
+
+```bash
+cd miniblog-starter
+npm install
+npm run dev
+```
+
+브라우저에서 `http://localhost:5173`을 엽니다.
+
+## 파일 구조
+
+```text
+miniblog-starter/
+└── src/
+    ├── main.jsx
+    ├── App.jsx                  ← 문제 5, 6, 7, 9, 10
+    ├── App.css                  (완성됨)
+    ├── data.js                  (완성됨)
+    └── components/
+        ├── Header.jsx           (완성됨)
+        ├── Clock.jsx            (완성됨)
+        ├── SearchBar.jsx        (완성됨)
+        ├── CategoryFilter.jsx   (완성됨)
+        ├── Footer.jsx           (완성됨)
+        ├── PostList.jsx         ← 문제 1
+        ├── PostCard.jsx         ← 문제 2, 3, 4, 5, 10
+        └── PostForm.jsx         ← 문제 8, 9
+```
+
+`TODO` 주석의 앞 번호는 문제 번호와 같습니다. 예를 들어 `TODO 5-2`는 문제 5의 두 번째 할 일입니다.
+
+**실행 확인**
+
+- 헤더에 블로그 이름과 시계가 보입니다.
+- 글쓰기 폼, 검색창, 카테고리 버튼이 보입니다.
+- 글 목록은 **비어 있습니다.** (아직 `PostList`가 아무것도 그리지 않기 때문입니다.)
+- 카테고리 버튼을 눌러도 목록은 바뀌지 않고, 글쓰기 폼에는 글자가 입력되지 않습니다. 각각 문제 6, 문제 8에서 해결합니다.
+
+<!--
+완성 화면 데모를 교재에 넣으려면 react-demos/ 아래에 완성 화면 html을 추가한 뒤 아래 주석을 풀어 주세요.
+<iframe class="site-demo-frame" src="react-demos/week12-miniblog.html" title="미니 블로그 완성 화면" loading="lazy"></iframe>
+
+<p class="demo-caption"><a href="react-demos/week12-miniblog.html" target="_blank">완성 화면 새 창에서 보기</a></p>
+-->
+
+---
+
+# 실습 문제
+
+## 문제 1. 글 목록 그리기
+
+`PostList`가 받은 `posts` 배열을 화면에 그리세요. 글이 하나도 없을 때는 안내 문구를 보여 줍니다.
+
+`src/components/PostList.jsx`의 `TODO` 두 곳을 채웁니다.
+
+```jsx
+function PostList({ posts, onToggleLike, onDelete }) {
+  // TODO 1-1: 글이 없을 때의 안내 문구를 반환하세요.
+
+  // TODO 1-2: posts 를 map 으로 돌며 <PostCard> 를 만드세요.
+  return null;
+}
+```
+
+**구현 조건**
+
+- `posts.length`가 `0`이면 `<p className="empty" role="status">조건에 맞는 글이 없어요.</p>`를 반환합니다.
+- 글이 있으면 `posts.map(...)`으로 `PostCard`를 하나씩 만듭니다.
+- `key`에는 **인덱스가 아니라 `post.id`**를 씁니다.
+- `PostCard`에는 `post={post}`, `onToggleLike={onToggleLike}`, `onDelete={onDelete}`를 전달합니다.
+
+**실행 확인**
+
+- 1초 로딩 뒤에 `TODO`라고 적힌 카드가 **5개** 나타납니다.
+- 개발자 도구 콘솔에 `unique "key"` 경고가 없습니다.
+
+---
+
+## 문제 2. PostCard에 글 정보 보여 주기
+
+`PostCard`가 받은 `post` 객체에서 값을 꺼내 제목, 작성 정보, 본문을 보여 주세요.
+
+`src/components/PostCard.jsx`의 `TODO 2-1`, `TODO 2-2`를 채웁니다.
+
+```jsx
+function PostCard({ post, onToggleLike, onDelete }) {
+  const { /* 필요한 값들 */ } = post;
+```
+
+그다음 `return` 안의 `<h2>TODO</h2>`를 지우고 아래 구조로 작성합니다.
+
+```jsx
+<h2>{title}</h2>
+<p className="post__meta">
+  {author} · {date} · {category}
+</p>
+<p>{content}</p>
+```
+
+**구현 조건**
+
+- `post`에서 `id`, `title`, `author`, `date`, `category`, `content`, `likes`, `liked`, `isNew`를 구조 분해합니다. (뒤 문제에서 모두 사용합니다.)
+- 제목은 `<h2>`, 작성 정보는 `className="post__meta"`인 `<p>`, 본문은 `<p>`에 씁니다.
+- 작성 정보는 `홍길동 · 2026-03-02 · 공부`처럼 `·`로 구분합니다.
+
+**실행 확인**
+
+- 카드 5개에 각각 제목, 작성자·날짜·카테고리, 본문이 보입니다.
+- 아직은 긴 글도 본문이 **전부** 보입니다.
+
+---
+
+## 문제 3. NEW 배지 붙이기
+
+`isNew`가 `true`인 글에만 제목 옆에 `NEW` 배지를 보여 주세요.
+
+`PostCard.jsx`의 `TODO 3-1`을 채웁니다. 제목을 아래처럼 바꿉니다.
+
+```jsx
+<h2>
+  {title}
+  {/* NEW 배지 */}
+</h2>
+```
+
+**구현 조건**
+
+- `isNew`가 `true`일 때만 `<span className="badge-new">NEW</span>`를 보여 줍니다. (`&&` 사용)
+- 배지는 제목과 같은 `<h2>` 안, 제목 글자 바로 뒤에 둡니다.
+
+**실행 확인**
+
+- "제주 2박 3일 여행 계획"과 "useEffect 정리 노트" 두 카드에만 `NEW` 배지가 붙습니다.
+
+---
+
+## 문제 4. 더 보기 / 접기
+
+본문이 길면 앞부분만 보여 주고, 버튼으로 전체를 펼치고 접을 수 있게 만드세요.
+
+`PostCard.jsx`의 `TODO 4-1`, `TODO 4-2`를 채웁니다. 먼저 State와 계산 값을 만듭니다.
+
+```jsx
+const [expanded, setExpanded] = useState(/* 처음 값 */);
+
+const isLong = /* content 가 50자보다 긴가? */;
+const shownContent = /* 화면에 보여 줄 본문 */;
+```
+
+그다음 문제 2에서 `{content}`로 썼던 본문을 `{shownContent}`로 바꾸고, 그 아래에 버튼을 추가합니다.
+
+**구현 조건**
+
+- `expanded`의 처음 값은 `false`입니다.
+- 본문이 **50자보다 길 때**:
+  - `expanded`가 `false`이면 `content.slice(0, 50) + "…"`만 보여 줍니다.
+  - `expanded`가 `true`이면 전체 본문을 보여 줍니다.
+- 본문이 50자 이하이면 전체를 보여 주고 **버튼은 보이지 않습니다.**
+- 버튼은 `isLong`일 때만 보여 줍니다. 글자는 `expanded`에 따라 `더 보기`, `접기`로 바뀌고, `type="button"`과 `className="btn-more"`를 씁니다.
+- 버튼을 누르면 `setExpanded((prev) => !prev)`로 값을 **반대로** 바꿉니다.
+
+**실행 확인**
+
+- 긴 글은 50자까지만 보이고 끝에 `…`이 붙습니다.
+- `더 보기`를 누르면 전체가 보이고 `접기`로 바뀝니다. 다시 누르면 접힙니다.
+- 한 카드를 펼쳐도 다른 카드는 영향을 받지 않습니다.
+
+::: {.callout-warning title="흔한 실수"}
+`onClick={setExpanded(!expanded)}`처럼 괄호를 붙여 호출하면 렌더링 도중에 State가 바뀌어 오류가 납니다. `onClick={() => setExpanded((prev) => !prev)}`로 씁니다.
+:::
+
+---
+
+## 문제 5. 좋아요 기능 만들기
+
+좋아요 버튼을 누르면 하트가 켜지고 좋아요 수가 오르내리게 만드세요. 이 데이터는 나중에 헤더에서도 쓰기 때문에 `PostCard`가 아니라 **`App`이 관리**합니다.
+
+먼저 `App.jsx`의 `TODO 5-1`, `toggleLike`를 완성합니다.
+
+```jsx
+const toggleLike = (id) => {
+  setPosts((prev) =>
+    prev.map((post) => {
+      /* id 가 같은 글만 liked 와 likes 를 바꾼 새 객체로 */
+    })
+  );
+};
+```
+
+그다음 `PostCard.jsx`의 `post__actions` 안에 좋아요 버튼을 만듭니다. (`TODO 5-2`)
+
+**구현 조건**
+
+- `id`가 같은 글만 `{ ...post, liked: ..., likes: ... }` 형태의 **새 객체**로 바꾸고, 나머지 글은 그대로 반환합니다.
+- `liked`가 `true`였다면 `liked`를 `false`로, `likes`를 `1` 줄입니다. `false`였다면 반대로 합니다.
+- `post.liked = true`처럼 **원본 객체를 직접 수정하지 않습니다.**
+- 버튼은 `liked`일 때 `className="btn-like btn-like--on"`과 `♥`, 아닐 때 `className="btn-like"`과 `♡`를 씁니다.
+- 버튼 글자는 `♥ 좋아요 12`처럼 하트와 좋아요 수를 함께 보여 줍니다.
+- 버튼을 누르면 `onToggleLike(id)`를 호출합니다. (`PostCard`는 State를 바꾸지 않고 부모에게 알리기만 합니다.)
+
+**실행 확인**
+
+- 좋아요를 누르면 하트가 켜지고 숫자가 `1` 늘어납니다. 다시 누르면 원래대로 돌아옵니다.
+- 한 카드의 좋아요가 다른 카드에 영향을 주지 않습니다.
+
+---
+
+## 문제 6. 카테고리 필터
+
+카테고리 버튼을 누르면 해당 카테고리의 글만 보이게 만드세요. 카테고리 버튼은 이미 `activeCategory` State와 연결되어 있습니다.
+
+`App.jsx`의 `TODO 6-1`을 채웁니다.
+
+```jsx
+const visiblePosts = posts.filter((post) => {
+  // TODO 6-1: 카테고리 조건 (지금은 항상 통과)
+  const matchCategory = true;
+  ...
+});
+```
+
+**구현 조건**
+
+- `activeCategory`가 `"전체"`이거나 `post.category`와 같으면 `true`가 되게 합니다.
+- `visiblePosts`는 **State로 만들지 않고** 렌더링할 때마다 계산합니다. (파생 값)
+
+**실행 확인**
+
+- `일상`을 누르면 글 2개만 남습니다.
+- `전체`를 누르면 글 5개가 모두 보입니다.
+
+---
+
+## 문제 7. 검색
+
+검색창에 입력한 글자가 제목이나 본문에 들어 있는 글만 보이게 만드세요. 검색창은 이미 `query` State와 연결되어 있습니다.
+
+`App.jsx`의 `TODO 7-1`을 채웁니다.
+
+```jsx
+const visiblePosts = posts.filter((post) => {
+  ...
+  // TODO 7-1: 검색어 조건 (지금은 항상 통과)
+  const matchQuery = true;
+  return matchCategory && matchQuery;
+});
+```
+
+**구현 조건**
+
+- `post.title` 또는 `post.content`에 `keyword`가 포함되어 있으면 `true`가 되게 합니다. (`includes` 사용)
+- `keyword`는 이미 `query.trim()`으로 만들어져 있습니다.
+- 카테고리 조건과 검색어 조건을 **모두** 만족해야 보입니다. (`&&`는 이미 작성되어 있습니다.)
+
+**실행 확인**
+
+- 검색창에 `제주`를 입력하면 글 1개만 남습니다.
+- `공부` 카테고리에서 `제주`를 검색하면 "조건에 맞는 글이 없어요."가 나옵니다.
+- 검색어를 지우면 글이 다시 나타납니다.
+
+---
+
+## 문제 8. 글쓰기 폼 입력과 검증
+
+글쓰기 폼에 글자를 입력할 수 있게 만들고, 빈 칸이나 짧은 내용으로 `등록하기`를 누르면 오류 문구가 나오게 하세요. 폼의 JSX는 완성되어 있습니다.
+
+`src/components/PostForm.jsx`의 `TODO 8-1`, `TODO 8-2`를 채웁니다.
+
+```jsx
+function validate(form) {
+  const errors = {};
+  /* 제목, 작성자, 내용 검사 */
+  return errors;
+}
+
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  /* form 의 [name] 항목만 value 로 바꾸기 */
+  setSubmitted(false);
+};
+```
+
+**구현 조건**
+
+- 검사 규칙은 아래와 같습니다. 모두 `trim()`으로 앞뒤 공백을 지운 뒤 검사합니다.
+  - 제목이 비어 있으면 `errors.title = "제목을 입력해 주세요."`
+  - 작성자가 비어 있으면 `errors.author = "작성자를 입력해 주세요."`
+  - 내용이 10자 미만이면 `errors.content = "내용은 10자 이상 입력해 주세요."`
+- `handleChange`는 **핸들러 하나**로 모든 입력을 처리합니다. `name`과 `form`의 키가 같다는 점을 이용합니다.
+- `setForm`에는 함수를 넘기고, `...prev`로 기존 값을 먼저 펼친 뒤 `[name]: value`로 해당 항목만 바꿉니다.
+
+**실행 확인**
+
+- 제목, 작성자, 내용, 카테고리를 바꿀 수 있고, 내용에 글자를 쓰면 `N자`가 함께 바뀝니다.
+- 빈 폼에서 `등록하기`를 누르면 오류 문구 3개가 나타나고 페이지가 새로고침되지 않습니다.
+- 제목만 채우고 누르면 오류가 2개만 남습니다.
+- 모두 올바르게 채워도 아직 **글이 등록되지는 않습니다.** 문제 9에서 만듭니다.
+
+::: {.callout-warning title="흔한 실수"}
+`setForm({ [name]: value })`처럼 쓰면 다른 항목이 사라집니다. `...prev`로 기존 값을 먼저 펼쳐야 합니다.
+:::
+
+---
+
+## 문제 9. 새 글 등록하기
+
+검사를 통과한 폼 내용으로 새 글을 만들어 목록 맨 앞에 추가하세요.
+
+먼저 `PostForm.jsx`의 `handleSubmit`에서 `TODO 9-1`을 채웁니다.
+
+```jsx
+// TODO 9-1: 검사를 통과했을 때의 처리를 완성하세요.
+//   1) onAdd({ title, author, category, content }) 호출 (모두 trim)
+//   2) setForm(emptyForm), setSubmitted(true)
+```
+
+그다음 `App.jsx`의 `TODO 9-2`, `addPost`를 완성합니다.
+
+```jsx
+const addPost = (data) => {
+  const newPost = {
+    ...data,
+    id: /* 겹치지 않는 값 */,
+    date: /* 오늘 날짜 */,
+    likes: 0,
+    liked: false,
+    isNew: true,
+  };
+  /* posts 맨 앞에 newPost 추가 */
+};
+```
+
+**구현 조건**
+
+- `onAdd`에는 `title`, `author`, `category`, `content`를 담은 객체를 넘깁니다. 문자열 값은 `trim()`한 뒤 넘깁니다.
+- 등록 후에는 `setForm(emptyForm)`으로 폼을 비우고 `setSubmitted(true)`로 성공 문구를 보여 줍니다.
+- `addPost`의 `id`는 `crypto.randomUUID()`, 날짜는 `new Date().toISOString().slice(0, 10)`을 씁니다.
+- 새 글은 **맨 앞**에 넣고, 배열을 직접 바꾸지 않고 `setPosts((prev) => [newPost, ...prev])`처럼 **새 배열**을 만듭니다.
+
+**실행 확인**
+
+- 모두 채워서 `등록하기`를 누르면 목록 맨 위에 `NEW` 배지가 붙은 글이 생깁니다.
+- 폼이 비워지고 "글이 등록되었어요!"가 나타납니다.
+- 푸터의 "전체 N개의 글"이 `6`으로 바뀝니다.
+- 새 글에도 좋아요가 동작합니다.
+
+::: {.callout-warning title="흔한 실수"}
+`posts.push(newPost)`는 원본 배열을 직접 바꿔서 화면이 갱신되지 않습니다. 항상 새 배열을 만들어 `setPosts`에 전달합니다.
+:::
+
+---
+
+## 문제 10. 삭제와 좋아요 집계
+
+글 삭제 버튼을 만들고, 헤더에 "내가 좋아한 글 N"이 표시되게 하세요.
+
+`App.jsx`의 `deletePost`와 `likedCount`를 완성하고(`TODO 10-1`, `10-2`), `PostCard.jsx`에 삭제 버튼을 추가합니다. (`TODO 10-3`)
+
+```jsx
+const deletePost = (id) => {
+  /* 정말 삭제할지 묻고, 해당 글만 빼기 */
+};
+
+const likedCount = /* liked 가 true 인 글의 개수 */;
+```
+
+**구현 조건**
+
+- `deletePost`는 `window.confirm("정말 삭제할까요?")`로 먼저 물어보고, 취소하면 아무것도 하지 않습니다.
+- 삭제는 `filter`로 해당 `id`만 뺀 **새 배열**을 만듭니다.
+- `likedCount`는 State로 만들지 않고 `posts.filter(...)`의 길이로 **계산**합니다.
+- 삭제 버튼은 `className="btn-delete"`이고, 누르면 `onDelete(id)`를 호출합니다. 좋아요 버튼 옆에 둡니다.
+
+**실행 확인**
+
+- 카드의 좋아요를 누를 때마다 헤더의 "♥ 내가 좋아한 글 N"이 **함께** 바뀝니다. (State 끌어올리기 덕분입니다.)
+- `삭제`를 누르고 확인하면 카드가 사라지고 푸터의 글 개수가 줄어듭니다.
+- 확인 창에서 취소하면 글이 그대로 남습니다.

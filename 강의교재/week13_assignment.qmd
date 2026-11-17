@@ -1,0 +1,323 @@
+---
+title: "13주차 과제"
+subtitle: "폼과 State 끌어올리기"
+date: "2026-11-16"
+number-sections: false
+---
+
+# 13주차 과제
+
+## 문제지 내려받기
+
+<p><a class="btn btn-primary" href="downloads/week13_assignment.docx" download>13주차 과제 문제지 (docx)</a></p>
+
+## 문제 1. 폼과 제어 컴포넌트
+
+```jsx
+function JoinForm() {
+  const [form, setForm] = useState({ name: "", email: "" });
+  const [members, setMembers] = useState([]);
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setForm({ (가), [(나)]: value });
+  }
+
+  function handleSubmit(event) {
+    event.(다)();
+    setMembers([...members, form]);
+    setForm({ name: "", email: "" });
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input name="name" value={form.name} onChange={handleChange} />
+      <input name="email" value={form.email} onChange={handleChange} />
+      <button>가입</button>
+      <p>가입자 {members.length}명</p>
+    </form>
+  );
+}
+```
+
+**(1)** 본문 코드의 빈칸 (가), (나), (다)에 들어갈 코드를 쓰시오.
+
+**(2)** 빈칸을 채운 코드에서 이메일 입력창에 글자를 입력했을 때 form의 값이 바뀌는 과정을 handleChange의 각 줄이 하는 일과 함께 서술하시오.
+
+**(3)** 이름이나 이메일이 비어 있으면(공백만 있어도) 가입되지 않도록 handleSubmit에 추가할 코드를 쓰시오. 추가할 줄만 쓰고, 넣을 위치도 함께 쓰시오.
+
+**(4)** 제어 컴포넌트에서 value와 onChange가 각각 하는 일을 한 문장씩 쓰시오.
+
+## 문제 2. 입력 요소의 종류와 검증
+
+이 코드를 실행하면 약관 체크박스를 한 번 누르면 체크되지만, 다시 눌러도 체크가 풀리지 않는다.
+
+```jsx
+function SurveyForm() {
+  const [form, setForm] = useState({ nickname: "", grade: "1", agree: false });
+  const [error, setError] = useState("");
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setForm({ ...form, [name]: value });
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    if (!form.agree) {
+      setError("약관에 동의해 주세요.");
+      return;
+    }
+
+    setError("");
+    alert(`${form.nickname} (${form.grade}학년) 제출 완료`);
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input name="nickname" value={form.nickname} onChange={handleChange} />
+      <select name="grade" value={form.grade} onChange={handleChange}>
+        <option value="1">1학년</option>
+        <option value="2">2학년</option>
+        <option value="3">3학년</option>
+      </select>
+      <label>
+        <input
+          type="checkbox"
+          name="agree"
+          checked={form.agree}
+          onChange={handleChange}
+        />
+        약관에 동의합니다
+      </label>
+      {error && <p className="error">{error}</p>}
+      <button>제출</button>
+    </form>
+  );
+}
+```
+
+**(1)** (가) 잘못된 부분을 찾아 쓰고, (나) 올바르게 고친 코드를 쓰고, (다) 이렇게 동작하는 이유를 서술하시오.
+
+**(2)** 닉네임이 두 글자 미만이면 "닉네임은 두 글자 이상 입력해 주세요."를 오류로 표시하고 제출하지 않도록, 오류를 고친 코드의 handleSubmit에 추가할 코드와 그 코드를 넣을 위치를 쓰시오. 추가할 줄만 쓰시오.
+
+**(3)** 오류를 고친 코드에서 약관에 동의하지 않은 채 [제출]을 누르면 일어나는 일을 handleSubmit의 코드 흐름과 함께 서술하시오.
+
+**(4)** 텍스트 입력창, select, 체크박스에서 값을 읽는 속성은 각각 무엇인지 쓰시오. 또한 <input type="number">에서 읽은 값을 숫자로 계산하려면 어떻게 해야 하는지 쓰시오.
+
+## 문제 3. 제출 결과를 목록에 쌓기
+
+```jsx
+function GuestBook() {
+  const [text, setText] = useState("");
+  const [messages, setMessages] = useState([]);
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    if (text.trim() === "") return;
+    setMessages([...messages, { id: crypto.randomUUID(), text }]);
+    setText("");
+  }
+
+  function handleDelete(id) {
+    setMessages(messages.filter((message) => message.id !== id));
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input value={text} onChange={(event) => setText(event.target.value)} />
+      <button>등록</button>
+      <ul>
+        {messages.map((message) => (
+          <li key={message.id}>
+            {message.text}
+            <button type="button" onClick={() => handleDelete(message.id)}>
+              삭제
+            </button>
+          </li>
+        ))}
+      </ul>
+      {messages.length === 0 && <p>아직 글이 없습니다.</p>}
+    </form>
+  );
+}
+```
+
+**(1)** 모든 글을 한 번에 지우는 [전체 삭제] 버튼과 그 처리 함수를 작성하시오. 이 버튼은 <form> 안에 있어도 눌렀을 때 폼이 제출되면 안 된다.
+
+**(2)** 글을 하나 등록했을 때 handleSubmit부터 화면이 바뀌기까지의 과정을 서술하시오. 또한 처음에 보이던 "아직 글이 없습니다."가 사라지는 이유를 쓰시오.
+
+**(3)** 목록 항목마다 key를 쓰는 이유를 쓰고, 삭제할 수 있는 목록에서 key={index}(목록에서의 순서 번호)를 쓰면 위험한 이유를 쓰시오.
+
+**(4)** handleSubmit에서 setText("")를 지우면 글을 등록한 뒤 입력창이 어떻게 되는지 쓰고, 그렇게 되는 이유를 value와 State로 설명하시오.
+
+## 문제 4. State 끌어올리기
+
+이 코드를 실행하면 [신청]을 눌러도 "신청한 동아리 0개"가 바뀌지 않는다.
+
+```jsx
+const clubs = [
+  { id: 1, name: "코딩 동아리" },
+  { id: 2, name: "영상 제작 동아리" },
+];
+
+function ClubCard({ club, onJoin }) {
+  return (
+    <li>
+      {club.name}
+      <button onClick={() => onJoin(club)}>신청</button>
+    </li>
+  );
+}
+
+function JoinedSummary({ joined }) {
+  return <p>신청한 동아리 {joined.length}개</p>;
+}
+
+function App() {
+  const [joined, setJoined] = useState([]);
+
+  function joinClub(club) {
+    joined.push(club);
+    setJoined(joined);
+  }
+
+  return (
+    <>
+      <ul>
+        {clubs.map((club) => (
+          <ClubCard key={club.id} club={club} onJoin={joinClub} />
+        ))}
+      </ul>
+      <JoinedSummary joined={joined} />
+    </>
+  );
+}
+```
+
+**(1)** (가) 잘못된 부분을 찾아 쓰고, (나) 올바르게 고친 코드를 쓰고, (다) 화면이 바뀌지 않는 이유를 서술하시오.
+
+**(2)** 오류를 고친 코드에서 [신청]을 눌렀을 때 "신청한 동아리" 숫자가 바뀌기까지의 과정을 onJoin, joinClub, setJoined를 사용하여 순서대로 서술하시오.
+
+**(3)** 신청을 취소하는 기능을 만들려고 한다. JoinedSummary에는 신청한 동아리마다 [취소] 버튼이 이미 있고, 누르면 onCancel(club.id)를 호출한다고 가정한다. App에 id가 같은 동아리를 신청 목록에서 빼는 cancelClub 함수를 작성하고, JoinedSummary에 onCancel이라는 이름으로 내려 주는 줄을 쓰시오.
+
+**(4)** (가) 이 코드에서 값(joined)이 흐르는 방향과 State를 바꿔 달라는 요청(onJoin)이 흐르는 방향을 각각 쓰시오. (나) 신청 개수를 State로 따로 만들지 않고 joined.length로 구하는 이유를 쓰시오.
+
+## 문제 5. State를 어디에 둘 것인가
+
+```jsx
+function TodoForm({ onAdd }) {
+  const [text, setText] = useState("");
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    if (text.trim() === "") return;
+    onAdd(text);
+    setText("");
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input value={text} onChange={(event) => setText(event.target.value)} />
+      <button>추가</button>
+    </form>
+  );
+}
+
+function TodoItem({ todo, onToggle }) {
+  const [showMemo, setShowMemo] = useState(false);
+
+  return (
+    <li>
+      <input
+        type="checkbox"
+        checked={todo.done}
+        onChange={() => onToggle(todo.id)}
+      />
+      {todo.title}
+      <button onClick={() => setShowMemo(!showMemo)}>메모</button>
+      {showMemo && <p>{todo.memo}</p>}
+    </li>
+  );
+}
+
+function TodoList({ todos, onToggle }) {
+  return (
+    <ul>
+      {todos.map((todo) => (
+        <TodoItem key={todo.id} todo={todo} onToggle={onToggle} />
+      ))}
+    </ul>
+  );
+}
+
+function App() {
+  const [todos, setTodos] = useState([
+    { id: 1, title: "과제 제출", memo: "금요일까지", done: false },
+    { id: 2, title: "React 복습", memo: "폼 정리", done: true },
+  ]);
+
+  function addTodo(title) {
+    setTodos([...todos, { id: crypto.randomUUID(), title, memo: "", done: false }]);
+  }
+
+  function toggleTodo(id) {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, done: !todo.done } : todo
+      )
+    );
+  }
+
+  return (
+    <>
+      <TodoForm onAdd={addTodo} />
+      <TodoList todos={todos} onToggle={toggleTodo} />
+    </>
+  );
+}
+```
+
+**(1)** 이 코드의 State 세 개(todos, text, showMemo)를 각각 App, TodoForm, TodoItem에 둔 이유를 쓰시오.
+
+**(2)** 완료한 할 일의 개수를 "완료 N개"로 표시하는 <p>를 App의 반환부에 추가하려고 한다. 개수는 State로 만들지 않는다. 필요한 코드를 쓰시오.
+
+**(3)** TodoItem의 showMemo를 아래와 같이 App으로 옮겼더니, 한 항목의 [메모]를 누르면 모든 항목의 메모가 함께 펼쳐진다. (가) 모든 항목의 메모가 함께 펼쳐지는 이유를 서술하고, (나) 각 항목이 자신의 메모 표시 여부를 독립적인 불리언 State로 관리하도록 할 때 showMemo를 둘 컴포넌트를 쓰시오.
+
+```jsx
+function TodoItem({ todo, onToggle, showMemo, onToggleMemo }) {
+  return (
+    <li>
+      <input
+        type="checkbox"
+        checked={todo.done}
+        onChange={() => onToggle(todo.id)}
+      />
+      {todo.title}
+      <button onClick={onToggleMemo}>메모</button>
+      {showMemo && <p>{todo.memo}</p>}
+    </li>
+  );
+}
+
+function App() {
+  const [showMemo, setShowMemo] = useState(false);
+  // ... todos, addTodo, toggleTodo는 그대로 ...
+
+  return (
+    <>
+      <TodoForm onAdd={addTodo} />
+      <TodoList
+        todos={todos}
+        onToggle={toggleTodo}
+        showMemo={showMemo}
+        onToggleMemo={() => setShowMemo(!showMemo)}
+      />
+    </>
+  );
+}
+// TodoList는 받은 showMemo와 onToggleMemo를 각 TodoItem에 그대로 넘긴다.
+```
+
+**(4)** State를 어디에 둘지 정하는 기준을 한 문장으로 쓰고, 입력 중인 글자 text를 App으로 올리지 않는 이유를 쓰시오.

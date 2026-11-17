@@ -4,6 +4,7 @@ project:
   resources:
     - examples/**
     - react-demos/**
+    - downloads/**
 
 book:
   title: "고급웹프로그래밍:React"
@@ -98,6 +99,10 @@ book:
           href: week12_quiz.qmd
         - text: "3. 코딩실습"
           href: week12_code.qmd
+    - part: "13주차 : 과제"
+      chapters:
+        - text: "1. 과제"
+          href: week13_assignment.qmd
 
 crossref:
   fig-title: "그림"
